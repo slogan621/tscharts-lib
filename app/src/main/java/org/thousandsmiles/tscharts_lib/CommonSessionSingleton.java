@@ -41,12 +41,12 @@ public class CommonSessionSingleton {
     private ArrayList<HeadshotImage> m_headshotJobs = new ArrayList<HeadshotImage>();
     private ConcurrentHashMap<Integer, String> m_headshotIdToPath = new ConcurrentHashMap<Integer, String>();
 
-    void addHeadshotJob(HeadshotImage hs)
+    public void addHeadshotJob(HeadshotImage hs)
     {
         m_headshotJobs.add(hs);
     }
 
-    void startNextHeadshotJob()
+    public void startNextHeadshotJob()
     {
         HeadshotImage hs;
         if (m_headshotJobs.size() > 0) {
@@ -55,20 +55,20 @@ public class CommonSessionSingleton {
         }
     }
 
-    void clearHeadShotCache() {
+    public void clearHeadShotCache() {
         m_headshotIdToPath.clear();
     }
 
-    void addHeadShotPath(int id, String path) {
+    public void addHeadShotPath(int id, String path) {
         m_headshotIdToPath.put(id, path);
     }
 
-    void addHeadshotImage(HeadshotImage o)
+    public void addHeadshotImage(HeadshotImage o)
     {
         m_headshotImages.add(o);
     }
 
-    void cancelHeadshotImages()
+    public void cancelHeadshotImages()
     {
         m_headshotJobs.clear();
         for (int i = 0; i < m_headshotImages.size(); i++) {
@@ -85,7 +85,7 @@ public class CommonSessionSingleton {
         m_photoPath = path;
     }
 
-    void createHeadshot(final RESTCompletionListener listener) {
+    public void createHeadshot(final RESTCompletionListener listener) {
         boolean ret = false;
 
         Thread thread = new Thread() {
@@ -132,11 +132,11 @@ public class CommonSessionSingleton {
         thread.start();
     }
 
-    void removeHeadShotPath(int id) {
+    public void removeHeadShotPath(int id) {
         m_headshotIdToPath.remove(id);
     }
 
-    String getHeadShotPath(int id) {
+    public String getHeadShotPath(int id) {
         String ret = null;
 
         try {
@@ -165,7 +165,7 @@ public class CommonSessionSingleton {
         return getPatientId();
     }
 
-    int getHeadshotTag()
+    public int getHeadshotTag()
     {
         return m_headshotTag;
     }
@@ -178,11 +178,11 @@ public class CommonSessionSingleton {
         return m_token;
     }
 
-    void setStorageDir(Activity activity) {
+    public void setStorageDir(Activity activity) {
         m_storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
     }
 
-    File getStorageDir() {
+    public File getStorageDir() {
         return m_storageDir;
     }
 
