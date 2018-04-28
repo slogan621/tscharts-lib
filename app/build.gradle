@@ -1,9 +1,9 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
+    publishNonDefault true
     compileSdkVersion 26
     defaultConfig {
-        applicationId "org.thousandsmiles.tscharts_lib"
         minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
@@ -24,4 +24,6 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.volley:volley:1.0.0'
 }
