@@ -55,8 +55,6 @@ public abstract class RESTful {
         return m_retries;
     }
 
-
-
     protected void onFail(int code, String message)
     {
         for (RESTCompletionListener x : m_listener) {
@@ -64,7 +62,7 @@ public abstract class RESTful {
         }
     }
 
-    protected int getStatus() {
+    public int getStatus() {
         return m_status;
     }
 
