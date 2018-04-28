@@ -54,11 +54,11 @@ public class HeadshotImage implements ImageReadyListener {
         m_listener.add(listener);
     }
 
-    void setImageView(ImageView imageView) {
+    public void setImageView(ImageView imageView) {
         m_imageView = imageView;
     }
 
-    Thread getImage(int id) {
+    public Thread getImage(int id) {
         m_id = id;
         if (m_reader == null) {
             m_reader = new ImageDataReader(m_context, m_id);
@@ -72,12 +72,12 @@ public class HeadshotImage implements ImageReadyListener {
         return m_thread;
     }
 
-    void start()
+    public  void start()
     {
         m_thread.start();
     }
 
-    String getImageFileAbsolutePath()
+    public  String getImageFileAbsolutePath()
     {
         String ret = null;
 
@@ -95,7 +95,7 @@ public class HeadshotImage implements ImageReadyListener {
         }
     }
 
-    void setActivity(Activity activity) {
+    public void setActivity(Activity activity) {
         m_activity = activity;
         m_context = activity.getApplicationContext();
     }
