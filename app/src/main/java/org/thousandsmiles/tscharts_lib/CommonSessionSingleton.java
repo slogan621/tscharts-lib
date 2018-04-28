@@ -81,6 +81,10 @@ public class CommonSessionSingleton {
         return m_photoPath;
     }
 
+    public void setPhotoPath(String path) {
+        m_photoPath = path;
+    }
+
     void createHeadshot(final RESTCompletionListener listener) {
         boolean ret = false;
 
