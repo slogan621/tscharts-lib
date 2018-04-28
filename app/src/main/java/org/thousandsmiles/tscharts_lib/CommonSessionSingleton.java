@@ -36,10 +36,14 @@ public class CommonSessionSingleton {
     private int m_headshotTag = 676;
     private int m_patientId;
     private String m_photoPath = "";
-    private int m_clinicId;
+    private int m_clinicId = -1;
     private ArrayList<HeadshotImage> m_headshotImages = new ArrayList<HeadshotImage>();
     private ArrayList<HeadshotImage> m_headshotJobs = new ArrayList<HeadshotImage>();
     private ConcurrentHashMap<Integer, String> m_headshotIdToPath = new ConcurrentHashMap<Integer, String>();
+
+    public void setClinicId(int id) {
+        m_clinicId = id;
+    }
 
     public void addHeadshotJob(HeadshotImage hs)
     {

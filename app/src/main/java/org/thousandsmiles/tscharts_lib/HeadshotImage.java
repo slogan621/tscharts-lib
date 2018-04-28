@@ -34,8 +34,8 @@ public class HeadshotImage implements ImageReadyListener {
     private Activity m_activity;
     private ImageDataReader m_reader = null;
     private Thread m_thread = null;
+    private int m_clinicId = -1;
     private ArrayList<ImageDisplayedListener> m_listener = new ArrayList<ImageDisplayedListener>();   // callback on success or error
-
 
     private void sendOnImageDisplayed(int id, String path) {
         for (int i = 0; i < m_listener.size(); i++) {
