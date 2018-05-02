@@ -24,6 +24,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -40,6 +43,7 @@ public class CommonSessionSingleton {
     private ArrayList<HeadshotImage> m_headshotImages = new ArrayList<HeadshotImage>();
     private ArrayList<HeadshotImage> m_headshotJobs = new ArrayList<HeadshotImage>();
     private ConcurrentHashMap<Integer, String> m_headshotIdToPath = new ConcurrentHashMap<Integer, String>();
+    private ArrayList<String> m_medicationsList = new ArrayList<String>();
 
     public void setClinicId(int id) {
         m_clinicId = id;
@@ -188,6 +192,27 @@ public class CommonSessionSingleton {
 
     public File getStorageDir() {
         return m_storageDir;
+    }
+
+    public void setMedicationsList(JSONArray a)
+    {
+        m_medicationsList.clear();
+        for (int i = 0; i < a.length(); i++) {
+            try {
+                m_medicationsList.add(a.getString(i));
+            } catch (JSONException e) {
+            }
+        }
+    }
+
+    public ArrayList<String> getMedicationsList()
+    {
+        return m_medicationsList;
+    }
+
+    public String[] getMedicationsListStringArray()
+    {
+        return m_medicationsList.toArray(new String[0]);
     }
 
     public static CommonSessionSingleton getInstance() {
