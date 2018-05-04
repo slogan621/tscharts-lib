@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,6 +45,40 @@ public class CommonSessionSingleton {
     private ArrayList<HeadshotImage> m_headshotJobs = new ArrayList<HeadshotImage>();
     private ConcurrentHashMap<Integer, String> m_headshotIdToPath = new ConcurrentHashMap<Integer, String>();
     private ArrayList<String> m_medicationsList = new ArrayList<String>();
+    private MedicalHistory m_patientMedicalHistory = null;
+
+    public void resetPatientMedicalHistory() {
+        m_patientMedicalHistory = null;
+    }
+
+    public void setMedicalHistoryId(int id) {
+        m_patientMedicalHistory.setId(id);
+    }
+
+    public void setPatientMedicalHistory(JSONObject o)
+    {
+        if (m_patientMedicalHistory == null) {
+            m_patientMedicalHistory = new MedicalHistory();
+        }
+        m_patientMedicalHistory.fromJSONObject(o);
+    }
+
+    public void updatePatientMedicalHistory(MedicalHistory mh) {
+        m_patientMedicalHistory = mh;
+    }
+
+    public MedicalHistory getPatientMedicalHistory()
+    {
+        return m_patientMedicalHistory;
+    }
+
+    public MedicalHistory getNewPatientMedicalHistory()
+    {
+        if (m_patientMedicalHistory == null) {
+            m_patientMedicalHistory = new MedicalHistory();
+        }
+        return m_patientMedicalHistory;
+    }
 
     public void setClinicId(int id) {
         m_clinicId = id;
