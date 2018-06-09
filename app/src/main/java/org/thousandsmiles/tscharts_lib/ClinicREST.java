@@ -126,7 +126,7 @@ public class ClinicREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("http://%s:%s/tscharts/v1/clinic/?date=%s/%s/%s", getIP(), getPort(), month, day, year);
+        String url = String.format("%s://%s:%s/tscharts/v1/clinic/?date=%s/%s/%s", getProtocol(), getIP(), getPort(), month, day, year);
 
         AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new ResponseListener(), new ErrorListener());
 

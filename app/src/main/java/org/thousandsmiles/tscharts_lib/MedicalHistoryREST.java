@@ -160,7 +160,7 @@ public class MedicalHistoryREST extends RESTful {
 
         JSONObject data = mh.toJSONObject(false);
 
-        String url = String.format("http://%s:%s/tscharts/v1/medicalhistory/", getIP(), getPort());
+        String url = String.format("%s://%s:%s/tscharts/v1/medicalhistory/", getProtocol(), getIP(), getPort());
 
         MedicalHistoryREST.AuthJSONObjectRequest request = new MedicalHistoryREST.AuthJSONObjectRequest(Request.Method.POST, url, data, new PostResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -178,7 +178,7 @@ public class MedicalHistoryREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("http://%s:%s/tscharts/v1/medicalhistory/%d/", getIP(), getPort(), historyid);
+        String url = String.format("%s://%s:%s/tscharts/v1/medicalhistory/%d/", getProtocol(), getIP(), getPort(), historyid);
 
         AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new ResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -196,8 +196,8 @@ public class MedicalHistoryREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("http://%s:%s/tscharts/v1/medicalhistory/?clinic=%d&patient=%d",
-                                   getIP(), getPort(), clinicid, patientid);
+        String url = String.format("%s://%s:%s/tscharts/v1/medicalhistory/?clinic=%d&patient=%d",
+                getProtocol(), getIP(), getPort(), clinicid, patientid);
 
         AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new ResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -217,7 +217,7 @@ public class MedicalHistoryREST extends RESTful {
 
         JSONObject data = mh.toJSONObject(true);
 
-        String url = String.format("http://%s:%s/tscharts/v1/medicalhistory/%d/", getIP(), getPort(), mh.getId());
+        String url = String.format("%s://%s:%s/tscharts/v1/medicalhistory/%d/", getProtocol(), getIP(), getPort(), mh.getId());
 
         AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.PUT, url, data, new PutResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

@@ -132,7 +132,7 @@ public class MedicationsREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("http://%s:%s/tscharts/v1/medications/", getIP(), getPort());
+        String url = String.format("%s://%s:%s/tscharts/v1/medications/",  getProtocol(), getIP(), getPort());
 
         AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetMedicationsResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

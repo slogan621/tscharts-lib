@@ -89,4 +89,8 @@ public abstract class RESTful {
         String val = sharedPref.getString("ipAddress", "");
         return val;
     }
+
+    public String getProtocol() {
+        return "https";
+    }
 }

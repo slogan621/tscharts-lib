@@ -193,7 +193,7 @@ public class ImageREST extends RESTful {
 
         m_queue = volley.getQueue();
 
-        String url = String.format("http://%s:%s/tscharts/v1/image/%d/", getIP(), getPort(), imageid);
+        String url = String.format("%s://%s:%s/tscharts/v1/image/%d/", getProtocol(), getIP(), getPort(), imageid);
 
         ImageREST.AuthJSONObjectRequest request = new ImageREST.AuthJSONObjectRequest(Request.Method.GET, url, null, new ImageREST.ResponseListener(), new ImageREST.ErrorListener());
 
@@ -211,7 +211,7 @@ public class ImageREST extends RESTful {
 
         volley.initQueueIf(getContext());
 
-        String url = String.format("http://%s:%s/tscharts/v1/image?patient=%d&newest=true", getIP(), getPort(), patientid);
+        String url = String.format("%s://%s:%s/tscharts/v1/image?patient=%d&newest=true", getProtocol(), getIP(), getPort(), patientid);
 
         ImageREST.AuthJSONObjectRequest request = new ImageREST.AuthJSONObjectRequest(Request.Method.GET, url, null, new ImageREST.ResponseListener(), new ImageREST.ErrorListener());
 
@@ -263,7 +263,7 @@ public class ImageREST extends RESTful {
             // fail
         }
 
-        String url = String.format("http://%s:%s/tscharts/v1/image/", getIP(), getPort());
+        String url = String.format("%s://%s:%s/tscharts/v1/image/", getProtocol(), getIP(), getPort());
 
         ImageREST.AuthJSONObjectRequest request = new ImageREST.AuthJSONObjectRequest(Request.Method.POST, url, data, new PostResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -288,7 +288,7 @@ public class ImageREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("http://%s:%s/tscharts/v1/image?patient=%d&sort=%s", getIP(), getPort(), patientid, sortArg);
+        String url = String.format("%s://%s:%s/tscharts/v1/image?patient=%d&sort=%s", getProtocol(), getIP(), getPort(), patientid, sortArg);
 
         AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ArrayResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy( 50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));

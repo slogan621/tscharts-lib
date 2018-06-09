@@ -115,7 +115,7 @@ public class LoginREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("http://%s:%s/tscharts/v1/login/", getIP(), getPort());
+        String url = String.format("%s://%s:%s/tscharts/v1/login/", getProtocol(), getIP(), getPort());
 
         JSONObject data = new JSONObject();
 
@@ -143,7 +143,7 @@ public class LoginREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("http://%s/tscharts/v1/logout/", getIP());
+        String url = String.format("%s://%s/tscharts/v1/logout/", getProtocol(), getIP());
 
         JSONObject data = new JSONObject();
 
