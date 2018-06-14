@@ -28,7 +28,10 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
@@ -57,6 +60,16 @@ public class TrustedSSLSocketFactory {
             return null;
         }
 
+        // Create all-trusting host name verifier
+        HostnameVerifier allHostsValid = new HostnameVerifier() {
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        };
+
+        // Install the all-trusting host verifier
+        HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+
         Certificate ca = null;
         // Generate the certificate using the certificate file under res/raw/cert.cer
         InputStream caInput = new BufferedInputStream(aCtx.getResources().openRawResource(R.raw.cert));
@@ -82,6 +95,7 @@ public class TrustedSSLSocketFactory {
         }
 
         // Create a TrustManager that trusts the CAs in our KeyStore
+
         String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
         TrustManagerFactory tmf = null;
         try {

@@ -33,7 +33,8 @@ public class VolleySingleton {
         if (m_queue == null) {
             TrustedSSLSocketFactory tssf = TrustedSSLSocketFactory.getInstance();
             SSLSocketFactory sf = tssf.getSocketFactory(context);
-            m_queue = Volley.newRequestQueue(context,  new HurlStack(null, sf));
+            HurlStack hs = new HurlStack(null, sf);
+            m_queue = Volley.newRequestQueue(context, hs);
         }
     }
 
