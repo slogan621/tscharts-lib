@@ -20,27 +20,32 @@ package org.thousandsmiles.tscharts_lib;
 import android.content.Context;
 
 import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.Volley;
 
+import javax.net.ssl.SSLSocketFactory;
+
 public class VolleySingleton {
-    private static VolleySingleton instance;
-    private static RequestQueue queue;
+    private static VolleySingleton m_instance;
+    private static RequestQueue m_queue;
 
     public void initQueueIf(Context context) {
-        if (queue == null) {
-            queue = Volley.newRequestQueue(context);
+        if (m_queue == null) {
+            TrustedSSLSocketFactory tssf = TrustedSSLSocketFactory.getInstance();
+            SSLSocketFactory sf = tssf.getSocketFactory(context);
+            m_queue = Volley.newRequestQueue(context,  new HurlStack(null, sf));
         }
     }
 
     public RequestQueue getQueue() {
-        return queue;
+        return m_queue;
     }
 
     public static VolleySingleton getInstance() {
-        if (instance == null) {
-            instance = new VolleySingleton();
+        if (m_instance == null) {
+            m_instance = new VolleySingleton();
         }
-        return instance;
+        return m_instance;
     }
 }
 
