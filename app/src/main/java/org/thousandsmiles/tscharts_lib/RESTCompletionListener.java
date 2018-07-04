@@ -17,7 +17,12 @@
 
 package org.thousandsmiles.tscharts_lib;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public interface RESTCompletionListener {
-    void onSuccess(int code, String message);
-    void onFail(int code, String message);
+    public void onSuccess(int code, String message, JSONArray a);
+    public void onSuccess(int code, String message, JSONObject a);
+    public void onSuccess(int code, String message);
+    public void onFail(int code, String message);
 }

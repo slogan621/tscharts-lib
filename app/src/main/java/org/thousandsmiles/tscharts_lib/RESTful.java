@@ -21,6 +21,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public abstract class RESTful {
@@ -36,6 +39,20 @@ public abstract class RESTful {
 
     public void removeListener(RESTCompletionListener o) {
         m_listener.remove(o);
+    }
+
+    protected void onSuccess(int code, String message, JSONArray a)
+    {
+        for (RESTCompletionListener x : m_listener) {
+            x.onSuccess(code, message, a);
+        }
+    }
+
+    protected void onSuccess(int code, String message, JSONObject o)
+    {
+        for (RESTCompletionListener x : m_listener) {
+            x.onSuccess(code, message, o);
+        }
     }
 
     protected void onSuccess(int code, String message)

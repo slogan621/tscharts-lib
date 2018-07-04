@@ -47,6 +47,7 @@ public class MedicalHistoryREST extends RESTful {
                 CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
                 setStatus(200);
                 onSuccess(200, "");
+                // XXX factor next line to listener
                 sess.setPatientMedicalHistory(response);
                 m_lock.notify();
             }
@@ -61,6 +62,7 @@ public class MedicalHistoryREST extends RESTful {
             synchronized (m_lock) {
                 CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
                 try {
+                    // XXX factor next line to listener(s)
                     sess.setMedicalHistoryId(response.getInt("id"));
                     setStatus(200);
                     onSuccess(200, "");
