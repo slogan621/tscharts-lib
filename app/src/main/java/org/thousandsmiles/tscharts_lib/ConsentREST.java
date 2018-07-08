@@ -87,6 +87,7 @@ public class ConsentREST extends RESTful {
                     }
                 } else {
                    setStatus(error.networkResponse.statusCode);
+                   onFail(getStatus(), "");
                 }
                 m_lock.notify();
             }
