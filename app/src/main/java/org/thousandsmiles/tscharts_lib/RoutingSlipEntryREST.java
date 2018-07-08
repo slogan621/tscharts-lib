@@ -53,10 +53,8 @@ public class RoutingSlipEntryREST extends RESTful {
         @Override
         public void onResponse(JSONObject response) {
             synchronized (m_lock) {
-                //SessionSingleton sess = SessionSingleton.getInstance();
                 setStatus(200);
                 onSuccess(200, "", response);
-                //sess.setRoutingSlipEntryResponse(response);
                 m_lock.notify();
             }
         }
