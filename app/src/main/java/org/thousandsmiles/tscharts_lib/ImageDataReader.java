@@ -76,6 +76,7 @@ public class ImageDataReader {
                 ".jpg",                         /* suffix */
                 m_sess.getStorageDir()          /* directory */
         );
+        m_file.deleteOnExit();
         return m_file;
     }
 
