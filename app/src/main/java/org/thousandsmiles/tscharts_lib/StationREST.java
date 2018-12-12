@@ -20,6 +20,7 @@ package org.thousandsmiles.tscharts_lib;
 import android.content.Context;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -35,7 +36,19 @@ import java.util.Map;
 public class StationREST extends RESTful {
     private final Object m_lock = new Object();
 
-    private class ResponseListener implements Response.Listener<JSONArray> {
+    private class ObjectResponseListener implements Response.Listener<JSONObject> {
+
+        @Override
+        public void onResponse(JSONObject response) {
+            synchronized (m_lock) {
+                setStatus(200);
+                onSuccess(200, "", response);
+                m_lock.notify();
+            }
+        }
+    }
+
+    private class ArrayResponseListener implements Response.Listener<JSONArray> {
 
         @Override
         public void onResponse(JSONArray response) {
@@ -95,7 +108,6 @@ public class StationREST extends RESTful {
         public AuthJSONArrayRequest(String url, Response.Listener<JSONArray> listener,
                                     Response.ErrorListener errorListener, String username, String password) {
             super(url, listener, errorListener);
-
         }
 
         private Map<String, String> headers = new HashMap<String, String>();
@@ -106,11 +118,27 @@ public class StationREST extends RESTful {
             headers.put("Authorization", CommonSessionSingleton.getInstance().getToken());
             return headers;
         }
-
     }
 
     public StationREST(Context context) {
         setContext(context);
+    }
+
+    public Object getStation(int id) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/station/%d/", getProtocol(), getIP(), getPort(), id);
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new ObjectResponseListener(), new ErrorListener());
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
     }
 
     public Object getStationData() {
@@ -123,7 +151,7 @@ public class StationREST extends RESTful {
 
         String url = String.format("%s://%s:%s/tscharts/v1/station/", getProtocol(), getIP(), getPort());
 
-        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ResponseListener(), new ErrorListener());
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ArrayResponseListener(), new ErrorListener());
 
         queue.add((JsonArrayRequest) request);
 
