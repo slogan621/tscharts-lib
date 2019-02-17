@@ -39,6 +39,7 @@ public class CommonSessionSingleton {
     private File m_storageDir = null;
     private int m_headshotTag = 676;
     private int m_patientId;
+    private int m_patientRoutingSlipId;
     private String m_photoPath = "";
     private int m_clinicId = -1;
     private ArrayList<HeadshotImage> m_headshotImages = new ArrayList<HeadshotImage>();
@@ -46,6 +47,16 @@ public class CommonSessionSingleton {
     private ConcurrentHashMap<Integer, String> m_headshotIdToPath = new ConcurrentHashMap<Integer, String>();
     private ArrayList<String> m_medicationsList = new ArrayList<String>();
     private MedicalHistory m_patientMedicalHistory = null;
+
+    public void setPatientRoutingSlipId(int id)
+    {
+        m_patientRoutingSlipId = id;
+    }
+
+    public int getPatientRoutingSlipId()
+    {
+        return m_patientRoutingSlipId;
+    }
 
     public void resetPatientMedicalHistory() {
         m_patientMedicalHistory = null;
