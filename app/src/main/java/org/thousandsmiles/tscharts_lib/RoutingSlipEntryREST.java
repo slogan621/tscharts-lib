@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2017-2018
- * (C) Copyright Thousand Smiles Foundation 2017-2018
+ * (C) Copyright Syd Logan 2017-2019
+ * (C) Copyright Thousand Smiles Foundation 2017-2019
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package org.thousandsmiles.tscharts_lib;
 import android.content.Context;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -52,6 +53,18 @@ public class RoutingSlipEntryREST extends RESTful {
 
         @Override
         public void onResponse(JSONObject response) {
+            synchronized (m_lock) {
+                setStatus(200);
+                onSuccess(200, "", response);
+                m_lock.notify();
+            }
+        }
+    }
+
+    private class GetRoutingSlipEntriesResponseListener implements Response.Listener<JSONArray> {
+
+        @Override
+        public void onResponse(JSONArray response) {
             synchronized (m_lock) {
                 setStatus(200);
                 onSuccess(200, "", response);
@@ -177,6 +190,32 @@ public class RoutingSlipEntryREST extends RESTful {
         return m_lock;
     }
 
+    public Object markRoutingSlipStateRemoved(int entryId) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/routingslipentry/%d/", getProtocol(), getIP(), getPort(), entryId);
+
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("state", "Removed");
+        } catch(Exception e) {
+            // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
+            // because of the bad JSON sent
+        }
+
+        RoutingSlipEntryREST.AuthJSONObjectRequest request = new RoutingSlipEntryREST.AuthJSONObjectRequest(Request.Method.PUT, url, data,  new RoutingSlipEntryREST.UpdateRoutingSlipEntryResponseListener(), new RoutingSlipEntryREST.ErrorListener());
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
     public Object deleteRoutingSlipEntry(int entryId) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
@@ -209,6 +248,26 @@ public class RoutingSlipEntryREST extends RESTful {
         RoutingSlipEntryREST.AuthJSONObjectRequest request = new RoutingSlipEntryREST.AuthJSONObjectRequest(Request.Method.GET, url, null,  new RoutingSlipEntryREST.GetRoutingSlipEntryResponseListener(), new RoutingSlipEntryREST.ErrorListener());
 
         queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object getRoutingSlipEntriesByStates(int routingSlip, String states) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/routingslipentry/?routingslip=%d&states=%s",
+                getProtocol(), getIP(), getPort(), routingSlip, states);
+
+
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new RoutingSlipEntryREST.GetRoutingSlipEntriesResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonArrayRequest) request);
 
         return m_lock;
     }
