@@ -50,6 +50,21 @@ public class RoutingSlipREST extends RESTful {
         }
     }
 
+    private class GetAllRoutingSlipsForPatientListener implements Response.Listener<JSONArray> {
+
+        @Override
+        public void onResponse(JSONArray response) {
+            synchronized (m_lock) {
+                CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
+                setStatus(200);
+                if (response.length() > 1) {
+                    onSuccess(200, "", response);
+                }
+                m_lock.notify();
+            }
+        }
+    }
+
     private class ErrorListener implements Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
@@ -161,7 +176,7 @@ public class RoutingSlipREST extends RESTful {
 
         String url = String.format("%s://%s:%s/tscharts/v1/routingslip?patient=%d", getProtocol(), getIP(), getPort(), patientId);
 
-        RoutingSlipREST.AuthJSONObjectRequest request = new RoutingSlipREST.AuthJSONObjectRequest(Request.Method.GET, url, null,  new RoutingSlipREST.GetRoutingSlipResponseListener(), new RoutingSlipREST.ErrorListener());
+        RoutingSlipREST.AuthJSONObjectRequest request = new RoutingSlipREST.AuthJSONObjectRequest(Request.Method.GET, url, null,  new RoutingSlipREST.GetAllRoutingSlipsForPatientListener(), new RoutingSlipREST.ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonObjectRequest) request);
