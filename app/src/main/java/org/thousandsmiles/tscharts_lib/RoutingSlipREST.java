@@ -57,9 +57,7 @@ public class RoutingSlipREST extends RESTful {
             synchronized (m_lock) {
                 CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
                 setStatus(200);
-                if (response.length() > 1) {
-                    onSuccess(200, "", response);
-                }
+                onSuccess(200, "", response);
                 m_lock.notify();
             }
         }
