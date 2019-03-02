@@ -30,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommonSessionSingleton {
@@ -47,10 +48,92 @@ public class CommonSessionSingleton {
     private ConcurrentHashMap<Integer, String> m_headshotIdToPath = new ConcurrentHashMap<Integer, String>();
     private ArrayList<String> m_medicationsList = new ArrayList<String>();
     private MedicalHistory m_patientMedicalHistory = null;
+    private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
+
+    private class IsNewPatientListener implements RESTCompletionListener
+    {
+        private int m_patientId = 0;
+
+        public void setPatientId(int id)
+        {
+            m_patientId = id;
+        }
+
+        public void onSuccess(int code, String message, JSONArray a)
+        {
+            if (code == 200) {
+                if (a.length() > 1) {
+                    m_isNewPatientMap.put(m_patientId, false);
+                }
+                else {
+                    m_isNewPatientMap.put(m_patientId, true);
+                }
+            }
+        }
+
+        public void onSuccess(int code, String message, JSONObject a)
+        {
+        }
+
+        public void onSuccess(int code, String message)
+        {
+        }
+
+        public void onFail(int code, String message)
+        {
+        }
+    }
 
     public void setPatientRoutingSlipId(int id)
     {
         m_patientRoutingSlipId = id;
+    }
+
+    public boolean isNewPatient(final int patientId) {
+        boolean ret = false;
+        try {
+            ret = m_isNewPatientMap.get(patientId);
+        }
+        catch(Exception e) {
+            Thread thread = new Thread() {
+                public void run() {
+                // note we use session context because this may be called after onPause()
+                RoutingSlipREST rest = new RoutingSlipREST(getContext());
+                IsNewPatientListener listener = new IsNewPatientListener();
+
+                listener.setPatientId(patientId);
+
+                rest.addListener(listener);
+                Object lock;
+
+                lock = rest.getAllRoutingSlipsForPatient(patientId);
+
+                synchronized (lock) {
+                    // we loop here in case of race conditions or spurious interrupts
+                    while (true) {
+                        try {
+                            lock.wait();
+                            break;
+                        } catch (InterruptedException e) {
+                            continue;
+                        }
+                    }
+                }
+                }
+            };
+            thread.start();
+            try {
+                // give it two seconds
+                thread.join(2000);
+                try {
+                    ret = m_isNewPatientMap.get(patientId);
+                }
+                catch(Exception e1) {
+                }
+            } catch (Exception e2) {
+            }
+        }
+        return ret;
     }
 
     public int getPatientRoutingSlipId()
@@ -140,7 +223,6 @@ public class CommonSessionSingleton {
     }
 
     public void createHeadshot(final RESTCompletionListener listener) {
-        boolean ret = false;
 
         Thread thread = new Thread() {
             public void run() {

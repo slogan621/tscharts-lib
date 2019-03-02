@@ -43,8 +43,8 @@ public class RoutingSlipREST extends RESTful {
         @Override
         public void onResponse(JSONObject response) {
             synchronized (m_lock) {
-                CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
                 setStatus(200);
+                onSuccess(200, "", response);
                 m_lock.notify();
             }
         }
@@ -142,6 +142,24 @@ public class RoutingSlipREST extends RESTful {
         RequestQueue queue = volley.getQueue();
 
         String url = String.format("%s://%s:%s/tscharts/v1/routingslip?patient=%d&clinic=%d", getProtocol(), getIP(), getPort(), patientId, clinicId);
+
+        RoutingSlipREST.AuthJSONObjectRequest request = new RoutingSlipREST.AuthJSONObjectRequest(Request.Method.GET, url, null,  new RoutingSlipREST.GetRoutingSlipResponseListener(), new RoutingSlipREST.ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object getAllRoutingSlipsForPatient(int patientId) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/routingslip?patient=%d", getProtocol(), getIP(), getPort(), patientId);
 
         RoutingSlipREST.AuthJSONObjectRequest request = new RoutingSlipREST.AuthJSONObjectRequest(Request.Method.GET, url, null,  new RoutingSlipREST.GetRoutingSlipResponseListener(), new RoutingSlipREST.ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
