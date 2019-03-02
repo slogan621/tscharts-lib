@@ -176,10 +176,10 @@ public class RoutingSlipREST extends RESTful {
 
         String url = String.format("%s://%s:%s/tscharts/v1/routingslip?patient=%d", getProtocol(), getIP(), getPort(), patientId);
 
-        RoutingSlipREST.AuthJSONObjectRequest request = new RoutingSlipREST.AuthJSONObjectRequest(Request.Method.GET, url, null,  new RoutingSlipREST.GetAllRoutingSlipsForPatientListener(), new RoutingSlipREST.ErrorListener());
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllRoutingSlipsForPatientListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        queue.add((JsonObjectRequest) request);
+        queue.add((JsonArrayRequest) request);
 
         return m_lock;
     }
