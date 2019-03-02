@@ -122,16 +122,6 @@ public class CommonSessionSingleton {
                 }
             };
             thread.start();
-            try {
-                // give it two seconds
-                thread.join(2000);
-                try {
-                    ret = m_isNewPatientMap.get(patientId);
-                }
-                catch(Exception e1) {
-                }
-            } catch (Exception e2) {
-            }
         }
         return ret;
     }
