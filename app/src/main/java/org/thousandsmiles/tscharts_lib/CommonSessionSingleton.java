@@ -141,15 +141,8 @@ public class CommonSessionSingleton {
         public void onSuccess(int code, String message, JSONArray a)
         {
             if (code == 200) {
-                /* loop thru the list and see if any of them within 12 calendar months */
-
-                m_hasCurrentXRayMap.put(m_patientId, true);
-
-                for (int i = 0; i < a.length(); i++) {
-                    if (true == true) {
-                        m_hasCurrentXRayMap.put(m_patientId, true);
-                        break;
-                    }
+                if (a.length() > 0) {
+                    m_hasCurrentXRayMap.put(m_patientId, true);
                 }
             }
         }
@@ -184,7 +177,7 @@ public class CommonSessionSingleton {
                     rest.addListener(listener);
                     Object lock;
 
-                    lock = rest.getAllXRaysForPatient(m_patientId);
+                    lock = rest.getAllXRaysForPatient(patientId);
 
                     synchronized (lock) {
                         // we loop here in case of race conditions or spurious interrupts
