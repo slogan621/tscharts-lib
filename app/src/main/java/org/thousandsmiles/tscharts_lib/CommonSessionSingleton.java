@@ -49,6 +49,7 @@ public class CommonSessionSingleton {
     private ArrayList<String> m_medicationsList = new ArrayList<String>();
     private MedicalHistory m_patientMedicalHistory = null;
     private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
+    private static HashMap<Integer, Boolean> m_hasCurrentXRayMap = new HashMap<Integer, Boolean>();
 
     private class IsNewPatientListener implements RESTCompletionListener
     {
@@ -89,6 +90,8 @@ public class CommonSessionSingleton {
         m_patientRoutingSlipId = id;
     }
 
+
+
     public boolean isNewPatient(final int patientId) {
         boolean ret = false;
         try {
@@ -119,6 +122,81 @@ public class CommonSessionSingleton {
                         }
                     }
                 }
+                }
+            };
+            thread.start();
+        }
+        return ret;
+    }
+
+    private class HasCurrentXRayListener implements RESTCompletionListener
+    {
+        private int m_patientId = 0;
+
+        public void setPatientId(int id)
+        {
+            m_patientId = id;
+        }
+
+        public void onSuccess(int code, String message, JSONArray a)
+        {
+            if (code == 200) {
+                /* loop thru the list and see if any of them within 12 calendar months */
+
+                m_hasCurrentXRayMap.put(m_patientId, true);
+
+                for (int i = 0; i < a.length(); i++) {
+                    if (true == true) {
+                        m_hasCurrentXRayMap.put(m_patientId, true);
+                        break;
+                    }
+                }
+            }
+        }
+
+        public void onSuccess(int code, String message, JSONObject a)
+        {
+        }
+
+        public void onSuccess(int code, String message)
+        {
+        }
+
+        public void onFail(int code, String message)
+        {
+        }
+    }
+
+    public boolean hasCurrentXRay(final int patientId) {
+        boolean ret = false;
+        try {
+            ret = m_hasCurrentXRayMap.get(patientId);
+        }
+        catch(Exception e) {
+            Thread thread = new Thread() {
+                public void run() {
+                    // note we use session context because this may be called after onPause()
+                    XRayREST rest = new XRayREST(getContext());
+                    HasCurrentXRayListener listener = new HasCurrentXRayListener();
+
+                    listener.setPatientId(patientId);
+
+                    rest.addListener(listener);
+                    Object lock;
+
+                    lock = rest.getAllXRaysForPatient(m_patientId);
+
+                    synchronized (lock) {
+                        // we loop here in case of race conditions or spurious interrupts
+                        while (true) {
+                            try {
+                                lock.wait();
+                                break;
+                            } catch (InterruptedException e) {
+                                continue;
+                            }
+                        }
+                    }
                 }
             };
             thread.start();
