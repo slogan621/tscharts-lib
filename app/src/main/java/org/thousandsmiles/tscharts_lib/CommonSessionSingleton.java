@@ -162,7 +162,7 @@ public class CommonSessionSingleton {
                         try {
                             date = sdf.parse(a.getJSONObject(i).getString("time"), new ParsePosition(0));
                             if (date != null) {
-                                Calendar d = new GregorianCalendar();
+                                Calendar d = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
                                 d.setTime(date);
                                 long diff = today.getTime().getTime() - d.getTime().getTime();
                                 diff = diff / (1000 * 60 * 60 * 24);
