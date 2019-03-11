@@ -166,7 +166,7 @@ public class CommonSessionSingleton {
                                 d.setTime(date);
                                 long diff = today.getTime().getTime() - d.getTime().getTime();
                                 diff = diff / (1000 * 60 * 60 * 24);
-                                if (diff >= m_days) {
+                                if (diff < m_days) {
                                     m_hasCurrentXRayMap.put(m_patientId, true);
                                     break;
                                 }
