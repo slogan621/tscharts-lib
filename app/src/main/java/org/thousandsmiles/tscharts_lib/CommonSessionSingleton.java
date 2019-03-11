@@ -152,7 +152,7 @@ public class CommonSessionSingleton {
                     for (int i = 0; i < a.length(); i++) {
                         Date date, today;
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyyTHH:MM:SS");
+                        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:MM:SS");
                         sdf.setLenient(false);
                         try {
                             date = sdf.parse(a.getJSONObject(i).getString("time"), new ParsePosition(0));
