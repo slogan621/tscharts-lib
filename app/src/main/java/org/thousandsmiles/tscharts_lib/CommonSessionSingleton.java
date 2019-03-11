@@ -31,8 +31,11 @@ import java.io.File;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CommonSessionSingleton {
@@ -150,15 +153,20 @@ public class CommonSessionSingleton {
             if (code == 200) {
                 if (a.length() > 0) {
                     for (int i = 0; i < a.length(); i++) {
-                        Date date, today;
+                        Date date;
+
+                        Calendar today = new GregorianCalendar(TimeZone.getTimeZone("GMT"));
 
                         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
                         sdf.setLenient(false);
                         try {
                             date = sdf.parse(a.getJSONObject(i).getString("time"), new ParsePosition(0));
-                            today = new Date();
                             if (date != null) {
-                                if (date.compareTo(today) < m_days) {
+                                Calendar d = new GregorianCalendar();
+                                d.setTime(date);
+                                long diff = today.getTime().getTime() - d.getTime().getTime();
+                                diff = diff / (1000 * 60 * 60 * 24);
+                                if (diff >= m_days) {
                                     m_hasCurrentXRayMap.put(m_patientId, true);
                                     break;
                                 }
