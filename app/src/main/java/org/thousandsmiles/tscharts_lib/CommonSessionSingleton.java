@@ -22,14 +22,16 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -132,17 +134,39 @@ public class CommonSessionSingleton {
     private class HasCurrentXRayListener implements RESTCompletionListener
     {
         private int m_patientId = 0;
+        private int m_days = 365;     // within last year
 
         public void setPatientId(int id)
         {
             m_patientId = id;
+        }
+        public void setDays(int days)
+        {
+            m_days = days;
         }
 
         public void onSuccess(int code, String message, JSONArray a)
         {
             if (code == 200) {
                 if (a.length() > 0) {
-                    m_hasCurrentXRayMap.put(m_patientId, true);
+                    for (int i = 0; i < a.length(); i++) {
+                        Date date, today;
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyyTHH:MM:SS");
+                        sdf.setLenient(false);
+                        try {
+                            date = sdf.parse(a.getJSONObject(i).getString("time"), new ParsePosition(0));
+                            today = new Date();
+                            if (date != null) {
+                                if (date.compareTo(today) < m_days) {
+                                    m_hasCurrentXRayMap.put(m_patientId, true);
+                                    break;
+                                }
+                            }
+                        } catch (JSONException e) {
+
+                        }
+                    }
                 }
             }
         }
@@ -160,7 +184,7 @@ public class CommonSessionSingleton {
         }
     }
 
-    public boolean hasCurrentXRay(final int patientId) {
+    public boolean hasCurrentXRay(final int patientId, final int days) {
         boolean ret = false;
         try {
             ret = m_hasCurrentXRayMap.get(patientId);
@@ -173,6 +197,7 @@ public class CommonSessionSingleton {
                     HasCurrentXRayListener listener = new HasCurrentXRayListener();
 
                     listener.setPatientId(patientId);
+                    listener.setDays(days);
 
                     rest.addListener(listener);
                     Object lock;
