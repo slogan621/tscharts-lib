@@ -403,7 +403,9 @@ public class CommonSessionSingleton {
             ret = m_clinicMap.get(id);
         }
         catch(Exception e) {
+        }
 
+        if (ret == null) {
             final Thread thread = new Thread() {
                 public void run() {
                     final ClinicREST clinicREST = new ClinicREST(getContext());
