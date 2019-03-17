@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2018
- * (C) Copyright Thousand Smiles Foundation 2018
+ * (C) Copyright Syd Logan 2018-2019
+ * (C) Copyright Thousand Smiles Foundation 2018-2019
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -55,6 +56,7 @@ public class CommonSessionSingleton {
     private MedicalHistory m_patientMedicalHistory = null;
     private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, Boolean> m_hasCurrentXRayMap = new HashMap<Integer, Boolean>();
+    private static HashMap<Integer, JSONObject> m_clinicMap = new HashMap<Integer, JSONObject>();
 
     private class IsNewPatientListener implements RESTCompletionListener
     {
@@ -94,8 +96,6 @@ public class CommonSessionSingleton {
     {
         m_patientRoutingSlipId = id;
     }
-
-
 
     public boolean isNewPatient(final int patientId) {
         boolean ret = false;
@@ -372,6 +372,62 @@ public class CommonSessionSingleton {
         try {
             ret = m_headshotIdToPath.get(id);
         } catch(Exception e) {
+        }
+        return ret;
+    }
+
+    private class GetClinicByIdListener implements RESTCompletionListener {
+        private int m_clinicId;
+
+        public void setClinicId(int id) {m_clinicId = id;}
+
+        public void onSuccess(int code, String message, JSONArray a) {
+        }
+
+        public void onSuccess(int code, String message, JSONObject a) {
+           m_clinicMap.put(m_clinicId, a);
+        }
+
+        public void onSuccess(int code, String message) {
+        }
+
+        public void onFail(int code, String message) {
+        }
+    }
+
+    public JSONObject getClinicById(int id) {
+
+        JSONObject ret = null;
+
+        try {
+            ret = m_clinicMap.get(id);
+        }
+        catch(Exception e) {
+            final ClinicREST clinicREST = new ClinicREST(getContext());
+            final GetClinicByIdListener listener = new GetClinicByIdListener();
+
+            listener.setClinicId(id);
+            clinicREST.addListener(listener);
+            final Object lock;
+
+            lock = clinicREST.getClinicById(id);
+
+            final Thread thread = new Thread() {
+                public void run() {
+                    synchronized (lock) {
+                        // we loop here in case of race conditions or spurious interrupts
+                        while (true) {
+                            try {
+                                lock.wait();
+                                break;
+                            } catch (InterruptedException e) {
+                                continue;
+                            }
+                        }
+                    }
+                }
+            };
+            thread.start();
         }
         return ret;
     }

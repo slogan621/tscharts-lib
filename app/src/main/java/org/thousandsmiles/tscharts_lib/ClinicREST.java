@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2017
- * (C) Copyright Thousand Smiles Foundation 2017
+ * (C) Copyright Syd Logan 2017-2019
+ * (C) Copyright Thousand Smiles Foundation 2017-2019
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,20 +55,37 @@ public class ClinicREST extends RESTful {
         }
     }
 
+    private class GetByIdResponseListener implements Response.Listener<JSONObject> {
+
+        @Override
+        public void onResponse(JSONObject response) {
+
+            synchronized (m_lock) {
+                CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
+                setStatus(200);
+                onSuccess(200, "", response);
+                m_lock.notify();
+            }
+        }
+    }
+
     private class ErrorListener implements Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
 
             synchronized (m_lock) {
+                int code;
                 if (error.networkResponse == null) {
                     if (error.getCause() instanceof java.net.ConnectException || error.getCause() instanceof  java.net.UnknownHostException) {
-                        setStatus(101);
+                        code = 101;
                     } else {
-                        setStatus(-1);
+                        code = -1;
                     }
                 } else {
-                   setStatus(error.networkResponse.statusCode);
+                    code = error.networkResponse.statusCode;
                 }
+                setStatus(code);
+                onFail(code, "");
                 m_lock.notify();
             }
         }
@@ -119,7 +136,6 @@ public class ClinicREST extends RESTful {
 
     public Object getClinicData(int year, int month, int day) {
 
-        //year = 2016; month = 5; day = 1;
         VolleySingleton volley = VolleySingleton.getInstance();
 
         volley.initQueueIf(getContext());
@@ -129,6 +145,23 @@ public class ClinicREST extends RESTful {
         String url = String.format("%s://%s:%s/tscharts/v1/clinic/?date=%s/%s/%s", getProtocol(), getIP(), getPort(), month, day, year);
 
         AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new ResponseListener(), new ErrorListener());
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object getClinicById(int id) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/clinic/%d", getProtocol(), getIP(), getPort(), id);
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new GetByIdResponseListener(), new ErrorListener());
 
         queue.add((JsonObjectRequest) request);
 
