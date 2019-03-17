@@ -395,7 +395,7 @@ public class CommonSessionSingleton {
         }
     }
 
-    public JSONObject getClinicById(int id) {
+    public JSONObject getClinicById(final int id) {
 
         JSONObject ret = null;
 
@@ -403,17 +403,17 @@ public class CommonSessionSingleton {
             ret = m_clinicMap.get(id);
         }
         catch(Exception e) {
-            final ClinicREST clinicREST = new ClinicREST(getContext());
-            final GetClinicByIdListener listener = new GetClinicByIdListener();
-
-            listener.setClinicId(id);
-            clinicREST.addListener(listener);
-            final Object lock;
-
-            lock = clinicREST.getClinicById(id);
 
             final Thread thread = new Thread() {
                 public void run() {
+                    final ClinicREST clinicREST = new ClinicREST(getContext());
+                    final GetClinicByIdListener listener = new GetClinicByIdListener();
+
+                    listener.setClinicId(id);
+                    clinicREST.addListener(listener);
+                    final Object lock;
+
+                    lock = clinicREST.getClinicById(id);
                     synchronized (lock) {
                         // we loop here in case of race conditions or spurious interrupts
                         while (true) {
