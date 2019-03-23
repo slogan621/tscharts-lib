@@ -100,9 +100,9 @@ public class XRay {
         return xRayTypeToString(m_type);
     }
 
-    public boolean JSONToXRay(JSONObject o)
+    public int fromJSONObject(JSONObject o)
     {
-        boolean ret = true;
+        int ret = 0;
 
         try {
             setId(o.getInt("id"));
@@ -112,7 +112,7 @@ public class XRay {
             setMouthType(mouthTypeToEnum(o.getString("mouth_type")));
             setType(xRayTypeToEnum(o.getString("xray_type")));
         } catch (JSONException e) {
-            ret = false;
+            ret = -1;
         }
         return ret;
     }
