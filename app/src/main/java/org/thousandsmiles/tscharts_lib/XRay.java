@@ -129,7 +129,7 @@ public class XRay implements Serializable {
             data.put("teeth", this.getTeeth());
             data.put("patient", this.getPatient());
             data.put("clinic", this.getClinic());
-            data.put("type", this.getTypeAsString());
+            data.put("xray_type", this.getTypeAsString());
             data.put("mouth_type", this.getMouthTypeAsString());
         } catch(Exception e) {
             // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
