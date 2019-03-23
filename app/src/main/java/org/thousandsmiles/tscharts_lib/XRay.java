@@ -20,7 +20,9 @@ package org.thousandsmiles.tscharts_lib;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class XRay {
+import java.io.Serializable;
+
+public class XRay implements Serializable {
 
     public enum XRayType {
         XRAY_TYPE_NONE,
