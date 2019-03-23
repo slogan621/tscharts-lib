@@ -43,8 +43,10 @@ public class XRayREST extends RESTful {
         @Override
         public void onResponse(JSONObject response) {
             synchronized (m_lock) {
+                CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
                 setStatus(200);
                 onSuccess(200, "", response);
+                sess.setPatientXRay(response);
                 m_lock.notify();
             }
         }

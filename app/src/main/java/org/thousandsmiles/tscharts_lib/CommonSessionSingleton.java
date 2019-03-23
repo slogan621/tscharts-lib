@@ -54,6 +54,7 @@ public class CommonSessionSingleton {
     private ConcurrentHashMap<Integer, String> m_headshotIdToPath = new ConcurrentHashMap<Integer, String>();
     private ArrayList<String> m_medicationsList = new ArrayList<String>();
     private MedicalHistory m_patientMedicalHistory = null;
+    private XRay m_patientXRay = null;
     private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, Boolean> m_hasCurrentXRayMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, JSONObject> m_clinicMap = new HashMap<Integer, JSONObject>();
@@ -266,6 +267,31 @@ public class CommonSessionSingleton {
             m_patientMedicalHistory = new MedicalHistory();
         }
         return m_patientMedicalHistory;
+    }
+
+    public void setPatientXRay(JSONObject o)
+    {
+        if (m_patientXRay == null) {
+            m_patientXRay = new XRay();
+        }
+        m_patientXRay.fromJSONObject(o);
+    }
+
+    public void updatePatientXRay(XRay xray) {
+        m_patientXRay = xray;
+    }
+
+    public XRay getPatientXray()
+    {
+        return m_patientXRay;
+    }
+
+    public XRay getNewPatientXray()
+    {
+        if (m_patientXRay == null) {
+            m_patientXRay = new XRay();
+        }
+        return m_patientXRay;
     }
 
     public void setClinicId(int id) {
