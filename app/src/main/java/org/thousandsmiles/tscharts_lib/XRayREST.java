@@ -163,10 +163,10 @@ public class XRayREST extends RESTful {
 
         String url = String.format("%s://%s:%s/tscharts/v1/xray?patient=%d&clinic=%d", getProtocol(), getIP(), getPort(), patientId, clinicId);
 
-        XRayREST.AuthJSONObjectRequest request = new XRayREST.AuthJSONObjectRequest(Request.Method.GET, url, null,  new XRayREST.GetXRayResponseListener(), new XRayREST.ErrorListener());
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllXRaysListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        queue.add((JsonObjectRequest) request);
+        queue.add((JsonArrayRequest) request);
 
         return m_lock;
     }
