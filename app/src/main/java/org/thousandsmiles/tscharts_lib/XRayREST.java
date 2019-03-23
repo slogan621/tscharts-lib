@@ -118,7 +118,6 @@ public class XRayREST extends RESTful {
             headers.put("Authorization", CommonSessionSingleton.getInstance().getToken());
             return headers;
         }
-
     }
 
     private class PostResponseListener implements Response.Listener<JSONObject> {
@@ -130,6 +129,19 @@ public class XRayREST extends RESTful {
                 setStatus(200);
                 onSuccess(200, "");
 
+                m_lock.notify();
+            }
+        }
+    }
+
+    private class PutResponseListener implements Response.Listener<JSONObject> {
+
+        @Override
+        public void onResponse(JSONObject response) {
+
+            synchronized (m_lock) {
+                setStatus(200);
+                onSuccess(200, "");
                 m_lock.notify();
             }
         }
@@ -211,7 +223,7 @@ public class XRayREST extends RESTful {
         return m_lock;
     }
 
-    public Object createXRay(int patientId, int clinicId, long teeth, String type) {
+    public Object createXRay(int patientId, int clinicId, long teeth, String type, String mouth_type) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
@@ -228,12 +240,33 @@ public class XRayREST extends RESTful {
             data.put("clinic", clinicId);
             data.put("teeth", teeth);
             data.put("xray_type", type);
+            data.put("mouth_type", mouth_type);
         } catch (JSONException e) {
         }
 
         String url = String.format("%s://%s:%s/tscharts/v1/xray/", getProtocol(), getIP(), getPort());
 
         XRayREST.AuthJSONObjectRequest request = new XRayREST.AuthJSONObjectRequest(Request.Method.POST, url, data, new PostResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object updateXRay(XRay xray) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        JSONObject data = xray.toJSONObject(true);
+
+        String url = String.format("%s://%s:%s/tscharts/v1/xray/%d/", getProtocol(), getIP(), getPort(), xray.getId());
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.PUT, url, data, new PutResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonObjectRequest) request);
