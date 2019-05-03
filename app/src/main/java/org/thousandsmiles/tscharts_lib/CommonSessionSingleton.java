@@ -18,6 +18,7 @@
 package org.thousandsmiles.tscharts_lib;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
@@ -38,6 +39,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static android.content.Context.ACTIVITY_SERVICE;
 
 public class CommonSessionSingleton {
     private static CommonSessionSingleton m_instance;
@@ -303,12 +306,30 @@ public class CommonSessionSingleton {
         m_headshotJobs.add(hs);
     }
 
+    public ActivityManager.MemoryInfo getAvailableMemory() {
+        ActivityManager.MemoryInfo memoryInfo = null;
+        if (m_ctx != null) {
+            ActivityManager activityManager = (ActivityManager) m_ctx.getSystemService(ACTIVITY_SERVICE);
+            memoryInfo = new ActivityManager.MemoryInfo();
+            activityManager.getMemoryInfo(memoryInfo);
+        }
+        return memoryInfo;
+    }
+
     public void startNextHeadshotJob()
     {
-        HeadshotImage hs;
-        if (m_headshotJobs.size() > 0) {
-            hs = m_headshotJobs.remove(0);
-            hs.start();
+        ActivityManager.MemoryInfo memoryInfo = getAvailableMemory();
+
+        if (memoryInfo != null) {
+            if (!memoryInfo.lowMemory) {
+                HeadshotImage hs;
+                if (m_headshotJobs.size() > 0) {
+                    hs = m_headshotJobs.remove(0);
+                    hs.start();
+                }
+            } else {
+                m_headshotJobs.clear();
+            }
         }
     }
 
