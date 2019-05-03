@@ -97,13 +97,14 @@ public abstract class RESTful {
 
     public String getPort() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(m_context);
-        String val = sharedPref.getString("port", "80");
+        String val = sharedPref.getString("port", "443");
+
         return val;
     }
 
     public String getIP() {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(m_context);
-        String val = sharedPref.getString("ipAddress", "");
+        String val = sharedPref.getString("ipAddress", "192.168.0.128");
         return val;
     }
 
