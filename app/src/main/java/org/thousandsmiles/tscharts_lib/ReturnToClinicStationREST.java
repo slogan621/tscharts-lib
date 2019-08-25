@@ -202,6 +202,26 @@ public class ReturnToClinicStationREST extends RESTful {
         return m_lock;
     }
 
+    public Object getReturnToClinicStationRequesting(int clinicId, int patientId, int stationId, int requestingStationId, String state) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/returntoclinicstation/?patient=%d&clinic=%d&&station=%d&requestingclinicstation=%d&state=%s",
+                getProtocol(), getIP(), getPort(), patientId, clinicId, stationId, requestingStationId, state);
+
+        ReturnToClinicStationREST.AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetReturnToClinicStationArrayResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonArrayRequest) request);
+
+        return m_lock;
+    }
+
+
     public Object getReturnToClinicStation(int id) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
