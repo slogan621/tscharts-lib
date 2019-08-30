@@ -40,7 +40,7 @@ public class SearchReturnToClinicStationHelper extends AsyncTask<Object, Object,
     private int m_patient = -1;
     private ArrayList<SearchReturnToClinicStationListener> m_listeners = new ArrayList<SearchReturnToClinicStationListener>();
 
-    void addListener(SearchReturnToClinicStationListener listener)
+    public void addListener(SearchReturnToClinicStationListener listener)
     {
        m_listeners.add(listener);
     }
@@ -55,23 +55,23 @@ public class SearchReturnToClinicStationHelper extends AsyncTask<Object, Object,
         }
     }
 
-    void setRequestingStation(int id) {
+    public void setRequestingStation(int id) {
         m_requestingStation = id;
     }
 
-    void setClinic(int id) {
+    public void setClinic(int id) {
         m_clinic = id;
     }
 
-    void setContext(Context ctx) {
+    public void setContext(Context ctx) {
         m_ctx = ctx;
     }
 
-    void setPatient(int id) {
+    public void setPatient(int id) {
         m_patient = id;
     }
 
-    void setState(String state) {
+    public void setState(String state) {
         m_state = state;
     }
 
