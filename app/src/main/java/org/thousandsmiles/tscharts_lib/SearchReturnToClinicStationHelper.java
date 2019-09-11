@@ -35,6 +35,7 @@ public class SearchReturnToClinicStationHelper extends AsyncTask<Object, Object,
     private Context m_ctx;
 
     private int m_requestingStation = -1;
+    private int m_station = -1;
     private String m_state = null;
     private int m_clinic = -1;
     private int m_patient = -1;
@@ -57,6 +58,10 @@ public class SearchReturnToClinicStationHelper extends AsyncTask<Object, Object,
 
     public void setRequestingStation(int id) {
         m_requestingStation = id;
+    }
+
+    public void setStation(int id) {
+        m_station = id;
     }
 
     public void setClinic(int id) {
@@ -114,7 +119,12 @@ public class SearchReturnToClinicStationHelper extends AsyncTask<Object, Object,
 
         final ReturnToClinicStationREST rtcsREST = new ReturnToClinicStationREST(m_ctx);
         rtcsREST.addListener(new GetReturnToClinicStationHandler());
-        lock = rtcsREST.getReturnToClinicStationRequesting(m_clinic, m_patient, m_requestingStation, m_state);
+        if (m_requestingStation != -1) {
+            lock = rtcsREST.getReturnToClinicStationRequesting(m_clinic, m_patient, m_requestingStation, m_state);
+        } else {
+            // m_station may also be -1, let it fail with a 404
+            lock = rtcsREST.getReturnToClinicStation(m_clinic, m_patient, m_station, m_state);
+        }
 
         synchronized (lock) {
             // we loop here in case of race conditions or spurious interrupts
