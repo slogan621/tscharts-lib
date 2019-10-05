@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 public class PatientData {
     private int m_id;
+    private int m_oldId;
     private String m_fatherLast = "";
     private String m_motherLast = "";
     private String m_first = "";
@@ -43,6 +44,7 @@ public class PatientData {
 
     public PatientData() {
         m_id = -1;
+        m_oldId = -1;
         m_fatherLast = "";
         m_motherLast = "";
         m_first = "";
@@ -77,6 +79,14 @@ public class PatientData {
 
     public void setCURP(String curp) {
         m_curp = curp;
+    }
+
+    public int getOldId() {
+        return m_oldId;
+    }
+
+    public void setOldId(int id) {
+        m_oldId = id;
     }
 
     public int getId() {
@@ -321,6 +331,11 @@ public class PatientData {
 
         try {
             setId(o.getInt("id"));
+            try {
+                setOldId(o.getInt("oldid"));
+            } catch (Exception e) {
+                // XXX in case not in database, just use default
+            }
             setCURP(o.getString("curp"));
             setFatherLast(o.getString("paternal_last"));
             setMotherLast(o.getString("maternal_last"));
@@ -351,6 +366,7 @@ public class PatientData {
         JSONObject data = new JSONObject();
         try {
             data.put("id", getId());
+            data.put("oldid", getOldId());
             data.put("curp", getCURP());
             data.put("paternal_last", getFatherLast());
             data.put("maternal_last", getMotherLast());
