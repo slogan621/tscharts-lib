@@ -365,7 +365,9 @@ public class PatientData {
     {
         JSONObject data = new JSONObject();
         try {
-            data.put("id", getId());
+            if (getId() != -1) {
+                data.put("id", getId());
+            }
             data.put("oldid", getOldId());
             data.put("curp", getCURP());
             data.put("paternal_last", getFatherLast());
