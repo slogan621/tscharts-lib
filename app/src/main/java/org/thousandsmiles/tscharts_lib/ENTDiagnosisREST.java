@@ -237,10 +237,7 @@ public class ENTDiagnosisREST extends RESTful {
 
         JSONObject data;
 
-        try {
-            data = diagnosis.toJSONObject(false);
-        } catch (JSONException e) {
-        }
+        data = diagnosis.toJSONObject(false);
 
         String url = String.format("%s://%s:%s/tscharts/v1/entdiagnosis/", getProtocol(), getIP(), getPort());
 
