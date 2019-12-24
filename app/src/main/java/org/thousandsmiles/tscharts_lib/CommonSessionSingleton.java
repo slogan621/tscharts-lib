@@ -60,6 +60,7 @@ public class CommonSessionSingleton {
     private XRay m_patientXRay = null;
     private ENTHistory m_patientENTHistory = null;
     private ENTDiagnosis m_patientENTDiagnosis = null;
+    private ENTExam m_patientENTExam = null;
     private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, Boolean> m_hasCurrentXRayMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, JSONObject> m_clinicMap = new HashMap<Integer, JSONObject>();
@@ -347,6 +348,31 @@ public class CommonSessionSingleton {
             m_patientENTDiagnosis = new ENTDiagnosis();
         }
         return m_patientENTDiagnosis;
+    }
+
+    public void setPatientENTExam(JSONObject o)
+    {
+        if (m_patientENTExam == null) {
+            m_patientENTExam = new ENTExam();
+        }
+        m_patientENTExam.fromJSONObject(o);
+    }
+
+    public void updatePatientENTExam(ENTExam entExam) {
+        m_patientENTExam = entExam;
+    }
+
+    public ENTExam getPatientENTExam()
+    {
+        return m_patientENTExam;
+    }
+
+    public ENTExam getNewPatientENTExam()
+    {
+        if (m_patientENTExam == null) {
+            m_patientENTExam = new ENTExam();
+        }
+        return m_patientENTExam;
     }
 
     public void setClinicId(int id) {
