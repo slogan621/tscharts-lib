@@ -58,6 +58,8 @@ public class CommonSessionSingleton {
     private ArrayList<String> m_medicationsList = new ArrayList<String>();
     private MedicalHistory m_patientMedicalHistory = null;
     private XRay m_patientXRay = null;
+    private ENTHistory m_patientENTHistory = null;
+    private ENTDiagnosis m_patientENTDiagnosis = null;
     private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, Boolean> m_hasCurrentXRayMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, JSONObject> m_clinicMap = new HashMap<Integer, JSONObject>();
@@ -295,6 +297,56 @@ public class CommonSessionSingleton {
             m_patientXRay = new XRay();
         }
         return m_patientXRay;
+    }
+
+    public void setPatientENTHistory(JSONObject o)
+    {
+        if (m_patientENTHistory == null) {
+            m_patientENTHistory = new ENTHistory();
+        }
+        m_patientENTHistory.fromJSONObject(o);
+    }
+
+    public void updatePatientENTHistory(ENTHistory entHistory) {
+        m_patientENTHistory = entHistory;
+    }
+
+    public ENTHistory getPatientENTHistory()
+    {
+        return m_patientENTHistory;
+    }
+
+    public ENTHistory getNewPatientENTHistory()
+    {
+        if (m_patientENTHistory == null) {
+            m_patientENTHistory = new ENTHistory();
+        }
+        return m_patientENTHistory;
+    }
+
+    public void setPatientENTDiagnosis(JSONObject o)
+    {
+        if (m_patientENTDiagnosis == null) {
+            m_patientENTDiagnosis = new ENTDiagnosis();
+        }
+        m_patientENTDiagnosis.fromJSONObject(o);
+    }
+
+    public void updatePatientENTDiagnosis(ENTDiagnosis entDiagnosis) {
+        m_patientENTDiagnosis = entDiagnosis;
+    }
+
+    public ENTDiagnosis getPatientENTDiagnosis()
+    {
+        return m_patientENTDiagnosis;
+    }
+
+    public ENTDiagnosis getNewPatientENTDiagnosis()
+    {
+        if (m_patientENTDiagnosis == null) {
+            m_patientENTDiagnosis = new ENTDiagnosis();
+        }
+        return m_patientENTDiagnosis;
     }
 
     public void setClinicId(int id) {
