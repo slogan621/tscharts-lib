@@ -60,7 +60,9 @@ public class CommonSessionSingleton {
     private XRay m_patientXRay = null;
     private ENTHistory m_patientENTHistory = null;
     private ENTDiagnosis m_patientENTDiagnosis = null;
+    private ENTDiagnosisExtra m_patientENTDiagnosisExtra = null;
     private ENTExam m_patientENTExam = null;
+    private ENTSurgicalHistory m_patientENTSurgicalHistory = null;
     private ENTTreatment m_patientENTTreatment = null;
     private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, Boolean> m_hasCurrentXRayMap = new HashMap<Integer, Boolean>();
@@ -351,6 +353,31 @@ public class CommonSessionSingleton {
         return m_patientENTDiagnosis;
     }
 
+    public void setPatientENTDiagnosisExtra(JSONObject o)
+    {
+        if (m_patientENTDiagnosisExtra == null) {
+            m_patientENTDiagnosisExtra = new ENTDiagnosisExtra();
+        }
+        m_patientENTDiagnosisExtra.fromJSONObject(o);
+    }
+
+    public void updatePatientENTDiagnosisExtra(ENTDiagnosisExtra entDiagnosisExtra) {
+        m_patientENTDiagnosisExtra = entDiagnosisExtra;
+    }
+
+    public ENTDiagnosisExtra getPatientENTDiagnosisExtra()
+    {
+        return m_patientENTDiagnosisExtra;
+    }
+
+    public ENTDiagnosisExtra getNewPatientENTDiagnosisExtra()
+    {
+        if (m_patientENTDiagnosisExtra == null) {
+            m_patientENTDiagnosisExtra = new ENTDiagnosisExtra();
+        }
+        return m_patientENTDiagnosisExtra;
+    }
+
     public void setPatientENTTreatment(JSONObject o)
     {
         if (m_patientENTTreatment == null) {
@@ -399,6 +426,31 @@ public class CommonSessionSingleton {
             m_patientENTExam = new ENTExam();
         }
         return m_patientENTExam;
+    }
+
+    public void setPatientENTSurgicalHistory(JSONObject o)
+    {
+        if (m_patientENTSurgicalHistory == null) {
+            m_patientENTSurgicalHistory = new ENTSurgicalHistory();
+        }
+        m_patientENTSurgicalHistory.fromJSONObject(o);
+    }
+
+    public void updatePatientENTSurgicalHistory(ENTSurgicalHistory entSurgicalHistory) {
+        m_patientENTSurgicalHistory = entSurgicalHistory;
+    }
+
+    public ENTSurgicalHistory getPatientENTSurgicalHistory()
+    {
+        return m_patientENTSurgicalHistory;
+    }
+
+    public ENTSurgicalHistory getNewPatientENTSurgicalHistory()
+    {
+        if (m_patientENTSurgicalHistory == null) {
+            m_patientENTSurgicalHistory = new ENTSurgicalHistory();
+        }
+        return m_patientENTSurgicalHistory;
     }
 
     public void setClinicId(int id) {
