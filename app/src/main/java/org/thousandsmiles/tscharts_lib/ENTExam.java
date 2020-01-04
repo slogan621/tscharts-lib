@@ -490,7 +490,7 @@ public class ENTExam implements Serializable {
             ret = ENTForkTest.ENT_FORK_TEST_A_GREATER_B;
         } else if (val.equals("b greater a")) {
             ret = ENTForkTest.ENT_FORK_TEST_B_GREATER_A;
-        } else if (val.equals("equal")) {
+        } else if (val.equals("a equal b")) {
             ret = ENTForkTest.ENT_FORK_TEST_EQUAL;
         } 
         return ret;
@@ -505,7 +505,7 @@ public class ENTExam implements Serializable {
         } else if (val == ENTForkTest.ENT_FORK_TEST_B_GREATER_A) {
             ret = "b greater a";
         } else if (val == ENTForkTest.ENT_FORK_TEST_EQUAL) {
-            ret = "equal";
+            ret = "a equal b";
         } 
         return ret;
     }
