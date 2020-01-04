@@ -660,6 +660,40 @@ public class ENTExam implements Serializable {
     }
 
     public ENTExam() {
+        this.m_normal = ENTHistory.EarSide.EAR_SIDE_NONE;
+        this.m_microtia = ENTHistory.EarSide.EAR_SIDE_NONE;
+        this.m_wax = ENTHistory.EarSide.EAR_SIDE_NONE;
+        this.m_drainage = ENTHistory.EarSide.EAR_SIDE_NONE;
+        this.m_externalOtitis = ENTHistory.EarSide.EAR_SIDE_NONE;
+        this.m_fb = ENTHistory.EarSide.EAR_SIDE_NONE;
+
+        this.m_tubeRight = ENTTube.ENT_TUBE_NONE;
+        this.m_tubeLeft = ENTTube.ENT_TUBE_NONE;
+
+        this.m_tympanoRight = ENTTympano.ENT_TYMPANOSCLEROSIS_NONE;
+        this.m_tympanoLeft = ENTTympano.ENT_TYMPANOSCLEROSIS_NONE;
+
+        this.m_tmGranulations = ENTHistory.EarSide.EAR_SIDE_NONE;
+        this.m_tmRetraction = ENTHistory.EarSide.EAR_SIDE_NONE;
+        this.m_tmAtelectasis = ENTHistory.EarSide.EAR_SIDE_NONE;
+
+        this.m_perfRight = ENTPerf.ENT_PERF_NONE;
+        this.m_perfLeft = ENTPerf.ENT_PERF_NONE;
+
+        this.m_voiceTest = ENTVoiceTest.ENT_VOICE_TEST_NONE;
+
+        this.m_forkAD = ENTForkTest.ENT_FORK_TEST_NONE;
+        this.m_forkAS = ENTForkTest.ENT_FORK_TEST_NONE;
+
+        this.m_bc = ENTBC.ENT_BC_NONE;
+
+        this.m_fork = ENTFork.ENT_FORK_NONE;
+
+        this.m_patient = 0;
+        this.m_clinic = 0;
+        this.m_id = 0;
+        this.m_comment = "";
+        this.m_username = "";
     }
 
     public ENTExam(ENTExam rhs) {
