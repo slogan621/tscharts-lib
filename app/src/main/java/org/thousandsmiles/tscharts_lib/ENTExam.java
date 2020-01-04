@@ -114,6 +114,206 @@ public class ENTExam implements Serializable {
     private String m_comment;
     private String m_username;
 
+    public ENTHistory.EarSide getNormal() {
+        return m_normal;
+    }
+
+    public void setNormal(ENTHistory.EarSide m_normal) {
+        this.m_normal = m_normal;
+    }
+
+    public ENTHistory.EarSide getMicrotia() {
+        return m_microtia;
+    }
+
+    public void setMicrotia(ENTHistory.EarSide m_microtia) {
+        this.m_microtia = m_microtia;
+    }
+
+    public ENTHistory.EarSide getWax() {
+        return m_wax;
+    }
+
+    public void setWax(ENTHistory.EarSide m_wax) {
+        this.m_wax = m_wax;
+    }
+
+    public ENTHistory.EarSide getDrainage() {
+        return m_drainage;
+    }
+
+    public void setDrainage(ENTHistory.EarSide m_drainage) {
+        this.m_drainage = m_drainage;
+    }
+
+    public ENTHistory.EarSide getExternalOtitis() {
+        return m_externalOtitis;
+    }
+
+    public void setExternalOtitis(ENTHistory.EarSide m_externalOtitis) {
+        this.m_externalOtitis = m_externalOtitis;
+    }
+
+    public ENTHistory.EarSide getFb() {
+        return m_fb;
+    }
+
+    public void setFb(ENTHistory.EarSide m_fb) {
+        this.m_fb = m_fb;
+    }
+
+    public ENTTube getTubeRight() {
+        return m_tubeRight;
+    }
+
+    public void setTubeRight(ENTTube m_tubeRight) {
+        this.m_tubeRight = m_tubeRight;
+    }
+
+    public ENTTube getTubeLeft() {
+        return m_tubeLeft;
+    }
+
+    public void setTubeLeft(ENTTube m_tubeLeft) {
+        this.m_tubeLeft = m_tubeLeft;
+    }
+
+    public ENTTympano getTympanoRight() {
+        return m_tympanoRight;
+    }
+
+    public void setTympanoRight(ENTTympano m_tympanoRight) {
+        this.m_tympanoRight = m_tympanoRight;
+    }
+
+    public ENTTympano getTympanoLeft() {
+        return m_tympanoLeft;
+    }
+
+    public void setTympanoLeft(ENTTympano m_tympanoLeft) {
+        this.m_tympanoLeft = m_tympanoLeft;
+    }
+
+    public ENTHistory.EarSide getTmGranulations() {
+        return m_tmGranulations;
+    }
+
+    public void setTmGranulations(ENTHistory.EarSide m_tmGranulations) {
+        this.m_tmGranulations = m_tmGranulations;
+    }
+
+    public ENTHistory.EarSide getTmRetraction() {
+        return m_tmRetraction;
+    }
+
+    public void setTmRetraction(ENTHistory.EarSide m_tmRetraction) {
+        this.m_tmRetraction = m_tmRetraction;
+    }
+
+    public ENTHistory.EarSide getTmAtelectasis() {
+        return m_tmAtelectasis;
+    }
+
+    public void setTmAtelectasis(ENTHistory.EarSide m_tmAtelectasis) {
+        this.m_tmAtelectasis = m_tmAtelectasis;
+    }
+
+    public ENTPerf getPerfRight() {
+        return m_perfRight;
+    }
+
+    public void setPerfRight(ENTPerf m_perfRight) {
+        this.m_perfRight = m_perfRight;
+    }
+
+    public ENTPerf getPerfLeft() {
+        return m_perfLeft;
+    }
+
+    public void setPerfLeft(ENTPerf m_perfLeft) {
+        this.m_perfLeft = m_perfLeft;
+    }
+
+    public ENTVoiceTest getVoiceTest() {
+        return m_voiceTest;
+    }
+
+    public void setVoiceTest(ENTVoiceTest m_voiceTest) {
+        this.m_voiceTest = m_voiceTest;
+    }
+
+    public ENTForkTest getForkAD() {
+        return m_forkAD;
+    }
+
+    public void setForkAD(ENTForkTest m_forkAD) {
+        this.m_forkAD = m_forkAD;
+    }
+
+    public ENTForkTest getForkAS() {
+        return m_forkAS;
+    }
+
+    public void setForkAS(ENTForkTest m_forkAS) {
+        this.m_forkAS = m_forkAS;
+    }
+
+    public ENTBC getBc() {
+        return m_bc;
+    }
+
+    public void setBc(ENTBC m_bc) {
+        this.m_bc = m_bc;
+    }
+
+    public ENTFork getFork() {
+        return m_fork;
+    }
+
+    public void setFork(ENTFork m_fork) {
+        this.m_fork = m_fork;
+    }
+
+    public int getPatient() {
+        return m_patient;
+    }
+
+    public void setPatient(int m_patient) {
+        this.m_patient = m_patient;
+    }
+
+    public int getClinic() {
+        return m_clinic;
+    }
+
+    public void setClinic(int m_clinic) {
+        this.m_clinic = m_clinic;
+    }
+
+    public int getId() {
+        return m_id;
+    }
+
+    public void setId(int m_id) {
+        this.m_id = m_id;
+    }
+
+    public String getComment() {
+        return m_comment;
+    }
+
+    public void setComment(String m_comment) {
+        this.m_comment = m_comment;
+    }
+
+    public String getUsername() {
+        return m_username;
+    }
+
+    public void setUsername(String m_username) {
+        this.m_username = m_username;
+    }
+
     public ENTHistory.EarSide earSideToEnum(String side)
     {
         ENTHistory.EarSide ret = ENTHistory.EarSide.EAR_SIDE_BOTH;
@@ -454,47 +654,6 @@ public class ENTExam implements Serializable {
         }
         return data;
     }
-
-    public int getPatient() {
-        return m_patient;
-    }
-
-    public void setPatient(int m_patient) {
-        this.m_patient = m_patient;
-    }
-
-    public int getClinic() {
-        return m_clinic;
-    }
-
-    public void setClinic(int m_clinic) {
-        this.m_clinic = m_clinic;
-    }
-
-    public int getId() {
-        return m_id;
-    }
-
-    public void setId(int m_id) {
-        this.m_id = m_id;
-    }
-
-    public String getComment() {
-        return m_comment;
-    }
-
-    public void setComment(String m_comment) {
-        this.m_comment = m_comment;
-    }
-
-    public String getUsername() {
-        return m_username;
-    }
-
-    public void setUsername(String m_username) {
-        this.m_username = m_username;
-    }
-
 
     public ENTExam() {
     }
