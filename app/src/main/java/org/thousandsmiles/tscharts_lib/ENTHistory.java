@@ -42,7 +42,8 @@ public class ENTHistory implements Serializable {
     public enum EarSide {
         EAR_SIDE_LEFT,
         EAR_SIDE_RIGHT,
-        EAR_SIDE_BOTH
+        EAR_SIDE_BOTH,
+        EAR_SIDE_NONE
     }
 
     private ENTType m_type;
@@ -125,6 +126,8 @@ public class ENTHistory implements Serializable {
             ret = EarSide.EAR_SIDE_LEFT;
         } else if (side.equals("right")) {
             ret = EarSide.EAR_SIDE_RIGHT;
+        } else if (side.equals("none")) {
+            ret = EarSide.EAR_SIDE_NONE;
         }
         return ret;
     }
@@ -137,6 +140,8 @@ public class ENTHistory implements Serializable {
             ret = "left";
         } else if (side == EarSide.EAR_SIDE_RIGHT) {
             ret = "right";
+        } else if (side == EarSide.EAR_SIDE_NONE) {
+            ret = "none";
         }
 
         return ret;
