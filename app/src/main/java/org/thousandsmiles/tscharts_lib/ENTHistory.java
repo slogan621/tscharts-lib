@@ -24,13 +24,6 @@ import java.io.Serializable;
 
 public class ENTHistory implements Serializable {
 
-    public enum ENTType {
-        ENT_TYPE_HEARING_LOSS,
-        ENT_TYPE_DRAINAGE,
-        ENT_TYPE_PAIN,
-        ENT_TYPE_OTHER
-    }
-
     public enum ENTDuration {
         EAR_DURATION_NONE,
         EAR_DURATION_DAYS,
@@ -46,44 +39,17 @@ public class ENTHistory implements Serializable {
         EAR_SIDE_NONE
     }
 
-    private ENTType m_type;
-    private ENTDuration m_duration;
-    private EarSide m_side;
+    private ENTDuration m_painDuration;
+    private EarSide m_painSide;
+    private ENTDuration m_drainageDuration;
+    private EarSide m_drainageSide;
+    private ENTDuration m_hearingLossDuration;
+    private EarSide m_hearingLossSide;
     private int m_patient;
     private int m_clinic;
     private int m_id;
-    private String m_name;
     private String m_comment;
     private String m_username;
-
-    public ENTType entTypeToEnum(String type)
-    {
-        ENTType ret = ENTType.ENT_TYPE_OTHER;
-
-        if (type.equals("hearing loss")) {
-            ret = ENTType.ENT_TYPE_HEARING_LOSS;
-        } else if (type.equals("drainage")) {
-            ret = ENTType.ENT_TYPE_DRAINAGE;
-        } else if (type.equals("pain")) {
-            ret = ENTType.ENT_TYPE_PAIN;
-        }
-        return ret;
-    }
-
-    public String entTypeToString(ENTType type)
-    {
-        String ret = "other";
-
-        if (type == ENTType.ENT_TYPE_HEARING_LOSS) {
-            ret = "heading loss";
-        } else if (type == ENTType.ENT_TYPE_DRAINAGE ) {
-            ret = "drainage";
-        } else if (type == ENTType.ENT_TYPE_PAIN) {
-            ret = "pain";
-        }
-
-        return ret;
-    }
 
     public ENTDuration entDurationToEnum(String duration)
     {
@@ -147,19 +113,34 @@ public class ENTHistory implements Serializable {
         return ret;
     }
 
-    public String getTypeAsString()
+    public String getPainDurationAsString()
     {
-        return entTypeToString(m_type);
+        return entDurationToString(m_painDuration);
     }
 
-    public String getDurationAsString()
+    public String getPainSideAsString()
     {
-        return entDurationToString(m_duration);
+        return earSideToString(m_painSide);
     }
 
-    public String getSideAsString()
+    public String getHearingLossDurationAsString()
     {
-        return earSideToString(m_side);
+        return entDurationToString(m_hearingLossDuration);
+    }
+
+    public String getHearingLossSideAsString()
+    {
+        return earSideToString(m_hearingLossSide);
+    }
+
+    public String getDrainageDurationAsString()
+    {
+        return entDurationToString(m_drainageDuration);
+    }
+
+    public String getDrainageSideSideAsString()
+    {
+        return earSideToString(m_drainageSide);
     }
 
     public int fromJSONObject(JSONObject o)
@@ -167,13 +148,15 @@ public class ENTHistory implements Serializable {
         int ret = 0;
 
         try {
-            setType(entTypeToEnum(o.getString("type")));
-            setDuration(entDurationToEnum(o.getString("duration")));
-            setSide(earSideToEnum(o.getString("side")));
+            setPainDuration(entDurationToEnum(o.getString("painDuration")));
+            setPainSide(earSideToEnum(o.getString("painSide")));
+            setHearingLossDuration(entDurationToEnum(o.getString("hearingLossDuration")));
+            setHearingLossSide(earSideToEnum(o.getString("hearingLossSide")));
+            setDrainageDuration(entDurationToEnum(o.getString("drainageDuration")));
+            setDrainageSide(earSideToEnum(o.getString("drainageSide")));
             setId(o.getInt("id"));
             setPatient(o.getInt("patient"));
             setClinic(o.getInt("clinic"));
-            setName(o.getString("name"));
             setComment(o.getString("comment"));
             setUsername(o.getString("username"));
         } catch (JSONException e) {
@@ -190,12 +173,14 @@ public class ENTHistory implements Serializable {
                 data.put("id", this.getId());
             }
 
-            data.put("type", getType());
-            data.put("duration", getDuration());
-            data.put("side", getSide());
+            data.put("painDuration", getPainDuration());
+            data.put("painSide", getPainSide());
+            data.put("hearingLossDuration", getHearingLossDuration());
+            data.put("hearingLossSide", getHearingLossSide());
+            data.put("drainageDuration", getDrainageDuration());
+            data.put("drainageSide", getDrainageSide());
             data.put("patient", getPatient());
             data.put("clinic", getClinic());
-            data.put("name", getName());
             data.put("comment", getComment());
             data.put("username", getUsername());
 
@@ -207,28 +192,52 @@ public class ENTHistory implements Serializable {
         return data;
     }
 
-    public ENTType getType() {
-        return m_type;
+    public ENTDuration getDrainageDuration() {
+        return m_drainageDuration;
     }
 
-    public void setType(ENTType type) {
-        this.m_type = type;
+    public void setDrainageDuration(ENTDuration duration) {
+        this.m_drainageDuration = duration;
     }
 
-    public ENTDuration getDuration() {
-        return m_duration;
+    public EarSide getDrainageSide() {
+        return m_drainageSide;
     }
 
-    public void setDuration(ENTDuration duration) {
-        this.m_duration = duration;
+    public void setDrainageSide(EarSide side) {
+        this.m_drainageSide = side;
     }
 
-    public void setSide(EarSide side) {
-        this.m_side = side;
+    public ENTDuration getPainDuration() {
+        return m_painDuration;
     }
 
-    public EarSide getSide() {
-        return m_side;
+    public void setPainDuration(ENTDuration duration) {
+        this.m_painDuration = duration;
+    }
+
+    public void setPainSide(EarSide side) {
+        this.m_painSide = side;
+    }
+
+    public EarSide getPainSide() {
+        return m_painSide;
+    }
+
+    public ENTDuration getHearingLossDuration() {
+        return m_hearingLossDuration;
+    }
+
+    public void setHearingLossDuration(ENTDuration duration) {
+        this.m_hearingLossDuration = duration;
+    }
+
+    public EarSide getHearingLossSide() {
+        return m_hearingLossSide;
+    }
+
+    public void setHearingLossSide(EarSide side) {
+        this.m_hearingLossSide = side;
     }
 
     public int getPatient() {
@@ -255,14 +264,6 @@ public class ENTHistory implements Serializable {
         this.m_id = m_id;
     }
 
-    public String getName() {
-        return m_name;
-    }
-
-    public void setName(String m_name) {
-        this.m_name = m_name;
-    }
-
     public String getComment() {
         return m_comment;
     }
@@ -284,13 +285,15 @@ public class ENTHistory implements Serializable {
     }
 
     public ENTHistory(ENTHistory rhs) {
-        this.m_type = rhs.m_type;
-        this.m_duration = rhs.m_duration;
-        this.m_side = rhs.m_side;
+        this.m_painDuration = rhs.m_painDuration;
+        this.m_painSide = rhs.m_painSide;
+        this.m_drainageDuration = rhs.m_drainageDuration;
+        this.m_drainageSide = rhs.m_drainageSide;
+        this.m_hearingLossDuration = rhs.m_hearingLossDuration;
+        this.m_hearingLossSide = rhs.m_hearingLossSide;
         this.m_patient = rhs.m_patient;
         this.m_clinic = rhs.m_clinic;
         this.m_id = rhs.m_id;
-        this.m_name = rhs.m_name;
         this.m_username = rhs.m_username;
         this.m_comment = rhs.m_comment;
     }
