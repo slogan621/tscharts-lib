@@ -51,7 +51,7 @@ public class ENTHistory implements Serializable {
     private String m_comment;
     private String m_username;
 
-    public ENTDuration entDurationToEnum(String duration)
+    public static ENTDuration entDurationToEnum(String duration)
     {
         ENTDuration ret = ENTDuration.EAR_DURATION_NONE;
 
@@ -67,7 +67,7 @@ public class ENTHistory implements Serializable {
         return ret;
     }
 
-    public String entDurationToString(ENTDuration duration)
+    public static String entDurationToString(ENTDuration duration)
     {
         String ret = "none";
 
@@ -84,7 +84,7 @@ public class ENTHistory implements Serializable {
         return ret;
     }
 
-    public EarSide earSideToEnum(String side)
+    public static EarSide earSideToEnum(String side)
     {
         EarSide ret = EarSide.EAR_SIDE_BOTH;
 
@@ -98,7 +98,7 @@ public class ENTHistory implements Serializable {
         return ret;
     }
 
-    public String earSideToString(EarSide side)
+    public static String earSideToString(EarSide side)
     {
         String ret = "both";
 

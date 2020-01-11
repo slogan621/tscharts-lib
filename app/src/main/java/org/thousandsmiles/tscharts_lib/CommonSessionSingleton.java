@@ -61,6 +61,7 @@ public class CommonSessionSingleton {
     private ENTHistory m_patientENTHistory = null;
     private ENTDiagnosis m_patientENTDiagnosis = null;
     private ENTDiagnosisExtra m_patientENTDiagnosisExtra = null;
+    private ENTHistoryExtra m_patientENTHistoryExtra = null;
     private ENTExam m_patientENTExam = null;
     private ENTSurgicalHistory m_patientENTSurgicalHistory = null;
     private ENTTreatment m_patientENTTreatment = null;
@@ -376,6 +377,31 @@ public class CommonSessionSingleton {
             m_patientENTDiagnosisExtra = new ENTDiagnosisExtra();
         }
         return m_patientENTDiagnosisExtra;
+    }
+
+    public void setPatientENTHistoryExtra(JSONObject o)
+    {
+        if (m_patientENTHistoryExtra == null) {
+            m_patientENTHistoryExtra = new ENTHistoryExtra();
+        }
+        m_patientENTHistoryExtra.fromJSONObject(o);
+    }
+
+    public void updatePatientENTHistoryExtra(ENTHistoryExtra entHistoryExtra) {
+        m_patientENTHistoryExtra = entHistoryExtra;
+    }
+
+    public ENTHistoryExtra getPatientENTHistoryExtra()
+    {
+        return m_patientENTHistoryExtra;
+    }
+
+    public ENTHistoryExtra getNewPatientENTHistoryExtra()
+    {
+        if (m_patientENTHistoryExtra == null) {
+            m_patientENTHistoryExtra = new ENTHistoryExtra();
+        }
+        return m_patientENTHistoryExtra;
     }
 
     public void setPatientENTTreatment(JSONObject o)
