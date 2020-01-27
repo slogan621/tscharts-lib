@@ -237,19 +237,7 @@ public class ENTHistoryREST extends RESTful {
 
         JSONObject data = new JSONObject();
 
-        try {
-            data.put("painDuration", history.getPainDuration());
-            data.put("painSide", history.getPainSide());
-            data.put("drainageDuration", history.getDrainageDuration());
-            data.put("drainageSide", history.getDrainageSide());
-            data.put("hearingLossDuration", history.getHearingLossDuration());
-            data.put("hearingLossSide", history.getHearingLossSide());
-            data.put("patient", history.getPatient());
-            data.put("clinic", history.getClinic());
-            data.put("comment", history.getComment());
-            data.put("username", history.getUsername());
-        } catch (JSONException e) {
-        }
+        data = history.toJSONObject(false);
 
         String url = String.format("%s://%s:%s/tscharts/v1/enthistory/", getProtocol(), getIP(), getPort());
 
