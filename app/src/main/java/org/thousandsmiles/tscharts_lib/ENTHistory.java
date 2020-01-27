@@ -173,12 +173,12 @@ public class ENTHistory implements Serializable {
                 data.put("id", this.getId());
             }
 
-            data.put("painDuration", getPainDuration());
-            data.put("painSide", getPainSide());
-            data.put("hearingLossDuration", getHearingLossDuration());
-            data.put("hearingLossSide", getHearingLossSide());
-            data.put("drainageDuration", getDrainageDuration());
-            data.put("drainageSide", getDrainageSide());
+            data.put("painDuration", entDurationToString(getPainDuration()));
+            data.put("painSide", earSideToString(getPainSide()));
+            data.put("hearingLossDuration",  entDurationToString(getHearingLossDuration()));
+            data.put("hearingLossSide", earSideToString(getHearingLossSide()));
+            data.put("drainageDuration",  entDurationToString(getDrainageDuration()));
+            data.put("drainageSide", earSideToString(getDrainageSide()));
             data.put("patient", getPatient());
             data.put("clinic", getClinic());
             data.put("comment", getComment());
