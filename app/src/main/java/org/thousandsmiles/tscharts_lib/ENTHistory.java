@@ -39,17 +39,17 @@ public class ENTHistory implements Serializable {
         EAR_SIDE_NONE
     }
 
-    private ENTDuration m_painDuration;
-    private EarSide m_painSide;
-    private ENTDuration m_drainageDuration;
-    private EarSide m_drainageSide;
-    private ENTDuration m_hearingLossDuration;
-    private EarSide m_hearingLossSide;
+    private ENTDuration m_painDuration = ENTDuration.EAR_DURATION_NONE;
+    private EarSide m_painSide = EarSide.EAR_SIDE_NONE;
+    private ENTDuration m_drainageDuration = ENTDuration.EAR_DURATION_NONE;
+    private EarSide m_drainageSide = EarSide.EAR_SIDE_NONE;
+    private ENTDuration m_hearingLossDuration  = ENTDuration.EAR_DURATION_NONE;
+    private EarSide m_hearingLossSide = EarSide.EAR_SIDE_NONE;
     private int m_patient;
     private int m_clinic;
     private int m_id;
-    private String m_comment;
-    private String m_username;
+    private String m_comment = "";
+    private String m_username = "";
 
     public static ENTDuration entDurationToEnum(String duration)
     {

@@ -26,8 +26,8 @@ public class ENTDiagnosisExtra implements Serializable {
 
     private int m_id;
     private int m_diagnosis;
-    private String m_name;
-    private String m_value;
+    private String m_name = "";
+    private String m_value = "";
 
     public int fromJSONObject(JSONObject o)
     {

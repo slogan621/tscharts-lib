@@ -24,51 +24,51 @@ import java.io.Serializable;
 
 public class ENTDiagnosis implements Serializable {
 
-    private ENTHistory.EarSide m_hlConductive;
-    private ENTHistory.EarSide m_hl;
-    private ENTHistory.EarSide m_hlMixed;
-    private ENTHistory.EarSide m_hlSensory;
-    private ENTHistory.EarSide m_externalCerumenImpaction;
-    private ENTHistory.EarSide m_externalEarCanalFB;
-    private ENTHistory.EarSide m_externalMicrotia;
+    private ENTHistory.EarSide m_hlConductive = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_hl = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_hlMixed = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_hlSensory = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_externalCerumenImpaction = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_externalEarCanalFB = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_externalMicrotia = ENTHistory.EarSide.EAR_SIDE_NONE;
 
-    private ENTHistory.EarSide m_tympanicAtelectasis;
-    private ENTHistory.EarSide m_tympanicGranuloma;
-    private ENTHistory.EarSide m_tympanicMonomer;
-    private ENTHistory.EarSide m_tympanicTube;
-    private ENTHistory.EarSide m_tympanicPerf;
+    private ENTHistory.EarSide m_tympanicAtelectasis = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_tympanicGranuloma = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_tympanicMonomer = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_tympanicTube = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_tympanicPerf = ENTHistory.EarSide.EAR_SIDE_NONE;
 
-    private ENTHistory.EarSide m_middleEarCholesteatoma;
-    private ENTHistory.EarSide m_middleEarEustTubeDysTMRetraction;
-    private ENTHistory.EarSide m_middleEarOtitisMedia;
-    private ENTHistory.EarSide m_middleEarSerousOtitisMedia;
+    private ENTHistory.EarSide m_middleEarCholesteatoma = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_middleEarEustTubeDysTMRetraction = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_middleEarOtitisMedia = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_middleEarSerousOtitisMedia = ENTHistory.EarSide.EAR_SIDE_NONE;
 
-    private boolean m_oralAnkyloglossia;
-    private boolean m_oralTonsilEnlarge;
-    private boolean m_oralCleftLipRepairDeformity;
-    private boolean m_oralCleftLipUnilateral;
-    private boolean m_oralCleftLipBilateral;
-    private boolean m_oralCleftLipUnrepaired;
-    private boolean m_oralCleftLipRepaired;
-    private boolean m_oralCleftPalateUnilateral;
-    private boolean m_oralCleftPalateBilateral;
-    private boolean m_oralCleftPalateUnrepaired;
-    private boolean m_oralCleftPalateRepaired;
-    private boolean m_oralSpeechProblem;
+    private boolean m_oralAnkyloglossia = false;
+    private boolean m_oralTonsilEnlarge = false;
+    private boolean m_oralCleftLipRepairDeformity = false;
+    private boolean m_oralCleftLipUnilateral = false;
+    private boolean m_oralCleftLipBilateral = false;
+    private boolean m_oralCleftLipUnrepaired = false;
+    private boolean m_oralCleftLipRepaired = false;
+    private boolean m_oralCleftPalateUnilateral = false;
+    private boolean m_oralCleftPalateBilateral = false;
+    private boolean m_oralCleftPalateUnrepaired = false;
+    private boolean m_oralCleftPalateRepaired = false;
+    private boolean m_oralSpeechProblem = false;
 
 
-    private boolean m_noseDeviatedSeptum;
-    private boolean m_noseTurbinateHypertrophy;
-    private boolean m_noseDeformitySecondaryToCleftPalate;
+    private boolean m_noseDeviatedSeptum = false;
+    private boolean m_noseTurbinateHypertrophy = false;
+    private boolean m_noseDeformitySecondaryToCleftPalate = false;
 
-    private ENTHistory.EarSide m_syndromeHemifacialMicrosomia;
-    private ENTHistory.EarSide m_syndromePierreRobin;
+    private ENTHistory.EarSide m_syndromeHemifacialMicrosomia = ENTHistory.EarSide.EAR_SIDE_NONE;
+    private ENTHistory.EarSide m_syndromePierreRobin = ENTHistory.EarSide.EAR_SIDE_NONE;
 
     private int m_patient;
     private int m_clinic;
     private int m_id;
-    private String m_comment;
-    private String m_username;
+    private String m_comment = "";
+    private String m_username = "";
 
     public boolean stringToBool(String val)
     {

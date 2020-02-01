@@ -26,8 +26,8 @@ public class ENTHistoryExtra implements Serializable {
 
     private int m_id;
     private int m_history;
-    private ENTHistory.ENTDuration m_duration;
-    private ENTHistory.EarSide m_side;
+    private ENTHistory.ENTDuration m_duration = ENTHistory.ENTDuration.EAR_DURATION_NONE;
+    private ENTHistory.EarSide m_side = ENTHistory.EarSide.EAR_SIDE_NONE;
     private String m_name;
 
     public int fromJSONObject(JSONObject o)
