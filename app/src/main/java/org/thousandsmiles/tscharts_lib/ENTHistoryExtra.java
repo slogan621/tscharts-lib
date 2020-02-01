@@ -28,6 +28,7 @@ public class ENTHistoryExtra implements Serializable {
     private int m_history;
     private ENTHistory.ENTDuration m_duration;
     private ENTHistory.EarSide m_side;
+    private String m_name;
 
     public int fromJSONObject(JSONObject o)
     {
@@ -37,6 +38,7 @@ public class ENTHistoryExtra implements Serializable {
             setId(o.getInt("id"));
             setSide(ENTHistory.earSideToEnum(o.getString("side")));
             setDuration(ENTHistory.entDurationToEnum(o.getString("duration")));
+            setName(o.getString("name"));
 
         } catch (JSONException e) {
             ret = -1;
@@ -54,6 +56,7 @@ public class ENTHistoryExtra implements Serializable {
 
             data.put("duration", getDuration());
             data.put("side", getSide());
+            data.put("name", getName());
         } catch(Exception e) {
             // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
             // because of the bad JSON sent
@@ -81,12 +84,20 @@ public class ENTHistoryExtra implements Serializable {
         return ENTHistory.earSideToString(m_side);
     }
 
+    public String getName()
+    {
+        return m_name;
+    }
+
     public void setDuration(ENTHistory.ENTDuration duration) {
         this.m_duration = duration;
     }
 
     public void setSide(ENTHistory.EarSide side) {
         this.m_side = side;
+    }
+    public void setName(String name) {
+        this.m_name = name;
     }
     public ENTHistoryExtra() {
     }
@@ -97,5 +108,6 @@ public class ENTHistoryExtra implements Serializable {
         this.m_id = rhs.m_id;
         this.m_duration = rhs.m_duration;
         this.m_side = rhs.m_side;
+        this.m_name = rhs.m_name;
     }
 }
