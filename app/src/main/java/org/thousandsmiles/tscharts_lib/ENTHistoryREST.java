@@ -129,7 +129,7 @@ public class ENTHistoryREST extends RESTful {
 
             synchronized (m_lock) {
                 setStatus(200);
-                onSuccess(200, "");
+                onSuccess(200, "", response);
 
                 m_lock.notify();
             }
@@ -143,7 +143,7 @@ public class ENTHistoryREST extends RESTful {
 
             synchronized (m_lock) {
                 setStatus(200);
-                onSuccess(200, "");
+                onSuccess(200, "", response);
                 m_lock.notify();
             }
         }
