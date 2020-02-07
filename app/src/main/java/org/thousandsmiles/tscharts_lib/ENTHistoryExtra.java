@@ -39,6 +39,7 @@ public class ENTHistoryExtra implements Serializable {
             setSide(ENTHistory.earSideToEnum(o.getString("side")));
             setDuration(ENTHistory.entDurationToEnum(o.getString("duration")));
             setName(o.getString("name"));
+            setHistory(o.getInt("history"));
 
         } catch (JSONException e) {
             ret = -1;
@@ -57,6 +58,7 @@ public class ENTHistoryExtra implements Serializable {
             data.put("duration", getDuration());
             data.put("side", getSide());
             data.put("name", getName());
+            data.put("history", getHistory());
         } catch(Exception e) {
             // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
             // because of the bad JSON sent
@@ -79,9 +81,19 @@ public class ENTHistoryExtra implements Serializable {
         return ENTHistory.entDurationToString(m_duration);
     }
 
+    public void setDuration(ENTHistory.ENTDuration duration)
+    {
+        this.m_duration = duration;
+    }
+
     public String getSide()
     {
         return ENTHistory.earSideToString(m_side);
+    }
+
+    public void setSide(ENTHistory.EarSide side)
+    {
+        this.m_side = side;
     }
 
     public String getName()
@@ -89,22 +101,26 @@ public class ENTHistoryExtra implements Serializable {
         return m_name;
     }
 
-    public void setDuration(ENTHistory.ENTDuration duration) {
-        this.m_duration = duration;
-    }
-
-    public void setSide(ENTHistory.EarSide side) {
-        this.m_side = side;
-    }
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.m_name = name;
     }
+
+    public int getHistory()
+    {
+        return m_history;
+    }
+
+    public void setHistory(int val)
+    {
+        this.m_history = val;
+    }
+
     public ENTHistoryExtra() {
     }
 
     public ENTHistoryExtra(ENTHistoryExtra rhs) {
         this.m_history = rhs.m_history;
-
         this.m_id = rhs.m_id;
         this.m_duration = rhs.m_duration;
         this.m_side = rhs.m_side;
