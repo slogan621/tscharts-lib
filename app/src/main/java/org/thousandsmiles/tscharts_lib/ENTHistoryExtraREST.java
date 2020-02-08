@@ -51,6 +51,31 @@ public class ENTHistoryExtraREST extends RESTful {
         }
     }
 
+    private class DeleteConsentResponseListener implements Response.Listener<JSONObject> {
+
+        @Override
+        public void onResponse(JSONObject response) {
+            synchronized (m_lock) {
+                setStatus(200);
+                onSuccess(200, "", response);
+                m_lock.notify();
+            }
+        }
+    }
+
+    private class GetENTHistoryExtraResponseListenerNoSet implements Response.Listener<JSONObject> {
+
+        @Override
+        public void onResponse(JSONObject response) {
+            synchronized (m_lock) {
+                CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
+                setStatus(200);
+                onSuccess(200, "", response);
+                m_lock.notify();
+            }
+        }
+    }
+
     private class GetAllENTHistoriesExtraListener implements Response.Listener<JSONArray> {
 
         @Override
@@ -166,6 +191,43 @@ public class ENTHistoryExtraREST extends RESTful {
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonArrayRequest) request);
+
+        return m_lock;
+    }
+
+    public Object getEntHistoryExtraById(int id) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/enthistoryextra/%d", getProtocol(), getIP(), getPort(), id);
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new GetENTHistoryExtraResponseListenerNoSet(), new ErrorListener());
+
+        request.setTag(CommonSessionSingleton.getInstance().getHeadshotTag());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object deleteENTHistoryExtra(int id) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/enthistoryextra/%d/", getProtocol(), getIP(), getPort(), id);
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.DELETE, url, null,  new DeleteConsentResponseListener(), new ErrorListener());
+
+        queue.add((JsonObjectRequest) request);
 
         return m_lock;
     }
