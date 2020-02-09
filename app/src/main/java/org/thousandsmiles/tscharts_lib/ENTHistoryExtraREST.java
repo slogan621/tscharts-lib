@@ -232,7 +232,8 @@ public class ENTHistoryExtraREST extends RESTful {
         return m_lock;
     }
 
-    public Object getAllENTHistoriesExtraForPatient(int patientId) {
+
+    public Object getAllENTHistoriesExtra(int historyId) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
@@ -240,43 +241,7 @@ public class ENTHistoryExtraREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("%s://%s:%s/tscharts/v1/enthistoryextra?patient=%d", getProtocol(), getIP(), getPort(), patientId);
-
-        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllENTHistoriesExtraListener(), new ErrorListener());
-        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        queue.add((JsonArrayRequest) request);
-
-        return m_lock;
-    }
-
-    public Object getAllENTHistoriesExtraForClinic(int clinicid) {
-
-        VolleySingleton volley = VolleySingleton.getInstance();
-
-        volley.initQueueIf(getContext());
-
-        RequestQueue queue = volley.getQueue();
-
-        String url = String.format("%s://%s:%s/tscharts/v1/enthistoryextra?clinic=%d", getProtocol(), getIP(), getPort(), clinicid);
-
-        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllENTHistoriesExtraListener(), new ErrorListener());
-        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        queue.add((JsonArrayRequest) request);
-
-        return m_lock;
-    }
-
-    public Object getAllENTHistoriesExtra(int clinicid, int patientid) {
-
-        VolleySingleton volley = VolleySingleton.getInstance();
-
-        volley.initQueueIf(getContext());
-
-        RequestQueue queue = volley.getQueue();
-
-        String url = String.format("%s://%s:%s/tscharts/v1/enthistoryextra?clinic=%d&patient=%d", getProtocol(), getIP(), getPort(), clinicid, patientid);
+        String url = String.format("%s://%s:%s/tscharts/v1/enthistoryextra?enthistory=%d", getProtocol(), getIP(), getPort(), historyId);
 
         AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllENTHistoriesExtraListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
