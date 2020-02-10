@@ -51,6 +51,31 @@ public class ENTDiagnosisExtraREST extends RESTful {
         }
     }
 
+    private class DeleteConsentResponseListener implements Response.Listener<JSONObject> {
+
+        @Override
+        public void onResponse(JSONObject response) {
+            synchronized (m_lock) {
+                setStatus(200);
+                onSuccess(200, "", response);
+                m_lock.notify();
+            }
+        }
+    }
+
+    private class GetENTDiagnosisExtraResponseListenerNoSet implements Response.Listener<JSONObject> {
+
+        @Override
+        public void onResponse(JSONObject response) {
+            synchronized (m_lock) {
+                CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
+                setStatus(200);
+                onSuccess(200, "", response);
+                m_lock.notify();
+            }
+        }
+    }
+
     private class GetAllENTDiagnosesExtraListener implements Response.Listener<JSONArray> {
 
         @Override
@@ -76,7 +101,7 @@ public class ENTDiagnosisExtraREST extends RESTful {
                         setStatus(-1);
                     }
                 } else {
-                   setStatus(error.networkResponse.statusCode);
+                    setStatus(error.networkResponse.statusCode);
                 }
                 m_lock.notify();
             }
@@ -128,7 +153,7 @@ public class ENTDiagnosisExtraREST extends RESTful {
 
             synchronized (m_lock) {
                 setStatus(200);
-                onSuccess(200, "");
+                onSuccess(200, "", response);
 
                 m_lock.notify();
             }
@@ -142,7 +167,7 @@ public class ENTDiagnosisExtraREST extends RESTful {
 
             synchronized (m_lock) {
                 setStatus(200);
-                onSuccess(200, "");
+                onSuccess(200, "", response);
                 m_lock.notify();
             }
         }
@@ -152,7 +177,7 @@ public class ENTDiagnosisExtraREST extends RESTful {
         setContext(context);
     }
 
-    public Object getEntDiagnosisExtra(int clinicId, int patientId) {
+    public Object getEntDiagnosisExtraById(int id) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
@@ -160,7 +185,45 @@ public class ENTDiagnosisExtraREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("%s://%s:%s/tscharts/v1/entdiagnosisextra?patient=%d&clinic=%d", getProtocol(), getIP(), getPort(), patientId, clinicId);
+        String url = String.format("%s://%s:%s/tscharts/v1/entdiagnosisextra/%d", getProtocol(), getIP(), getPort(), id);
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new GetENTDiagnosisExtraResponseListenerNoSet(), new ErrorListener());
+
+        request.setTag(CommonSessionSingleton.getInstance().getHeadshotTag());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object deleteENTDiagnosisExtra(int id) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/entdiagnosisextra/%d/", getProtocol(), getIP(), getPort(), id);
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.DELETE, url, null,  new DeleteConsentResponseListener(), new ErrorListener());
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+
+    public Object getAllENTDiagnosesExtra(int historyId) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/entdiagnosisextra?enthistory=%d", getProtocol(), getIP(), getPort(), historyId);
 
         AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllENTDiagnosesExtraListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -170,61 +233,7 @@ public class ENTDiagnosisExtraREST extends RESTful {
         return m_lock;
     }
 
-    public Object getAllENTDiagnosesExtraForPatient(int patientId) {
-
-        VolleySingleton volley = VolleySingleton.getInstance();
-
-        volley.initQueueIf(getContext());
-
-        RequestQueue queue = volley.getQueue();
-
-        String url = String.format("%s://%s:%s/tscharts/v1/entdiagnosisextra?patient=%d", getProtocol(), getIP(), getPort(), patientId);
-
-        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllENTDiagnosesExtraListener(), new ErrorListener());
-        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        queue.add((JsonArrayRequest) request);
-
-        return m_lock;
-    }
-
-    public Object getAllENTDiagnosesExtraForClinic(int clinicid) {
-
-        VolleySingleton volley = VolleySingleton.getInstance();
-
-        volley.initQueueIf(getContext());
-
-        RequestQueue queue = volley.getQueue();
-
-        String url = String.format("%s://%s:%s/tscharts/v1/entdiagnosisextra?clinic=%d", getProtocol(), getIP(), getPort(), clinicid);
-
-        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllENTDiagnosesExtraListener(), new ErrorListener());
-        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        queue.add((JsonArrayRequest) request);
-
-        return m_lock;
-    }
-
-    public Object getAllENTDiagnosesExtra(int clinicid, int patientid) {
-
-        VolleySingleton volley = VolleySingleton.getInstance();
-
-        volley.initQueueIf(getContext());
-
-        RequestQueue queue = volley.getQueue();
-
-        String url = String.format("%s://%s:%s/tscharts/v1/entdiagnosisextra?clinic=%d&patient=%d", getProtocol(), getIP(), getPort(), clinicid, patientid);
-
-        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllENTDiagnosesExtraListener(), new ErrorListener());
-        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        queue.add((JsonArrayRequest) request);
-
-        return m_lock;
-    }
-
-    public Object createENTDiagnosisExtra(ENTDiagnosisExtra diagnosisextra) {
+    public Object createENTDiagnosisExtra(ENTDiagnosisExtra historyextra) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
@@ -236,7 +245,7 @@ public class ENTDiagnosisExtraREST extends RESTful {
 
         JSONObject data;
 
-        data = diagnosisextra.toJSONObject(false);
+        data = historyextra.toJSONObject(false);
 
         String url = String.format("%s://%s:%s/tscharts/v1/entdiagnosisextra/", getProtocol(), getIP(), getPort());
 

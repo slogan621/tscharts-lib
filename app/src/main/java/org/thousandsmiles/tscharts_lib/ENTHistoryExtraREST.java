@@ -177,24 +177,6 @@ public class ENTHistoryExtraREST extends RESTful {
         setContext(context);
     }
 
-    public Object getEntHistoryExtra(int clinicId, int patientId) {
-
-        VolleySingleton volley = VolleySingleton.getInstance();
-
-        volley.initQueueIf(getContext());
-
-        RequestQueue queue = volley.getQueue();
-
-        String url = String.format("%s://%s:%s/tscharts/v1/enthistoryextra?patient=%d&clinic=%d", getProtocol(), getIP(), getPort(), patientId, clinicId);
-
-        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllENTHistoriesExtraListener(), new ErrorListener());
-        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        queue.add((JsonArrayRequest) request);
-
-        return m_lock;
-    }
-
     public Object getEntHistoryExtraById(int id) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
