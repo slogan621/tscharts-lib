@@ -271,6 +271,46 @@ public class ENTDiagnosis implements Serializable {
         this.m_username = m_username;
     }
 
+    public ENTHistory.EarSide getHlConductive() {return m_hlConductive;}
+    public ENTHistory.EarSide getHl() {return m_hl;}
+    public ENTHistory.EarSide getHlMixed() {return m_hlMixed;}
+    public ENTHistory.EarSide getHlSensory() {return m_hlSensory;}
+    public ENTHistory.EarSide getExternalCerumenImpaction() {return m_externalCerumenImpaction;}
+    public ENTHistory.EarSide getExternalEarCanalFB() {return m_externalEarCanalFB;}
+    public ENTHistory.EarSide getExternalMicrotia() {return m_externalMicrotia;}
+
+    public ENTHistory.EarSide getTympanicAtelectasis() {return m_tympanicAtelectasis;}
+    public ENTHistory.EarSide getTympanicGranuloma() {return m_tympanicGranuloma;}
+    public ENTHistory.EarSide getTympanicMonomer() {return m_tympanicMonomer;}
+    public ENTHistory.EarSide getTympanicTube() {return m_tympanicTube;}
+    public ENTHistory.EarSide getTympanicPerf() {return m_tympanicPerf;}
+
+    public ENTHistory.EarSide getMiddleEarCholesteatoma() {return m_middleEarCholesteatoma;}
+    public ENTHistory.EarSide getMiddleEarEustTubeDysTMRetraction() {return m_middleEarEustTubeDysTMRetraction;}
+    public ENTHistory.EarSide getMiddleEarOtitisMedia() {return m_middleEarOtitisMedia;}
+    public ENTHistory.EarSide getMiddleEarSerousOtitisMedia() {return m_middleEarSerousOtitisMedia;}
+
+    public boolean getOralAnkyloglossia() {return m_oralAnkyloglossia;}
+    public boolean getOralTonsilEnlarge() {return m_oralTonsilEnlarge;}
+    public boolean getOralCleftLipRepairDeformity() {return m_oralCleftLipRepairDeformity;}
+    public boolean getOralCleftLipUnilateral() {return m_oralCleftLipUnilateral;}
+    public boolean getOralCleftLipBilateral() {return m_oralCleftLipBilateral;}
+    public boolean getOralCleftLipUnrepaired() {return m_oralCleftLipUnrepaired;}
+    public boolean getOralCleftLipRepaired() {return m_oralCleftLipRepaired;}
+    public boolean getOralCleftPalateUnilateral() {return m_oralCleftPalateUnilateral;}
+    public boolean getOralCleftPalateBilateral() {return m_oralCleftPalateBilateral;}
+    public boolean getOralCleftPalateUnrepaired() {return m_oralCleftPalateUnrepaired;}
+    public boolean getOralCleftPalateRepaired() {return m_oralCleftPalateRepaired;}
+    public boolean getOralSpeechProblem() {return m_oralSpeechProblem;}
+
+
+    public boolean getNoseDeviatedSeptum() {return m_noseDeviatedSeptum;}
+    public boolean getNoseTurbinateHypertrophy() {return m_noseTurbinateHypertrophy;}
+    public boolean getNoseDeformitySecondaryToCleftPalate() {return m_noseDeformitySecondaryToCleftPalate;}
+
+    public ENTHistory.EarSide getSyndromeHemifacialMicrosomia() {return m_syndromeHemifacialMicrosomia;}
+    public ENTHistory.EarSide getSyndromePierreRobin() {return m_syndromePierreRobin;}
+
 
     public ENTDiagnosis() {
     }

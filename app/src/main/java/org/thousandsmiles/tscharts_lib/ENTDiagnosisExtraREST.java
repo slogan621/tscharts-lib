@@ -233,7 +233,7 @@ public class ENTDiagnosisExtraREST extends RESTful {
         return m_lock;
     }
 
-    public Object createENTDiagnosisExtra(ENTDiagnosisExtra historyextra) {
+    public Object createENTDiagnosisExtra(ENTDiagnosisExtra diagnosisextra) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
@@ -245,7 +245,7 @@ public class ENTDiagnosisExtraREST extends RESTful {
 
         JSONObject data;
 
-        data = historyextra.toJSONObject(false);
+        data = diagnosisextra.toJSONObject(false);
 
         String url = String.format("%s://%s:%s/tscharts/v1/entdiagnosisextra/", getProtocol(), getIP(), getPort());
 
