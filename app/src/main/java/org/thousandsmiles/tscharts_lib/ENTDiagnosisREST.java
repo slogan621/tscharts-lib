@@ -77,7 +77,7 @@ public class ENTDiagnosisREST extends RESTful {
                         setStatus(-1);
                     }
                 } else {
-                   setStatus(error.networkResponse.statusCode);
+                    setStatus(error.networkResponse.statusCode);
                 }
                 m_lock.notify();
             }
@@ -129,7 +129,7 @@ public class ENTDiagnosisREST extends RESTful {
 
             synchronized (m_lock) {
                 setStatus(200);
-                onSuccess(200, "");
+                onSuccess(200, "", response);
 
                 m_lock.notify();
             }
@@ -143,7 +143,7 @@ public class ENTDiagnosisREST extends RESTful {
 
             synchronized (m_lock) {
                 setStatus(200);
-                onSuccess(200, "");
+                onSuccess(200, "", response);
                 m_lock.notify();
             }
         }
@@ -235,7 +235,7 @@ public class ENTDiagnosisREST extends RESTful {
 
         CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
 
-        JSONObject data;
+        JSONObject data = new JSONObject();
 
         data = diagnosis.toJSONObject(false);
 
