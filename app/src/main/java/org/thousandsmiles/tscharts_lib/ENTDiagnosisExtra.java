@@ -70,15 +70,15 @@ public class ENTDiagnosisExtra implements Serializable {
     }
 
     public void setDiagnosis(int diagnosis) {
-        this.m_diagnosis = m_diagnosis;
+        this.m_diagnosis = diagnosis;
     }
 
     public int getId() {
         return m_id;
     }
 
-    public void setId(int m_id) {
-        this.m_id = m_id;
+    public void setId(int id) {
+        this.m_id = id;
     }
 
     public String getName() {
