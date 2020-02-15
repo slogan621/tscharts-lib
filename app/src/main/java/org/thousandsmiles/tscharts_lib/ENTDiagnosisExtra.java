@@ -53,7 +53,7 @@ public class ENTDiagnosisExtra implements Serializable {
                 data.put("id", this.getId());
             }
 
-            data.put("diagnosis", getDiagnosis());
+            data.put("entdiagnosis", getDiagnosis());
             data.put("name", getName());
             data.put("value", getValue());
         } catch(Exception e) {
