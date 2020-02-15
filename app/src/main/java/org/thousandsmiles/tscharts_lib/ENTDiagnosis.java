@@ -311,6 +311,47 @@ public class ENTDiagnosis implements Serializable {
     public ENTHistory.EarSide getSyndromeHemifacialMicrosomia() {return m_syndromeHemifacialMicrosomia;}
     public ENTHistory.EarSide getSyndromePierreRobin() {return m_syndromePierreRobin;}
 
+    // setters
+
+    public void setHlConductive(ENTHistory.EarSide val) { m_hlConductive = val;}
+    public void setHl(ENTHistory.EarSide val) { m_hl = val;}
+    public void setHlMixed(ENTHistory.EarSide val) { m_hlMixed = val;}
+    public void setHlSensory(ENTHistory.EarSide val) { m_hlSensory = val;}
+    public void setExternalCerumenImpaction(ENTHistory.EarSide val) { m_externalCerumenImpaction = val;}
+    public void setExternalEarCanalFB(ENTHistory.EarSide val) { m_externalEarCanalFB = val;}
+    public void setExternalMicrotia(ENTHistory.EarSide val) { m_externalMicrotia = val;}
+
+    public void setTympanicAtelectasis(ENTHistory.EarSide val) { m_tympanicAtelectasis = val;}
+    public void setTympanicGranuloma(ENTHistory.EarSide val) { m_tympanicGranuloma = val;}
+    public void setTympanicMonomer(ENTHistory.EarSide val) { m_tympanicMonomer = val;}
+    public void setTympanicTube(ENTHistory.EarSide val) { m_tympanicTube = val;}
+    public void setTympanicPerf(ENTHistory.EarSide val) { m_tympanicPerf = val;}
+
+    public void setMiddleEarCholesteatoma(ENTHistory.EarSide val) { m_middleEarCholesteatoma = val;}
+    public void setMiddleEarEustTubeDysTMRetraction(ENTHistory.EarSide val) { m_middleEarEustTubeDysTMRetraction = val;}
+    public void setMiddleEarOtitisMedia(ENTHistory.EarSide val) { m_middleEarOtitisMedia = val;}
+    public void setMiddleEarSerousOtitisMedia(ENTHistory.EarSide val) { m_middleEarSerousOtitisMedia = val;}
+
+    public void setOralAnkyloglossia(boolean val) { m_oralAnkyloglossia = val;}
+    public void setOralTonsilEnlarge(boolean val) { m_oralTonsilEnlarge = val;}
+    public void setOralCleftLipRepairDeformity(boolean val) { m_oralCleftLipRepairDeformity = val;}
+    public void setOralCleftLipUnilateral(boolean val) { m_oralCleftLipUnilateral = val;}
+    public void setOralCleftLipBilateral(boolean val) { m_oralCleftLipBilateral = val;}
+    public void setOralCleftLipUnrepaired(boolean val) { m_oralCleftLipUnrepaired = val;}
+    public void setOralCleftLipRepaired(boolean val) { m_oralCleftLipRepaired = val;}
+    public void setOralCleftPalateUnilateral(boolean val) { m_oralCleftPalateUnilateral = val;}
+    public void setOralCleftPalateBilateral(boolean val) { m_oralCleftPalateBilateral = val;}
+    public void setOralCleftPalateUnrepaired(boolean val) { m_oralCleftPalateUnrepaired = val;}
+    public void setOralCleftPalateRepaired(boolean val) { m_oralCleftPalateRepaired = val;}
+    public void setOralSpeechProblem(boolean val) { m_oralSpeechProblem = val;}
+
+
+    public void setNoseDeviatedSeptum(boolean val) { m_noseDeviatedSeptum = val;}
+    public void setNoseTurbinateHypertrophy(boolean val) { m_noseTurbinateHypertrophy = val;}
+    public void setNoseDeformitySecondaryToCleftPalate(boolean val) { m_noseDeformitySecondaryToCleftPalate = val;}
+
+    public void setSyndromeHemifacialMicrosomia(ENTHistory.EarSide val) { m_syndromeHemifacialMicrosomia = val;}
+    public void setSyndromePierreRobin(ENTHistory.EarSide val) { m_syndromePierreRobin = val;}
 
     public ENTDiagnosis() {
     }
