@@ -76,7 +76,7 @@ public class ENTTreatmentREST extends RESTful {
                         setStatus(-1);
                     }
                 } else {
-                   setStatus(error.networkResponse.statusCode);
+                    setStatus(error.networkResponse.statusCode);
                 }
                 m_lock.notify();
             }
