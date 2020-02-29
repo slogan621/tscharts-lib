@@ -97,7 +97,7 @@ public class ENTTreatment implements Serializable {
     private ENTHistory.EarSide m_euaFuture;
     private String m_euaFutureComment;
     private ENTHistory.EarSide m_fbRemovalFuture;
-    private String m_fbRemovalComment;
+    private String m_fbRemovalFutureComment;
     private ENTHistory.EarSide m_middleEarExploreMyringotomyFuture;
     private String m_middleEarExploreMyringotomyFutureComment;
     private ENTHistory.EarSide m_cerumenFuture;
@@ -671,12 +671,12 @@ public class ENTTreatment implements Serializable {
         m_fbRemovalFuture = fbRemovalFuture;
     }
 
-    public String getFbRemovalComment() {
-        return m_fbRemovalComment;
+    public String getFbRemovalFutureComment() {
+        return m_fbRemovalFutureComment;
     }
 
-    public void setFbRemovalComment(String fbRemovalComment) {
-        m_fbRemovalComment = fbRemovalComment;
+    public void setFbRemovalFutureComment(String fbRemovalFutureComment) {
+        m_fbRemovalFutureComment = fbRemovalFutureComment;
     }
 
     public ENTHistory.EarSide getMiddleEarExploreMyringotomyFuture() {
@@ -831,86 +831,86 @@ public class ENTTreatment implements Serializable {
 
         try {
 
-            setEarCleanedSide(earSideToEnum(o.getString("m_earCleanedSide")));
-            setEarCleanedComment(o.getString("m_earCleanedComment"));
-            setAudiogramSide(earSideToEnum(o.getString("m_audiogramSide")));
-            setAudiogramComment(o.getString("m_audiogramComment"));
-            setAudiogramRightAway(stringToBool(o.getString("m_audiogramRightAway")));
-            setAudiogramRightAwayComment(o.getString("m_audiogramRightAwayComment"));
-            setTympanogramSide(earSideToEnum(o.getString("m_tympanogramSide")));
-            setTympanogramComment(o.getString("m_tympanogramComment"));
-            setTympanogramRightAway(stringToBool(o.getString("m_tympanogramRightAway")));
-            setTympanogramRightAwayComment(o.getString("m_tympanogramRightAwayComment"));
-            setMastoidDebridedSide(earSideToEnum(o.getString("m_mastoidDebridedSide")));
-            setMastoidDebridedComment(o.getString("m_mastoidDebridedComment"));
-            setMastoidDebridedHearingAidEval(stringToBool(o.getString("m_mastoidDebridedHearingAidEval")));
-            setMastoidDebridedHearingAidEvalComment(o.getString("m_mastoidDebridedHearingAidEvalComment"));
-            setAntibioticDrops(stringToBool(o.getString("m_antibioticDrops")));
-            setAntibioticDropsComment(o.getString("m_antibioticDropsComment"));
-            setAntibioticOrally(stringToBool(o.getString("m_antibioticOrally")));
-            setAntibioticOrallyComment(o.getString("m_antibioticOrallyComment"));
-            setAntibioticAcuteInfection(stringToBool(o.getString("m_antibioticAcuteInfection")));
-            setAntibioticAcuteInfectionComment(o.getString("m_antibioticAcuteInfectionComment"));
-            setAntibioticAfterWaterExposureInfectionPrevention(stringToBool(o.getString("m_antibioticAfterWaterExposureInfectionPrevention")));
-            setAntibioticAfterWaterExposureInfectionPreventionComment(o.getString("m_antibioticAfterWaterExposureInfectionPreventionComment"));
-            setBoricAcidToday(stringToBool(o.getString("m_boricAcidToday")));
-            setBoricAcidTodayComment(o.getString("m_boricAcidTodayComment"));
-            setBoricAcidForHomeUse(stringToBool(o.getString("m_boricAcidForHomeUse")));
-            setBoricAcidForHomeUseComment(o.getString("m_boricAcidForHomeUseComment"));
-            setBoricAcidSide(earSideToEnum(o.getString("m_boricAcidSide")));
-            setBoricAcidSideComment(o.getString("m_boricAcidSideComment"));
-            setForeignBodyRemoved(earSideToEnum(o.getString("m_foreignBodyRemoved")));
-            setForeignBodyRemovedComment(o.getString("m_foreignBodyRemovedComment"));
-            setReturn3Months(stringToBool(o.getString("m_return3Months")));
-            setReturn6Months(stringToBool(o.getString("m_return6Months")));
-            setReturnPrn(stringToBool(o.getString("m_returnPrn")));
-            setReturnComment(o.getString("m_returnComment"));
-            setReferredPvtENTEnsenada(stringToBool(o.getString("m_referredPvtENTEnsenada")));
-            setReferredPvtENTEnsenadaComment(o.getString("m_referredPvtENTEnsenadaComment"));
-            setReferredChildrensHospitalTJ(stringToBool(o.getString("m_referredChildrensHospitalTJ")));
-            setReferredChildrensHospitalTJComment(o.getString("m_referredChildrensHospitalTJComment"));
+            setEarCleanedSide(earSideToEnum(o.getString("earCleanedSide")));
+            setEarCleanedComment(o.getString("earCleanedComment"));
+            setAudiogramSide(earSideToEnum(o.getString("audiogramSide")));
+            setAudiogramComment(o.getString("audiogramComment"));
+            setAudiogramRightAway(stringToBool(o.getString("audiogramRightAway")));
+            setAudiogramRightAwayComment(o.getString("audiogramRightAwayComment"));
+            setTympanogramSide(earSideToEnum(o.getString("tympanogramSide")));
+            setTympanogramComment(o.getString("tympanogramComment"));
+            setTympanogramRightAway(stringToBool(o.getString("tympanogramRightAway")));
+            setTympanogramRightAwayComment(o.getString("tympanogramRightAwayComment"));
+            setMastoidDebridedSide(earSideToEnum(o.getString("mastoidDebridedSide")));
+            setMastoidDebridedComment(o.getString("mastoidDebridedComment"));
+            setMastoidDebridedHearingAidEval(stringToBool(o.getString("mastoidDebridedHearingAidEval")));
+            setMastoidDebridedHearingAidEvalComment(o.getString("mastoidDebridedHearingAidEvalComment"));
+            setAntibioticDrops(stringToBool(o.getString("antibioticDrops")));
+            setAntibioticDropsComment(o.getString("antibioticDropsComment"));
+            setAntibioticOrally(stringToBool(o.getString("antibioticOrally")));
+            setAntibioticOrallyComment(o.getString("antibioticOrallyComment"));
+            setAntibioticAcuteInfection(stringToBool(o.getString("antibioticAcuteInfection")));
+            setAntibioticAcuteInfectionComment(o.getString("antibioticAcuteInfectionComment"));
+            setAntibioticAfterWaterExposureInfectionPrevention(stringToBool(o.getString("antibioticAfterWaterExposureInfectionPrevention")));
+            setAntibioticAfterWaterExposureInfectionPreventionComment(o.getString("antibioticAfterWaterExposureInfectionPreventionComment"));
+            setBoricAcidToday(stringToBool(o.getString("boricAcidToday")));
+            setBoricAcidTodayComment(o.getString("boricAcidTodayComment"));
+            setBoricAcidForHomeUse(stringToBool(o.getString("boricAcidForHomeUse")));
+            setBoricAcidForHomeUseComment(o.getString("boricAcidForHomeUseComment"));
+            setBoricAcidSide(earSideToEnum(o.getString("boricAcidSide")));
+            setBoricAcidSideComment(o.getString("boricAcidSideComment"));
+            setForeignBodyRemoved(earSideToEnum(o.getString("foreignBodyRemoved")));
+            setForeignBodyRemovedComment(o.getString("foreignBodyRemovedComment"));
+            setReturn3Months(stringToBool(o.getString("return3Months")));
+            setReturn6Months(stringToBool(o.getString("return6Months")));
+            setReturnPrn(stringToBool(o.getString("returnPrn")));
+            setReturnComment(o.getString("returnComment"));
+            setReferredPvtENTEnsenada(stringToBool(o.getString("referredPvtENTEnsenada")));
+            setReferredPvtENTEnsenadaComment(o.getString("referredPvtENTEnsenadaComment"));
+            setReferredChildrensHospitalTJ(stringToBool(o.getString("referredChildrensHospitalTJ")));
+            setReferredChildrensHospitalTJComment(o.getString("referredChildrensHospitalTJComment"));
 
-            setTubesTomorrow(earSideToEnum(o.getString("m_tubesTomorrow")));
-            setTubesTomorrowComment(o.getString("m_tubesTomorrowComment"));
-            setTPlastyTomorrow(earSideToEnum(o.getString("m_tPlastyTomorrow")));
-            setTPlastyTomorrowComment(o.getString("m_tPlastyTomorrowComment"));
-            setEuaTomorrow(earSideToEnum(o.getString("m_euaTomorrow")));
-            setEuaTomorrowComment(o.getString("m_euaTomorrowComment"));
-            setFbRemovalTomorrow(earSideToEnum(o.getString("m_fbRemovalTomorrow")));
-            setFbRemovalTomorrowComment(o.getString("m_fbRemovalTomorrowComment"));
-            setMiddleEarExploreMyringotomyTomorrow(earSideToEnum(o.getString("m_middleEarExploreMyringotomyTomorrow")));
-            setMiddleEarExploreMyringotomyTomorrowComment(o.getString("m_middleEarExploreMyringotomyTomorrowComment"));
-            setCerumenTomorrow(earSideToEnum(o.getString("m_cerumenTomorrow")));
-            setCerumenTomorrowComment(o.getString("m_cerumenTomorrowComment"));
-            setGranulomaTomorrow(earSideToEnum(o.getString("m_granulomaTomorrow")));
-            setGranulomaTomorrowComment(o.getString("m_granulomaTomorrowComment"));
-            setSeptorhinoplastyTomorrow(stringToBool(o.getString("m_septorhinoplastyTomorrow")));
-            setSeptorhinoplastyTomorrowComment(o.getString("m_septorhinoplastyTomorrowComment"));
-            setScarRevisionCleftLipTomorrow(stringToBool(o.getString("m_scarRevisionCleftLipTomorrow")));
-            setScarRevisionCleftLipTomorrowComment(o.getString("m_scarRevisionCleftLipTomorrowComment"));
-            setFrenulectomyTomorrow(stringToBool(o.getString("m_frenulectomyTomorrow")));
-            setFrenulectomyTomorrowComment(o.getString("m_frenulectomyTomorrowComment"));
+            setTubesTomorrow(earSideToEnum(o.getString("tubesTomorrow")));
+            setTubesTomorrowComment(o.getString("tubesTomorrowComment"));
+            setTPlastyTomorrow(earSideToEnum(o.getString("tPlastyTomorrow")));
+            setTPlastyTomorrowComment(o.getString("tPlastyTomorrowComment"));
+            setEuaTomorrow(earSideToEnum(o.getString("euaTomorrow")));
+            setEuaTomorrowComment(o.getString("euaTomorrowComment"));
+            setFbRemovalTomorrow(earSideToEnum(o.getString("fbRemovalTomorrow")));
+            setFbRemovalTomorrowComment(o.getString("fbRemovalTomorrowComment"));
+            setMiddleEarExploreMyringotomyTomorrow(earSideToEnum(o.getString("middleEarExploreMyringotomyTomorrow")));
+            setMiddleEarExploreMyringotomyTomorrowComment(o.getString("middleEarExploreMyringotomyTomorrowComment"));
+            setCerumenTomorrow(earSideToEnum(o.getString("cerumenTomorrow")));
+            setCerumenTomorrowComment(o.getString("cerumenTomorrowComment"));
+            setGranulomaTomorrow(earSideToEnum(o.getString("granulomaTomorrow")));
+            setGranulomaTomorrowComment(o.getString("granulomaTomorrowComment"));
+            setSeptorhinoplastyTomorrow(stringToBool(o.getString("septorhinoplastyTomorrow")));
+            setSeptorhinoplastyTomorrowComment(o.getString("septorhinoplastyTomorrowComment"));
+            setScarRevisionCleftLipTomorrow(stringToBool(o.getString("scarRevisionCleftLipTomorrow")));
+            setScarRevisionCleftLipTomorrowComment(o.getString("scarRevisionCleftLipTomorrowComment"));
+            setFrenulectomyTomorrow(stringToBool(o.getString("frenulectomyTomorrow")));
+            setFrenulectomyTomorrowComment(o.getString("frenulectomyTomorrowComment"));
 
-            setTubesFuture(earSideToEnum(o.getString("m_tubesFuture")));
-            setTubesFutureComment(o.getString("m_tubesFutureComment"));
-            setTPlastyFuture(earSideToEnum(o.getString("m_tPlastyFuture")));
-            setTPlastyFutureComment(o.getString("m_tPlastyFutureComment"));
-            setEuaFuture(earSideToEnum(o.getString("m_euaFuture")));
-            setEuaFutureComment(o.getString("m_euaFutureComment"));
-            setFbRemovalFuture(earSideToEnum(o.getString("m_fbRemovalFuture")));
-            setFbRemovalComment(o.getString("m_fbRemovalComment"));
-            setMiddleEarExploreMyringotomyFuture(earSideToEnum(o.getString("m_middleEarExploreMyringotomyFuture")));
-            setMiddleEarExploreMyringotomyFutureComment(o.getString("m_middleEarExploreMyringotomyFutureComment"));
-            setCerumenFuture(earSideToEnum(o.getString("m_cerumenFuture")));
-            setCerumenFutureComment(o.getString("m_cerumenFutureComment"));
-            setGranulomaFuture(earSideToEnum(o.getString("m_granulomaFuture")));
-            setGranulomaFutureComment(o.getString("m_granulomaFutureComment"));
-            setSeptorhinoplastyFuture(stringToBool(o.getString("m_septorhinoplastyFuture")));
-            setSeptorhinoplastyFutureComment(o.getString("m_septorhinoplastyFutureComment"));
-            setScarRevisionCleftLipFuture(stringToBool(o.getString("m_scarRevisionCleftLipFuture")));
-            setScarRevisionCleftLipFutureComment(o.getString("m_scarRevisionCleftLipFutureComment"));
-            setFrenulectomyFuture(stringToBool(o.getString("m_frenulectomyFuture")));
-            setFrenulectomyFutureComment(o.getString("m_frenulectomyFutureComment"));
+            setTubesFuture(earSideToEnum(o.getString("tubesFuture")));
+            setTubesFutureComment(o.getString("tubesFutureComment"));
+            setTPlastyFuture(earSideToEnum(o.getString("tPlastyFuture")));
+            setTPlastyFutureComment(o.getString("tPlastyFutureComment"));
+            setEuaFuture(earSideToEnum(o.getString("euaFuture")));
+            setEuaFutureComment(o.getString("euaFutureComment"));
+            setFbRemovalFuture(earSideToEnum(o.getString("fbRemovalFuture")));
+            setFbRemovalFutureComment(o.getString("fbRemovalFutureComment"));
+            setMiddleEarExploreMyringotomyFuture(earSideToEnum(o.getString("middleEarExploreMyringotomyFuture")));
+            setMiddleEarExploreMyringotomyFutureComment(o.getString("middleEarExploreMyringotomyFutureComment"));
+            setCerumenFuture(earSideToEnum(o.getString("cerumenFuture")));
+            setCerumenFutureComment(o.getString("cerumenFutureComment"));
+            setGranulomaFuture(earSideToEnum(o.getString("granulomaFuture")));
+            setGranulomaFutureComment(o.getString("granulomaFutureComment"));
+            setSeptorhinoplastyFuture(stringToBool(o.getString("septorhinoplastyFuture")));
+            setSeptorhinoplastyFutureComment(o.getString("septorhinoplastyFutureComment"));
+            setScarRevisionCleftLipFuture(stringToBool(o.getString("scarRevisionCleftLipFuture")));
+            setScarRevisionCleftLipFutureComment(o.getString("scarRevisionCleftLipFutureComment"));
+            setFrenulectomyFuture(stringToBool(o.getString("frenulectomyFuture")));
+            setFrenulectomyFutureComment(o.getString("frenulectomyFutureComment"));
 
             setId(o.getInt("id"));
             setPatient(o.getInt("patient"));
@@ -1000,7 +1000,7 @@ public class ENTTreatment implements Serializable {
             data.put("euaFuture", getEuaFuture());
             data.put("euaFutureComment", getEuaFutureComment());
             data.put("fbRemovalFuture", getFbRemovalFuture());
-            data.put("fbRemovalComment", getFbRemovalComment());
+            data.put("fbRemovalFutureComment", getFbRemovalFutureComment());
             data.put("middleEarExploreMyringotomyFuture", getMiddleEarExploreMyringotomyFuture());
             data.put("middleEarExploreMyringotomyFutureComment", getMiddleEarExploreMyringotomyFutureComment());
             data.put("cerumenFuture", getCerumenFuture());
@@ -1099,7 +1099,7 @@ public class ENTTreatment implements Serializable {
          m_euaFuture = rhs.m_euaFuture;
          m_euaFutureComment = rhs.m_euaFutureComment;
          m_fbRemovalFuture = rhs.m_fbRemovalFuture;
-         m_fbRemovalComment = rhs.m_fbRemovalComment;
+         m_fbRemovalFutureComment = rhs.m_fbRemovalFutureComment;
          m_middleEarExploreMyringotomyFuture = rhs.m_middleEarExploreMyringotomyFuture;
          m_middleEarExploreMyringotomyFutureComment = rhs.m_middleEarExploreMyringotomyFutureComment;
          m_cerumenFuture = rhs.m_cerumenFuture;
