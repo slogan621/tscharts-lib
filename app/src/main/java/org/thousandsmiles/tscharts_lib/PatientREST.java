@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2017-2018
- * (C) Copyright Thousand Smiles Foundation 2017-2018
+ * (C) Copyright Syd Logan 2017-2020
+ * (C) Copyright Thousand Smiles Foundation 2017-2020
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -279,6 +279,32 @@ public class PatientREST extends RESTful {
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object updatePatientOldId(int patientId, int oldId) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("oldid", oldId);
+        } catch (Exception e) {
+            return null;
+        }
+
+        String url = String.format("%s://%s:%s/tscharts/v1/patient/%d/", getProtocol(), getIP(), getPort(), patientId);
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.PUT, url, data, new PutResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(request);
 
         return m_lock;
     }
