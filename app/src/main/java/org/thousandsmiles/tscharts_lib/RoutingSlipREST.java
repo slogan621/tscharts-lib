@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2017-2019
- * (C) Copyright Thousand Smiles Foundation 2017-2019
+ * (C) Copyright Syd Logan 2017-2020
+ * (C) Copyright Thousand Smiles Foundation 2017-2020
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public class RoutingSlipREST extends RESTful {
         }
     }
 
-    private class GetAllRoutingSlipsForPatientListener implements Response.Listener<JSONArray> {
+    private class GetMultipleRoutingSlipsResponseListener implements Response.Listener<JSONArray> {
 
         @Override
         public void onResponse(JSONArray response) {
@@ -75,7 +75,7 @@ public class RoutingSlipREST extends RESTful {
                         setStatus(-1);
                     }
                 } else {
-                   setStatus(error.networkResponse.statusCode);
+                    setStatus(error.networkResponse.statusCode);
                 }
                 m_lock.notify();
             }
@@ -164,6 +164,24 @@ public class RoutingSlipREST extends RESTful {
         return m_lock;
     }
 
+    public Object getRoutingSlip(int clinicId, String category) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/routingslip?category=%s&clinic=%d", getProtocol(), getIP(), getPort(), category, clinicId);
+
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetMultipleRoutingSlipsResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonArrayRequest) request);
+
+        return m_lock;
+    }
+
     public Object getAllRoutingSlipsForPatient(int patientId) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
@@ -174,7 +192,7 @@ public class RoutingSlipREST extends RESTful {
 
         String url = String.format("%s://%s:%s/tscharts/v1/routingslip?patient=%d", getProtocol(), getIP(), getPort(), patientId);
 
-        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAllRoutingSlipsForPatientListener(), new ErrorListener());
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetMultipleRoutingSlipsResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonArrayRequest) request);
