@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2018-2019
- * (C) Copyright Thousand Smiles Foundation 2018-2019
+ * (C) Copyright Syd Logan 2018-2020
+ * (C) Copyright Thousand Smiles Foundation 2018-2020
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,13 @@
  */
 
 package org.thousandsmiles.tscharts_lib;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class PatientData {
+public class PatientData implements Parcelable {
     private int m_id;
     private int m_oldId;
     private String m_fatherLast = "";
@@ -71,6 +74,83 @@ public class PatientData {
         if (o != null) {
             fromJSONObject(o);
         }
+    }
+
+    protected PatientData(Parcel in) {
+        m_id = in.readInt();
+        m_oldId = in.readInt();
+        m_fatherLast = in.readString();
+        m_motherLast = in.readString();
+        m_first = in.readString();
+        m_middle = in.readString();
+        m_dob = in.readString();
+        m_gender = in.readString();
+        m_street1 = in.readString();
+        m_street2 = in.readString();
+        m_colonia = in.readString();
+        m_city = in.readString();
+        m_state = in.readString();
+        m_phone1 = in.readString();
+        m_phone2 = in.readString();
+        m_email = in.readString();
+        m_emergencyFullName = in.readString();
+        m_emergencyPhone = in.readString();
+        m_emergencyEmail = in.readString();
+        m_curp = in.readString();
+        m_valid = in.readByte() != 0;
+    }
+
+    public static final Creator<PatientData> CREATOR = new Creator<PatientData>() {
+        @Override
+        public PatientData createFromParcel(Parcel in) {
+            return new PatientData(in);
+        }
+
+        @Override
+        public PatientData[] newArray(int size) {
+            return new PatientData[size];
+        }
+    };
+
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeByte((byte) (m_valid == false ? 0 : 1));
+        dest.writeString(m_curp);
+        dest.writeString(m_emergencyEmail);
+        dest.writeString(m_emergencyPhone);
+        dest.writeString(m_emergencyFullName);
+        dest.writeString(m_email);
+        dest.writeString(m_phone2);
+        dest.writeString(m_phone1);
+        dest.writeString(m_state);
+        dest.writeString(m_city);
+        dest.writeString(m_colonia);
+        dest.writeString(m_street2);
+        dest.writeString(m_street1);
+        dest.writeString(m_gender);
+        dest.writeString(m_dob);
+        dest.writeString(m_middle);
+        dest.writeString(m_first);
+        dest.writeString(m_motherLast);
+        dest.writeString(m_fatherLast);
+        dest.writeInt(m_oldId);
+        dest.writeInt(m_id);
+    }
+
+    public String getPatientFullName(boolean lastFirst) {
+        String ret;
+
+        if (lastFirst == true) {
+            ret = String.format("%s-%s, %s %s", m_fatherLast, m_motherLast, m_first, m_middle);
+        } else {
+            ret = String.format("%s %s, %s-%s", m_first, m_middle, m_fatherLast, m_motherLast);
+        }
+        return ret;
     }
 
     public String getCURP() {
