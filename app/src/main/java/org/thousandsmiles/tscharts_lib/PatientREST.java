@@ -263,6 +263,25 @@ public class PatientREST extends RESTful {
         return m_lock;
     }
 
+    public Object findPatientsByNameAndClinicId(String name, int clinicId) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/patient?name=%s&clinic=%d", getProtocol(), getIP(), getPort(), name, clinicId);
+
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ArrayResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(request);
+
+        return m_lock;
+    }
+    
+
     public Object updatePatient(PatientData pd) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
