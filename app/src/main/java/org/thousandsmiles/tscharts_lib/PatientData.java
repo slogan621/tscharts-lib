@@ -44,6 +44,7 @@ public class PatientData implements Parcelable {
     private String m_emergencyEmail = "";
     private String m_curp = "";
     private boolean m_valid;
+    private boolean m_isCurrentXray;
 
     public PatientData() {
         m_id = -1;
@@ -67,6 +68,7 @@ public class PatientData implements Parcelable {
         m_emergencyEmail = "";
         m_curp = "";
         m_valid = true;
+        m_isCurrentXray = false;
     }
 
     public PatientData(JSONObject o) {
@@ -98,6 +100,7 @@ public class PatientData implements Parcelable {
         m_emergencyEmail = in.readString();
         m_curp = in.readString();
         m_valid = in.readByte() != 0;
+        m_isCurrentXray = in.readByte() != 0;
     }
 
     public static final Creator<PatientData> CREATOR = new Creator<PatientData>() {
@@ -119,6 +122,7 @@ public class PatientData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
+        dest.writeByte((byte) (m_isCurrentXray == false ? 0 : 1));
         dest.writeByte((byte) (m_valid == false ? 0 : 1));
         dest.writeString(m_curp);
         dest.writeString(m_emergencyEmail);
@@ -318,6 +322,14 @@ public class PatientData implements Parcelable {
         return m_valid;
     }
 
+    public boolean getIsCurrentXray() {
+        return m_isCurrentXray;
+    }
+
+    public void setIsCurrentXray(boolean isCurrentXray) {
+        m_isCurrentXray = isCurrentXray;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -435,6 +447,7 @@ public class PatientData implements Parcelable {
             setEmergencyPhone(o.getString("emergencyphone"));
             setEmergencyEmail(o.getString("emergencyemail"));
             m_valid = true;
+            m_isCurrentXray = false;
         } catch (JSONException e) {
             ret = -1;
         }
