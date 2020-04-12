@@ -175,7 +175,7 @@ public class AudiogramREST extends RESTful {
         return m_lock;
     }
 
-    public Object createAudiogram(int clinicId, int patientId, int imageId, String comment) {
+    public Object createAudiogram(Audiogram audiogram) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
@@ -188,16 +188,36 @@ public class AudiogramREST extends RESTful {
         JSONObject data = new JSONObject();
 
         try {
-            data.put("clinic", clinicId);
-            data.put("patient", patientId);
-            data.put("image", imageId);
-            data.put("comment", comment);
+            data.put("clinic", audiogram.getClinic());
+            data.put("patient", audiogram.getPatient());
+            data.put("image", audiogram.getImage());
+            data.put("comment", audiogram.getComment());
         } catch(Exception e) {
             // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
             // because of the bad JSON sent
         }
 
         AudiogramREST.AuthJSONObjectRequest request = new AudiogramREST.AuthJSONObjectRequest(Request.Method.POST, url, data,  new AudiogramREST.CreateOrUpdateAudiogramResponseListener(), new AudiogramREST.ErrorListener());
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object updateAudiogram(Audiogram audiogram) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        JSONObject data = audiogram.toJSONObject(true);
+
+        String url = String.format("%s://%s:%s/tscharts/v1/audiogram/%d/", getProtocol(), getIP(), getPort(), audiogram.getId());
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.PUT, url, data, new CreateOrUpdateAudiogramResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonObjectRequest) request);
 
