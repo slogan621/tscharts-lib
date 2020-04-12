@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2018-2019
- * (C) Copyright Thousand Smiles Foundation 2018-2019
+ * (C) Copyright Syd Logan 2018-2020
+ * (C) Copyright Thousand Smiles Foundation 2018-2020
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +64,7 @@ public class CommonSessionSingleton {
     private ENTExam m_patientENTExam = null;
     private ENTSurgicalHistory m_patientENTSurgicalHistory = null;
     private ENTTreatment m_patientENTTreatment = null;
+    private Audiogram m_patientAudiogram = null;
     private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, Boolean> m_hasCurrentXRayMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, JSONObject> m_clinicMap = new HashMap<Integer, JSONObject>();
@@ -477,6 +477,31 @@ public class CommonSessionSingleton {
             m_patientENTSurgicalHistory = new ENTSurgicalHistory();
         }
         return m_patientENTSurgicalHistory;
+    }
+
+    public void setPatientAudiogram(JSONObject o)
+    {
+        if (m_patientAudiogram == null) {
+            m_patientAudiogram = new Audiogram();
+        }
+        m_patientAudiogram.fromJSONObject(o);
+    }
+
+    public void updatePatientAudiogram(Audiogram audiogram) {
+        m_patientAudiogram = audiogram;
+    }
+
+    public Audiogram getPatientAudiogram()
+    {
+        return m_patientAudiogram;
+    }
+
+    public Audiogram getNewPatientAudiogram()
+    {
+        if (m_patientAudiogram == null) {
+            m_patientAudiogram = new Audiogram();
+        }
+        return m_patientAudiogram;
     }
 
     public void setClinicId(int id) {
