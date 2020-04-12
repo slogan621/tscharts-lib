@@ -570,7 +570,7 @@ public class CommonSessionSingleton {
         m_photoPath = path;
     }
 
-    public void createHeadshot(final RESTCompletionListener listener) {
+    public void createImage(final int clinic, final int patient, final String imageType, final RESTCompletionListener listener) {
 
         Thread thread = new Thread() {
             public void run() {
@@ -578,11 +578,10 @@ public class CommonSessionSingleton {
                 ImageREST rest = new ImageREST(getContext());
                 rest.addListener(listener);
                 Object lock;
-                int status;
 
                 File file = new File(getPhotoPath());
 
-                lock = rest.createImage(file);
+                lock = rest.createImage(file, clinic, patient, imageType);
 
                 synchronized (lock) {
                     // we loop here in case of race conditions or spurious interrupts
@@ -594,22 +593,6 @@ public class CommonSessionSingleton {
                             continue;
                         }
                     }
-                }
-                status = rest.getStatus();
-                if (status != 200) {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(new Runnable() {
-                        public void run() {
-                            //Toast.makeText(getContext(), getContext().getString(R.string.msg_unable_to_save_headshot_photo), Toast.LENGTH_LONG).show();
-                        }
-                    });
-                } else {
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(new Runnable() {
-                        public void run() {
-                            //Toast.makeText(getContext(), getContext().getString(R.string.msg_successfully_saved_headshot_photo), Toast.LENGTH_LONG).show();
-                        }
-                    });
                 }
             }
         };

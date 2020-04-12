@@ -280,7 +280,7 @@ public class PatientREST extends RESTful {
 
         return m_lock;
     }
-    
+
 
     public Object updatePatient(PatientData pd) {
 

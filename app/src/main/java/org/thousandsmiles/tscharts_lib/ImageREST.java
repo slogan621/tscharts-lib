@@ -223,7 +223,7 @@ public class ImageREST extends RESTful {
         return m_lock;
     }
 
-    public Object createImage(File file) {
+    public Object createImage(File file, int patient, int clinic, String imageType) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
@@ -245,9 +245,9 @@ public class ImageREST extends RESTful {
             if (read == file.length()) {
                 String encoded = Base64.encodeToString(buffer, 0, read, Base64.NO_WRAP);
                 try {
-                    data.put("patient", sess.getActivePatientId());
-                    data.put("clinic", sess.getClinicId());
-                    data.put("type", "Headshot");
+                    data.put("patient", patient);
+                    data.put("clinic", clinic);
+                    data.put("type", imageType);
                     data.put("data", encoded);
                 } catch (JSONException e) {
                 }
