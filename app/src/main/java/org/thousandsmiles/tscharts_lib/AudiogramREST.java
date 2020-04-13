@@ -63,6 +63,28 @@ public class AudiogramREST extends RESTful {
         }
     }
 
+    private class GetAudiogramArraySingleResponseListener implements Response.Listener<JSONArray> {
+
+        @Override
+        public void onResponse(JSONArray response) {
+            synchronized (m_lock) {
+                if (response.length() != 1) {
+                    setStatus(500);
+                    onFail(500, "Request for single audiogram returned multiple items");
+                } else {
+                    setStatus(200);
+                    CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
+                    try {
+                        sess.setPatientAudiogram(response.getJSONObject(0));
+                    } catch (Exception e) {
+                    }
+                    onSuccess(200, "", response);
+                }
+                m_lock.notify();
+            }
+        }
+    }
+
     private class GetAudiogramArrayResponseListener implements Response.Listener<JSONArray> {
 
         @Override
@@ -152,6 +174,24 @@ public class AudiogramREST extends RESTful {
         String url = String.format("%s://%s:%s/tscharts/v1/audiogram/?patient=%d&clinic=%d", getProtocol(), getIP(), getPort(), patientId, clinicId);
 
         AudiogramREST.AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAudiogramArrayResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonArrayRequest) request);
+
+        return m_lock;
+    }
+
+    public Object getAudiogram(int clinicId, int patientId, int imageId) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/audiogram/?patient=%d&clinic=%d&image=%d", getProtocol(), getIP(), getPort(), patientId, clinicId, imageId);
+
+        AudiogramREST.AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetAudiogramArraySingleResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonArrayRequest) request);
