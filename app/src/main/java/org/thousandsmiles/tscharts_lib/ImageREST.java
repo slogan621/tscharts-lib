@@ -223,7 +223,7 @@ public class ImageREST extends RESTful {
         return m_lock;
     }
 
-    public Object createImage(File file, int patient, int clinic, String imageType) {
+    public Object createImage(File file, int clinic, int patient, String imageType) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
