@@ -69,7 +69,7 @@ public class ImageREST extends RESTful {
                                 stream = null;
                             }
                             setStatus(200);
-                            onSuccess(200, "");
+                            onSuccess(200, "", response);
                         } catch (IOException e) {
                             setStatus(500);
                             onFail(500, "");
@@ -91,7 +91,7 @@ public class ImageREST extends RESTful {
 
             synchronized (m_lock) {
                 setStatus(200);
-                onSuccess(200, "");
+                onSuccess(200, "", response);
                 m_lock.notify();
             }
         }
@@ -103,7 +103,7 @@ public class ImageREST extends RESTful {
 
             synchronized (m_lock) {
                 setStatus(200);
-                onSuccess(200, "");
+                onSuccess(200, "", response);
                 m_lock.notify();
             }
         }
