@@ -56,7 +56,6 @@ public class AudiogramREST extends RESTful {
             synchronized (m_lock) {
                 setStatus(200);
                 onSuccess(200, "", response);
-                m_lock.notify();
                 CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
                 sess.setPatientAudiogram(response);
                 m_lock.notify();
