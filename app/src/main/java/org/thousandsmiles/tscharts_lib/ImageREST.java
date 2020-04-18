@@ -206,12 +206,13 @@ public class ImageREST extends RESTful {
     public Object getMostRecentPatientImageData(int patientid, File file) {
 
         m_file = file;
+        String imgType = "Headshot";  // XXX make this a parameter
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
         volley.initQueueIf(getContext());
 
-        String url = String.format("%s://%s:%s/tscharts/v1/image?patient=%d&newest=true", getProtocol(), getIP(), getPort(), patientid);
+        String url = String.format("%s://%s:%s/tscharts/v1/image?patient=%d&newest=true&type=%s", getProtocol(), getIP(), getPort(), patientid, imgType);
 
         ImageREST.AuthJSONObjectRequest request = new ImageREST.AuthJSONObjectRequest(Request.Method.GET, url, null, new ImageREST.ResponseListener(), new ImageREST.ErrorListener());
 
