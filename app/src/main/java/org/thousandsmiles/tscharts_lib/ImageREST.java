@@ -203,10 +203,9 @@ public class ImageREST extends RESTful {
         return m_lock;
     }
 
-    public Object getMostRecentPatientImageData(int patientid, File file) {
+    public Object getMostRecentPatientImageData(int patientid, File file, String imgType) {
 
         m_file = file;
-        String imgType = "Headshot";  // XXX make this a parameter
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
