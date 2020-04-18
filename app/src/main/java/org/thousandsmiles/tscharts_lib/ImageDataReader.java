@@ -36,10 +36,15 @@ public class ImageDataReader {
     private ArrayList<ImageReadyListener> m_listener = new ArrayList<ImageReadyListener>();   // callback on success or error
     private boolean m_isCached = false;             // image data is already cached in file
     private ImageREST m_imageData;
+    private String m_imageType = "Headshot";
 
     public ImageDataReader(Context context, int id) {
         m_context = context;
         m_id = id;
+    }
+
+    public void setImageType(String imageType) {
+        m_imageType = imageType;
     }
 
     public void cancelPendingRequest(int tag)
@@ -111,7 +116,7 @@ public class ImageDataReader {
                 onImageError(500);
             } else if (Looper.myLooper() != Looper.getMainLooper()) {
                 m_imageData = new ImageREST(m_context);
-                Object lock = m_imageData.getMostRecentPatientImageData(id, m_file);
+                Object lock = m_imageData.getMostRecentPatientImageData(id, m_file, m_imageType);
 
                 synchronized (lock) {
                     // we loop here in case of race conditions or spurious interrupts
