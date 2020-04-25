@@ -245,6 +245,31 @@ public class PatientREST extends RESTful {
         return m_lock;
     }
 
+    public Object findPatientsByDOB(Date d, int station) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        int month = cal.get(Calendar.MONTH) + 1;
+        int year = cal.get(Calendar.YEAR);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        String url = String.format("%s://%s:%s/tscharts/v1/patient?dob=%s/%s/%s&station=%d", getProtocol(), getIP(), getPort(),
+                month, day, year, station);
+
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ArrayResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(request);
+
+        return m_lock;
+    }
+
     public Object findPatientsByName(String name) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
@@ -254,6 +279,24 @@ public class PatientREST extends RESTful {
         RequestQueue queue = volley.getQueue();
 
         String url = String.format("%s://%s:%s/tscharts/v1/patient?name=%s", getProtocol(), getIP(), getPort(), name);
+
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ArrayResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(request);
+
+        return m_lock;
+    }
+
+    public Object findPatientsByName(String name, int station) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/patient?name=%s&station=%d", getProtocol(), getIP(), getPort(), name, station);
 
         AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ArrayResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -281,6 +324,24 @@ public class PatientREST extends RESTful {
         return m_lock;
     }
 
+    public Object findPatientsByNameAndClinicId(String name, int clinicId, int station) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/patient?name=%s&clinic=%d&sttion=%d", getProtocol(), getIP(), getPort(), name,
+                clinicId, station);
+
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ArrayResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(request);
+
+        return m_lock;
+    }
 
     public Object updatePatient(PatientData pd) {
 
