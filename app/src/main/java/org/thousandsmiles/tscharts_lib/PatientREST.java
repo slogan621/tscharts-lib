@@ -315,7 +315,7 @@ public class PatientREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("%s://%s:%s/tscharts/v1/patient?name=%s&clinic=%d", getProtocol(), getIP(),
+        String url = String.format("%s://%s:%s/tscharts/v1/patient?clinic=%d", getProtocol(), getIP(),
                 getPort(), name, clinicId);
 
         AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ArrayResponseListener(), new ErrorListener());
