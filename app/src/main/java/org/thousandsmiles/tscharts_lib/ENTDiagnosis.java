@@ -99,6 +99,8 @@ public class ENTDiagnosis implements Serializable {
             ret = ENTHistory.EarSide.EAR_SIDE_LEFT;
         } else if (side.equals("right")) {
             ret = ENTHistory.EarSide.EAR_SIDE_RIGHT;
+        } else if (side.equals("none")) {
+            ret = ENTHistory.EarSide.EAR_SIDE_NONE;
         }
         return ret;
     }
@@ -111,6 +113,8 @@ public class ENTDiagnosis implements Serializable {
             ret = "left";
         } else if (side == ENTHistory.EarSide.EAR_SIDE_RIGHT) {
             ret = "right";
+        } else if (side == ENTHistory.EarSide.EAR_SIDE_NONE) {
+            ret = "none";
         }
 
         return ret;
