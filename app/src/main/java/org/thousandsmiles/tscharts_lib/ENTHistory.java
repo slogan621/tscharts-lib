@@ -29,7 +29,8 @@ public class ENTHistory implements Serializable {
         EAR_DURATION_DAYS,
         EAR_DURATION_WEEKS,
         EAR_DURATION_MONTHS,
-        EAR_DURATION_INTERMITTENT
+        EAR_DURATION_INTERMITTENT,
+        EAR_DURATION_PERMANENT
     }
 
     public enum EarSide {
@@ -61,9 +62,11 @@ public class ENTHistory implements Serializable {
             ret = ENTDuration.EAR_DURATION_WEEKS;
         } else  if (duration.equals("months")) {
             ret = ENTDuration.EAR_DURATION_MONTHS;
-        }  if (duration.equals("intermittent")) {
-        ret = ENTDuration.EAR_DURATION_INTERMITTENT;
-    }
+        } else if (duration.equals("intermittent")) {
+            ret = ENTDuration.EAR_DURATION_INTERMITTENT;
+        } else if (duration.equals("permanent")) {
+            ret = ENTDuration.EAR_DURATION_PERMANENT;
+        }
         return ret;
     }
 
@@ -79,6 +82,8 @@ public class ENTHistory implements Serializable {
             ret = "months";
         } else if (duration == ENTDuration.EAR_DURATION_INTERMITTENT) {
             ret = "intermittent";
+        } else if (duration == ENTDuration.EAR_DURATION_PERMANENT) {
+            ret = "permanent";
         }
 
         return ret;
