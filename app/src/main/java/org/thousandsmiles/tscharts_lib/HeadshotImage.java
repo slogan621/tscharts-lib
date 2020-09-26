@@ -34,6 +34,7 @@ public class HeadshotImage implements ImageReadyListener {
     private Activity m_activity;
     private ImageDataReader m_reader = null;
     private Thread m_thread = null;
+    private String m_imageType = "Headshot";
     private ArrayList<ImageDisplayedListener> m_listener = new ArrayList<ImageDisplayedListener>();   // callback on success or error
 
     private void sendOnImageDisplayed(int id, String path) {
@@ -57,10 +58,15 @@ public class HeadshotImage implements ImageReadyListener {
         m_imageView = imageView;
     }
 
+    public void setImageType(String imgType) {
+        m_imageType = imgType;
+    }
+
     public Thread getImage(int id) {
         m_id = id;
         if (m_reader == null) {
             m_reader = new ImageDataReader(m_context, m_id);
+            m_reader.setImageType(m_imageType);
             m_reader.registerListener(this);
             m_thread = new Thread(){
                 public void run() {
