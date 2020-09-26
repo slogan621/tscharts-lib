@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2018
- * (C) Copyright Thousand Smiles Foundation 2018
+ * (C) Copyright Syd Logan 2018-2020
+ * (C) Copyright Thousand Smiles Foundation 2018-2020
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,7 +116,12 @@ public class ImageDataReader {
                 onImageError(500);
             } else if (Looper.myLooper() != Looper.getMainLooper()) {
                 m_imageData = new ImageREST(m_context);
-                Object lock = m_imageData.getMostRecentPatientImageData(id, m_file, m_imageType);
+                Object lock;
+                if (m_imageType == "Headshot") {
+                    lock = m_imageData.getMostRecentPatientImageData(id, m_file, m_imageType);
+                } else {
+                    lock = m_imageData.getImageData(id, m_file);
+                }
 
                 synchronized (lock) {
                     // we loop here in case of race conditions or spurious interrupts
