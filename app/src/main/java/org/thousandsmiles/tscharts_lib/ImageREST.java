@@ -290,6 +290,23 @@ public class ImageREST extends RESTful {
         return m_lock;
     }
 
+    public Object getTypedImagesForPatient(int patientid, String imgType)
+    {
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/image?patient=%d&type=%s", getProtocol(), getIP(), getPort(), patientid, imgType);
+
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ArrayResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy( 50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(request);
+
+        return m_lock;
+    }
+
     public Object getAllPatientImages(int patientid, File file, boolean sort) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
