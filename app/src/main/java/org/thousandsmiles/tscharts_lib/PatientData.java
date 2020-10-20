@@ -237,7 +237,7 @@ public class PatientData implements Parcelable {
         return m_dob;
     }
 
-    public String getDobMilitary(Context ctx) {
+    public String getDobMilitary() {
 
         String ret;
 
@@ -248,7 +248,7 @@ public class PatientData implements Parcelable {
 
             String[] tokens = m_dob.split(delims);
             int month = Integer.parseInt(tokens[0]);
-            ret = String.format("%s%s%s", tokens[1], m_months.get(month).toUpperCase().substring(0, 3), tokens[2]);
+            ret = String.format("%s%s%s", tokens[1], m_months.get(month - 1).toUpperCase().substring(0, 3), tokens[2]);
         } catch(NumberFormatException ex){
             ret = m_dob;
         }
