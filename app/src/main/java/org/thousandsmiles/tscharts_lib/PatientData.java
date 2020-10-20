@@ -51,7 +51,26 @@ public class PatientData implements Parcelable {
     private boolean m_isCurrentXray;
     private ArrayList<String> m_months = null;
 
-    public PatientData(Context ctx) {
+    private void initMonthStrings(Context ctx) {
+        if (m_months == null) {
+            m_months = new ArrayList<String>();
+
+            m_months.add(ctx.getResources().getString(R.string.January));
+            m_months.add(ctx.getResources().getString(R.string.February));
+            m_months.add(ctx.getResources().getString(R.string.March));
+            m_months.add(ctx.getResources().getString(R.string.April));
+            m_months.add(ctx.getResources().getString(R.string.May));
+            m_months.add(ctx.getResources().getString(R.string.June));
+            m_months.add(ctx.getResources().getString(R.string.July));
+            m_months.add(ctx.getResources().getString(R.string.August));
+            m_months.add(ctx.getResources().getString(R.string.September));
+            m_months.add(ctx.getResources().getString(R.string.October));
+            m_months.add(ctx.getResources().getString(R.string.November));
+            m_months.add(ctx.getResources().getString(R.string.December));
+        }
+    }
+
+    public PatientData() {
         m_id = -1;
         m_oldId = -1;
         m_fatherLast = "";
@@ -74,21 +93,6 @@ public class PatientData implements Parcelable {
         m_curp = "";
         m_valid = true;
         m_isCurrentXray = false;
-
-        m_months = new ArrayList<String>();
-
-        m_months.add(ctx.getResources().getString(R.string.January));
-        m_months.add(ctx.getResources().getString(R.string.February));
-        m_months.add(ctx.getResources().getString(R.string.March));
-        m_months.add(ctx.getResources().getString(R.string.April));
-        m_months.add(ctx.getResources().getString(R.string.May));
-        m_months.add(ctx.getResources().getString(R.string.June));
-        m_months.add(ctx.getResources().getString(R.string.July));
-        m_months.add(ctx.getResources().getString(R.string.August));
-        m_months.add(ctx.getResources().getString(R.string.September));
-        m_months.add(ctx.getResources().getString(R.string.October));
-        m_months.add(ctx.getResources().getString(R.string.November));
-        m_months.add(ctx.getResources().getString(R.string.December));
     }
 
     public PatientData(JSONObject o) {
@@ -237,9 +241,13 @@ public class PatientData implements Parcelable {
         return m_dob;
     }
 
-    public String getDobMilitary() {
+    public String getDobMilitary(Context ctx) {
 
         String ret;
+
+        // lazy instantiate the month LUT
+        
+        initMonthStrings(ctx);
 
         // value is mm/dd/YYYY, convert to ddMMMYYYY, where MMM is a 3-character month string
 
