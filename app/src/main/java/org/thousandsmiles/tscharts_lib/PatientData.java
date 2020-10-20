@@ -15,12 +15,16 @@
  * limitations under the License.
  */
 
+
 package org.thousandsmiles.tscharts_lib;
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class PatientData implements Parcelable {
     private int m_id;
@@ -45,8 +49,9 @@ public class PatientData implements Parcelable {
     private String m_curp = "";
     private boolean m_valid;
     private boolean m_isCurrentXray;
+    private ArrayList<String> m_months = null;
 
-    public PatientData() {
+    public PatientData(Context ctx) {
         m_id = -1;
         m_oldId = -1;
         m_fatherLast = "";
@@ -69,6 +74,21 @@ public class PatientData implements Parcelable {
         m_curp = "";
         m_valid = true;
         m_isCurrentXray = false;
+
+        m_months = new ArrayList<String>();
+
+        m_months.add(ctx.getResources().getString(R.string.January));
+        m_months.add(ctx.getResources().getString(R.string.February));
+        m_months.add(ctx.getResources().getString(R.string.March));
+        m_months.add(ctx.getResources().getString(R.string.April));
+        m_months.add(ctx.getResources().getString(R.string.May));
+        m_months.add(ctx.getResources().getString(R.string.June));
+        m_months.add(ctx.getResources().getString(R.string.July));
+        m_months.add(ctx.getResources().getString(R.string.August));
+        m_months.add(ctx.getResources().getString(R.string.September));
+        m_months.add(ctx.getResources().getString(R.string.October));
+        m_months.add(ctx.getResources().getString(R.string.November));
+        m_months.add(ctx.getResources().getString(R.string.December));
     }
 
     public PatientData(JSONObject o) {
@@ -215,6 +235,24 @@ public class PatientData implements Parcelable {
 
     public String getDob() {
         return m_dob;
+    }
+
+    public String getDobMilitary(Context ctx) {
+
+        String ret;
+
+        // value is mm/dd/YYYY, convert to ddMMMYYYY, where MMM is a 3-character month string
+
+        try {
+            String delims = "[/]";
+
+            String[] tokens = m_dob.split(delims);
+            int month = Integer.parseInt(tokens[0]);
+            ret = String.format("%s%s%s", tokens[1], m_months.get(month).toUpperCase().substring(0, 3), tokens[2]);
+        } catch(NumberFormatException ex){
+            ret = m_dob;
+        }
+        return ret;
     }
 
     public void setDob(String dob) {
