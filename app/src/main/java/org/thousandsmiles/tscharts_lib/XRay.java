@@ -25,7 +25,6 @@ import java.util.ArrayList;
 
 public class XRay implements Serializable {
 
-    public static final String XRAY_TYPE_NONE = "n";
     public static final String XRAY_TYPE_FULL = "f";
     public static final String XRAY_TYPE_ANTERIORS_BITEWINGS = "a";
     public static final String XRAY_TYPE_PANORAMIC_VIEW = "p";
@@ -71,7 +70,7 @@ public class XRay implements Serializable {
 
     public String convertCSVToDBXrayType(String type)
     {
-        String ret = XRAY_TYPE_NONE;
+        String ret = "";
 
         if (type.contains("full")) {
             ret += XRAY_TYPE_FULL;
@@ -198,13 +197,13 @@ public class XRay implements Serializable {
     }
 
     private boolean validateType(String type) {
-        return type.equals(XRAY_TYPE_NONE) || type.equals(XRAY_TYPE_FULL) ||
+        return  type.equals(XRAY_TYPE_FULL) ||
                 type.equals(XRAY_TYPE_ANTERIORS_BITEWINGS) || type.equals(XRAY_TYPE_PANORAMIC_VIEW) ||
                 type.equals(XRAY_TYPE_CEPHATOMETRIC);
     }
 
     public void clearType() {
-        this.m_type = XRAY_TYPE_NONE;
+        this.m_type = "";
     }
 
     // if m_type is "fb" and this function is called with "p", m_type will become "fbp"
@@ -226,7 +225,7 @@ public class XRay implements Serializable {
         if (validateType(type) == false) {
             ret = false;
         } else if (m_type.contains(type) == true) {
-            this.m_type.replace(type, "");
+            this.m_type = this.m_type.replace(type, "");
         }
         return ret;
     }
@@ -269,7 +268,7 @@ public class XRay implements Serializable {
 
     public XRay() {
         this.m_teeth = 0;
-        this.m_type = XRAY_TYPE_NONE;
+        this.m_type = "";
         this.m_mouthType = XRayMouthType.XRAY_MOUTH_TYPE_CHILD;
     }
 
