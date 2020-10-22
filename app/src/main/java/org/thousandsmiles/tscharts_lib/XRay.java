@@ -25,11 +25,11 @@ import java.util.ArrayList;
 
 public class XRay implements Serializable {
 
-    public final String XRAY_TYPE_NONE = "n";
-    public final String XRAY_TYPE_FULL = "f";
-    public final String XRAY_TYPE_ANTERIORS_BITEWINGS = "a";
-    public final String XRAY_TYPE_PANORAMIC_VIEW = "p";
-    public final String XRAY_TYPE_CEPHATOMETRIC = "c";
+    public static final String XRAY_TYPE_NONE = "n";
+    public static final String XRAY_TYPE_FULL = "f";
+    public static final String XRAY_TYPE_ANTERIORS_BITEWINGS = "a";
+    public static final String XRAY_TYPE_PANORAMIC_VIEW = "p";
+    public static final String XRAY_TYPE_CEPHATOMETRIC = "c";
 
     public enum XRayMouthType {
         XRAY_MOUTH_TYPE_NONE,
