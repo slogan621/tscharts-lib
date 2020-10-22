@@ -203,13 +203,13 @@ public class XRay implements Serializable {
                 type.equals(XRAY_TYPE_CEPHATOMETRIC);
     }
 
-    public void ClearType() {
+    public void clearType() {
         this.m_type = XRAY_TYPE_NONE;
     }
 
     // if m_type is "fb" and this function is called with "p", m_type will become "fbp"
 
-    public boolean AddType(String type) {
+    public boolean addType(String type) {
         boolean ret = true;
         if (validateType(type) == false) {
             ret = false;
@@ -221,7 +221,7 @@ public class XRay implements Serializable {
 
     // if m_type is "fbp" and this function is called with "p", m_type will become "fb"
 
-    public boolean RemoveType(String type) {
+    public boolean removeType(String type) {
         boolean ret = true;
         if (validateType(type) == false) {
             ret = false;
