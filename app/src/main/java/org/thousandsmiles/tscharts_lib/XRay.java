@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2019
- * (C) Copyright Thousand Smiles Foundation 2019
+ * (C) Copyright Syd Logan 2019-2020
+ * (C) Copyright Thousand Smiles Foundation 2019-2020
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class XRay implements Serializable {
 
-    public enum XRayType {
-        XRAY_TYPE_NONE,
-        XRAY_TYPE_FULL,
-        XRAY_TYPE_ANTERIORS_BITEWINGS
-    }
+    public final String XRAY_TYPE_NONE = "n";
+    public final String XRAY_TYPE_FULL = "f";
+    public final String XRAY_TYPE_ANTERIORS_BITEWINGS = "a";
+    public final String XRAY_TYPE_PANORAMIC_VIEW = "p";
+    public final String XRAY_TYPE_CEPHATOMETRIC = "c";
 
     public enum XRayMouthType {
         XRAY_MOUTH_TYPE_NONE,
@@ -37,7 +38,7 @@ public class XRay implements Serializable {
     }
 
     private long m_teeth;
-    private XRayType m_type;
+    private String m_type;               // represented in this object in DB format, e.g., "fa" vs. "full,anteriors_bitewings"
     private XRayMouthType m_mouthType;
     private int m_patient;
     private int m_clinic;
@@ -56,18 +57,6 @@ public class XRay implements Serializable {
         return ret;
     }
 
-    public XRayType xRayTypeToEnum(String type)
-    {
-        XRayType ret = XRayType.XRAY_TYPE_NONE;
-
-        if (type.equals("full")) {
-            ret = XRayType.XRAY_TYPE_FULL;
-        } else if (type.equals("anteriors_bitewings")) {
-            ret = XRayType.XRAY_TYPE_ANTERIORS_BITEWINGS;
-        }
-        return ret;
-    }
-
     public String mouthTypeToString(XRayMouthType type)
     {
         String ret = "";
@@ -80,15 +69,72 @@ public class XRay implements Serializable {
         return ret;
     }
 
-    public String xRayTypeToString(XRayType type)
+    public String convertCSVToDBXrayType(String type)
+    {
+        String ret = XRAY_TYPE_NONE;
+
+        if (type.contains("full")) {
+            ret += XRAY_TYPE_FULL;
+        }
+        if (type.contains("anteriors_bitewings")) {
+            ret += XRAY_TYPE_ANTERIORS_BITEWINGS;
+        }
+        if (type.contains("panoramic_view")) {
+            ret += XRAY_TYPE_PANORAMIC_VIEW;
+        }
+        if (type.contains("cephatometric")) {
+            ret += XRAY_TYPE_CEPHATOMETRIC;
+        }
+
+        return ret;
+    }
+
+    public ArrayList<String> getXrayTypeList()
+    {
+        ArrayList<String> ret = new ArrayList<String>();
+
+        if (m_type.contains(XRAY_TYPE_FULL)) {
+            ret.add(XRAY_TYPE_FULL);
+        }
+        if (m_type.contains(XRAY_TYPE_ANTERIORS_BITEWINGS)) {
+            ret.add(XRAY_TYPE_ANTERIORS_BITEWINGS);
+        }
+        if (m_type.contains(XRAY_TYPE_PANORAMIC_VIEW)) {
+            ret.add(XRAY_TYPE_PANORAMIC_VIEW);
+        }
+        if (m_type.contains(XRAY_TYPE_CEPHATOMETRIC)) {
+            ret.add(XRAY_TYPE_CEPHATOMETRIC);
+        }
+
+        return ret;
+    }
+
+    public String convertFromDBXrayTypeToCSV(String type)
     {
         String ret = "";
 
-        if (type == XRayType.XRAY_TYPE_FULL) {
-            ret = "full";
-        } else if (type == XRayType.XRAY_TYPE_ANTERIORS_BITEWINGS) {
-            ret = "anteriors_bitewings";
+        if (type.contains(XRAY_TYPE_FULL)) {
+            ret += "full";
+            ret += " ";
         }
+        if (type.contains(XRAY_TYPE_ANTERIORS_BITEWINGS)) {
+            ret += "anteriors_bitewings";
+            ret += " ";
+        }
+        if (type.contains(XRAY_TYPE_PANORAMIC_VIEW)) {
+            ret += "panoramic_view";
+            ret += " ";
+        }
+        if (type.contains(XRAY_TYPE_CEPHATOMETRIC)) {
+            ret += "cephatometric";
+            ret += " ";
+        }
+
+        // create a CSV by stripping off the last ' ', and replacing remaining with ","
+
+        ret = ret.trim();
+        ret = ret.replace(" ", ",");
+
         return ret;
     }
 
@@ -97,9 +143,9 @@ public class XRay implements Serializable {
         return mouthTypeToString(m_mouthType);
     }
 
-    public String getTypeAsString()
+    private String getTypeAsAPIString()
     {
-        return xRayTypeToString(m_type);
+        return convertFromDBXrayTypeToCSV(m_type);
     }
 
     public int fromJSONObject(JSONObject o)
@@ -112,7 +158,7 @@ public class XRay implements Serializable {
             setPatient(o.getInt("patient"));
             setClinic(o.getInt("clinic"));
             setMouthType(mouthTypeToEnum(o.getString("mouth_type")));
-            setType(xRayTypeToEnum(o.getString("xray_type")));
+            setType(convertCSVToDBXrayType(o.getString("xray_type")));
         } catch (JSONException e) {
             ret = -1;
         }
@@ -129,7 +175,7 @@ public class XRay implements Serializable {
             data.put("teeth", this.getTeeth());
             data.put("patient", this.getPatient());
             data.put("clinic", this.getClinic());
-            data.put("xray_type", this.getTypeAsString());
+            data.put("xray_type", this.convertFromDBXrayTypeToCSV(getType()));
             data.put("mouth_type", this.getMouthTypeAsString());
         } catch(Exception e) {
             // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
@@ -147,11 +193,11 @@ public class XRay implements Serializable {
         this.m_teeth = m_teeth;
     }
 
-    public XRayType getType() {
+    public String getType() {
         return m_type;
     }
 
-    public void setType(XRayType type) {
+    public void setType(String type) {
         this.m_type = type;
     }
 
@@ -189,7 +235,7 @@ public class XRay implements Serializable {
 
     public XRay() {
         this.m_teeth = 0;
-        this.m_type = XRayType.XRAY_TYPE_FULL;
+        this.m_type = XRAY_TYPE_NONE;
         this.m_mouthType = XRayMouthType.XRAY_MOUTH_TYPE_CHILD;
     }
 
