@@ -246,7 +246,7 @@ public class PatientData implements Parcelable {
         String ret;
 
         // lazy instantiate the month LUT
-        
+
         initMonthStrings(ctx);
 
         // value is mm/dd/YYYY, convert to ddMMMYYYY, where MMM is a 3-character month string
