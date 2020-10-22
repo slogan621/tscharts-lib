@@ -197,6 +197,40 @@ public class XRay implements Serializable {
         return m_type;
     }
 
+    private boolean validateType(String type) {
+        return type.equals(XRAY_TYPE_NONE) || type.equals(XRAY_TYPE_FULL) ||
+                type.equals(XRAY_TYPE_ANTERIORS_BITEWINGS) || type.equals(XRAY_TYPE_PANORAMIC_VIEW) ||
+                type.equals(XRAY_TYPE_CEPHATOMETRIC);
+    }
+
+    public void ClearType() {
+        this.m_type = XRAY_TYPE_NONE;
+    }
+
+    // if m_type is "fb" and this function is called with "p", m_type will become "fbp"
+
+    public boolean AddType(String type) {
+        boolean ret = true;
+        if (validateType(type) == false) {
+            ret = false;
+        } else if (m_type.contains(type) == false) {
+            this.m_type += type;
+        }
+        return ret;
+    }
+
+    // if m_type is "fbp" and this function is called with "p", m_type will become "fb"
+
+    public boolean RemoveType(String type) {
+        boolean ret = true;
+        if (validateType(type) == false) {
+            ret = false;
+        } else if (m_type.contains(type) == true) {
+            this.m_type.replace(type, "");
+        }
+        return ret;
+    }
+
     public void setType(String type) {
         this.m_type = type;
     }
