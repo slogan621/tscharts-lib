@@ -28,7 +28,7 @@ public class XRay implements Serializable {
     public static final String XRAY_TYPE_FULL = "f";
     public static final String XRAY_TYPE_ANTERIORS_BITEWINGS = "a";
     public static final String XRAY_TYPE_PANORAMIC_VIEW = "p";
-    public static final String XRAY_TYPE_CEPHATOMETRIC = "c";
+    public static final String XRAY_TYPE_CEPHALOMETRIC = "c";
 
     public enum XRayMouthType {
         XRAY_MOUTH_TYPE_NONE,
@@ -81,8 +81,8 @@ public class XRay implements Serializable {
         if (type.contains("panoramic_view")) {
             ret += XRAY_TYPE_PANORAMIC_VIEW;
         }
-        if (type.contains("cephatometric")) {
-            ret += XRAY_TYPE_CEPHATOMETRIC;
+        if (type.contains("cephalometric")) {
+            ret += XRAY_TYPE_CEPHALOMETRIC;
         }
 
         return ret;
@@ -101,8 +101,8 @@ public class XRay implements Serializable {
         if (m_type.contains(XRAY_TYPE_PANORAMIC_VIEW)) {
             ret.add(XRAY_TYPE_PANORAMIC_VIEW);
         }
-        if (m_type.contains(XRAY_TYPE_CEPHATOMETRIC)) {
-            ret.add(XRAY_TYPE_CEPHATOMETRIC);
+        if (m_type.contains(XRAY_TYPE_CEPHALOMETRIC)) {
+            ret.add(XRAY_TYPE_CEPHALOMETRIC);
         }
 
         return ret;
@@ -124,8 +124,8 @@ public class XRay implements Serializable {
             ret += "panoramic_view";
             ret += " ";
         }
-        if (type.contains(XRAY_TYPE_CEPHATOMETRIC)) {
-            ret += "cephatometric";
+        if (type.contains(XRAY_TYPE_CEPHALOMETRIC)) {
+            ret += "cephalometric";
             ret += " ";
         }
 
@@ -199,7 +199,7 @@ public class XRay implements Serializable {
     private boolean validateType(String type) {
         return  type.equals(XRAY_TYPE_FULL) ||
                 type.equals(XRAY_TYPE_ANTERIORS_BITEWINGS) || type.equals(XRAY_TYPE_PANORAMIC_VIEW) ||
-                type.equals(XRAY_TYPE_CEPHATOMETRIC);
+                type.equals(XRAY_TYPE_CEPHALOMETRIC);
     }
 
     public void clearType() {
