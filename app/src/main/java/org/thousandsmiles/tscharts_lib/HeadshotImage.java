@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2018
- * (C) Copyright Thousand Smiles Foundation 2018
+ * (C) Copyright Syd Logan 2018-2020
+ * (C) Copyright Thousand Smiles Foundation 2018-2020
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,14 +112,22 @@ public class HeadshotImage implements ImageReadyListener {
                 //int maxSize = 1024 * 1024 * 10;
                 //Picasso p = new Picasso.Builder(m_context).memoryCache(new LruCache(maxSize)).build();
                 //m_imageView.setBackgroundColor(m_activity.getResources().getColor(R.color.white));
-
-                //m_imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 m_imageView.setBackground(null);
-                int w = m_imageView.getMeasuredWidth();
-                int h = m_imageView.getMeasuredHeight();
+                if (m_imageType == "Headshot") {
+                    Picasso.with(m_context).load(file).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().into(m_imageView);
+                } else {
+                    m_imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                    m_imageView.setAdjustViewBounds(false);
+                    int w = m_imageView.getMeasuredWidth();
+                    int h = m_imageView.getMeasuredHeight();
+                    Picasso.with(m_context).load(file).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).resize(w, h).into(m_imageView);
+                }
 
-                //m_imageView.setAdjustViewBounds(false);
-                Picasso.with(m_context).load(file).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().into(m_imageView);
+
+                //int w = m_imageView.getMeasuredWidth();
+                //int h = m_imageView.getMeasuredHeight();
+
+
                 sendOnImageDisplayed(m_id, getImageFileAbsolutePath());
 
                 //Picasso.with(m_context).load(file).fit().centerInside().into(m_imageView);
