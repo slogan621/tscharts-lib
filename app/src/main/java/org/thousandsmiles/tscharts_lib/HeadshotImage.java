@@ -109,17 +109,17 @@ public class HeadshotImage implements ImageReadyListener {
     public void onImageRead(final File file) {
         m_activity.runOnUiThread(new Runnable() {
             public void run() {
-                //int maxSize = 1024 * 1024 * 10;
-                //Picasso p = new Picasso.Builder(m_context).memoryCache(new LruCache(maxSize)).build();
-                //m_imageView.setBackgroundColor(m_activity.getResources().getColor(R.color.white));
-                m_imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                m_imageView.setBackground(null);
-                m_imageView.setAdjustViewBounds(true);
-                Picasso.with(m_context).load(file).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(m_imageView);
-                sendOnImageDisplayed(m_id, getImageFileAbsolutePath());
+            //int maxSize = 1024 * 1024 * 10;
+            //Picasso p = new Picasso.Builder(m_context).memoryCache(new LruCache(maxSize)).build();
+            //m_imageView.setBackgroundColor(m_activity.getResources().getColor(R.color.white));
+            m_imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            m_imageView.setBackground(null);
+            m_imageView.setAdjustViewBounds(false);
+            Picasso.with(m_context).load(file).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(m_imageView);
+            sendOnImageDisplayed(m_id, getImageFileAbsolutePath());
 
-                //Picasso.with(m_context).load(file).fit().centerInside().into(m_imageView);
-                //p.with(m_context).load(file).into(m_imageView);
+            //Picasso.with(m_context).load(file).fit().centerInside().into(m_imageView);
+            //p.with(m_context).load(file).into(m_imageView);
             }
         });
     }
