@@ -29,6 +29,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -744,5 +747,101 @@ public class CommonSessionSingleton {
     }
     public Context getContext() {
         return m_ctx;
+    }
+
+    public String militaryToConventionalDateString(String s)
+    {
+        boolean ret = true;
+
+        if (s.length() != "MMMddYYYY".length()) {
+            ret = false;
+        } else {
+            String m = s.substring(2, 5);
+            String d = s.substring(0, 2);
+            String y = s.substring(5, 9);
+            String monthStr = "";
+
+            // no question this is not super efficient, but it is robust to locale changes and
+            // does not require a change as new languages are supported.
+
+            if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.January).substring(0, 3))) {
+                monthStr = "01";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.February).substring(0, 3))) {
+                monthStr = "02";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.March).substring(0, 3))) {
+                monthStr = "03";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.April).substring(0, 3))) {
+                monthStr = "04";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.May).substring(0, 3))) {
+                monthStr = "05";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.June).substring(0, 3))) {
+                monthStr = "06";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.July).substring(0, 3))) {
+                monthStr = "07";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.August).substring(0, 3))) {
+                monthStr = "08";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.September).substring(0, 3))) {
+                monthStr = "09";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.October).substring(0, 3))) {
+                monthStr = "10";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.November).substring(0, 3))) {
+                monthStr = "11";
+            } else if (m.equalsIgnoreCase(getContext().getResources().getString(R.string.December).substring(0, 3))) {
+                monthStr = "12";
+            } else {
+                ret = false;
+            }
+
+            if (ret == true) {
+                int val;
+
+                try {
+                    val = Integer.parseInt(d);
+                } catch (NumberFormatException e) {
+                    ret = false;
+                }
+                try {
+                    val = Integer.parseInt(y);
+                } catch (NumberFormatException e) {
+                    ret = false;
+                }
+            }
+            if (ret == true) {
+
+                // passes the military test, so convert to something isDateString can recognize
+
+                s = String.format("%s/%s/%s", monthStr, d, y);
+            }
+        }
+        return s;
+    }
+
+    public Date isDateString(String s) {
+
+        s = militaryToConventionalDateString(s); // convert if necessary
+
+        // supports variations where year is yyyy or yy day is dd and month is MM
+
+        Date ret = null;
+
+        String[] formats = {
+                "MM-dd-yy",
+                "MM/dd/yy",
+                "MM dd yy",
+                "MM-dd-yyyy",
+                "MM/dd/yyyy",
+                "MM dd yyyy"
+        };
+
+        for (int i = 0; i < formats.length; i++){
+            try {
+                DateFormat df = new SimpleDateFormat(formats[i], Locale.ENGLISH);
+                Date date = df.parse(s);
+                ret = date;
+                break;
+            } catch (ParseException pe) {
+            }
+        }
+        return ret;
     }
 }
