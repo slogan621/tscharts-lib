@@ -113,12 +113,12 @@ public class HeadshotImage implements ImageReadyListener {
                 //Picasso p = new Picasso.Builder(m_context).memoryCache(new LruCache(maxSize)).build();
                 //m_imageView.setBackgroundColor(m_activity.getResources().getColor(R.color.white));
 
-                m_imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                //m_imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 m_imageView.setBackground(null);
                 int w = m_imageView.getMeasuredWidth();
                 int h = m_imageView.getMeasuredHeight();
 
-                m_imageView.setAdjustViewBounds(false);
+                //m_imageView.setAdjustViewBounds(false);
                 Picasso.with(m_context).load(file).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().into(m_imageView);
                 sendOnImageDisplayed(m_id, getImageFileAbsolutePath());
 
