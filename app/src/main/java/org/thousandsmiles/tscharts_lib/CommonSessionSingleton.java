@@ -58,6 +58,7 @@ public class CommonSessionSingleton {
     private ArrayList<HeadshotImage> m_headshotJobs = new ArrayList<HeadshotImage>();
     private ConcurrentHashMap<Integer, String> m_headshotIdToPath = new ConcurrentHashMap<Integer, String>();
     private ArrayList<String> m_medicationsList = new ArrayList<String>();
+    private CDTCodesModelList m_cdtCodesList;
     private MedicalHistory m_patientMedicalHistory = null;
     private XRay m_patientXRay = null;
     private ENTHistory m_patientENTHistory = null;
@@ -725,6 +726,7 @@ public class CommonSessionSingleton {
         }
     }
 
+
     public ArrayList<String> getMedicationsList()
     {
         return m_medicationsList;
@@ -733,6 +735,22 @@ public class CommonSessionSingleton {
     public String[] getMedicationsListStringArray()
     {
         return m_medicationsList.toArray(new String[0]);
+    }
+
+    public void setCDTCodesList(JSONArray a)
+    {
+        m_cdtCodesList = CDTCodesModelList.getInstance();
+        m_cdtCodesList.setModelData(a);
+    }
+
+    public ArrayList<String> getCDTCodesList()
+    {
+        return m_cdtCodesList.getModelStrings();
+    }
+
+    public String[] getCDTCodesListStringArray()
+    {
+        return m_cdtCodesList.getModelStringArray();
     }
 
     public static CommonSessionSingleton getInstance() {
