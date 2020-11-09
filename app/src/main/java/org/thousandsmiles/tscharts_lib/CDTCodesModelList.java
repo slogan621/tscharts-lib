@@ -32,6 +32,7 @@ public class CDTCodesModelList {
     private List<CDTCodesModel> m_list = new ArrayList<CDTCodesModel>();
     private ArrayList<JSONObject> m_objs = new ArrayList<JSONObject>();
     private ArrayList<String> m_strs = new ArrayList<String>();
+    private ArrayList<String> m_categories = new ArrayList<String>();
 
     public List<CDTCodesModel> getModel() {
         return m_list;
@@ -48,6 +49,10 @@ public class CDTCodesModelList {
         return m_strs;
     }
 
+    public ArrayList<String> getCategoryStrings() {
+        return m_categories;
+    }
+    
     private CDTCodesModelList(){}
 
     synchronized static public CDTCodesModelList getInstance()
@@ -66,6 +71,7 @@ public class CDTCodesModelList {
             try {
                 CDTCodesModel model = new CDTCodesModel(items.getJSONObject(i), false);
                 m_list.add(model);
+                m_categories.add(model.getCategory());
                 m_strs.add(model.repr());
             } catch (Exception e) {
                 ret = false;
