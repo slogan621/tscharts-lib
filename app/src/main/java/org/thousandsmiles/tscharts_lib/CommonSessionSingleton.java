@@ -69,6 +69,7 @@ public class CommonSessionSingleton {
     private ENTSurgicalHistory m_patientENTSurgicalHistory = null;
     private ENTTreatment m_patientENTTreatment = null;
     private Audiogram m_patientAudiogram = null;
+    private DentalTreatment m_patientDentalTreatment = null;
     private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, Boolean> m_hasCurrentXRayMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, JSONObject> m_clinicMap = new HashMap<Integer, JSONObject>();
@@ -506,6 +507,31 @@ public class CommonSessionSingleton {
             m_patientAudiogram = new Audiogram();
         }
         return m_patientAudiogram;
+    }
+
+    public void setPatientDentalTreatment(JSONObject o)
+    {
+        if (m_patientDentalTreatment == null) {
+            m_patientDentalTreatment = new DentalTreatment();
+        }
+        m_patientDentalTreatment.fromJSONObject(o);
+    }
+
+    public void updatePatientDentalTreatment(DentalTreatment dentalTreatment) {
+        m_patientDentalTreatment = dentalTreatment;
+    }
+
+    public DentalTreatment getPatientDentalTreatment()
+    {
+        return m_patientDentalTreatment;
+    }
+
+    public DentalTreatment getNewPatientDentalTreatment()
+    {
+        if (m_patientDentalTreatment == null) {
+            m_patientDentalTreatment = new DentalTreatment();
+        }
+        return m_patientDentalTreatment;
     }
 
     public void setClinicId(int id) {
