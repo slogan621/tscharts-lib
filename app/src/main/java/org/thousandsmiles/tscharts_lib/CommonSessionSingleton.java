@@ -771,12 +771,12 @@ public class CommonSessionSingleton {
 
     public ArrayList<String> getCDTCodesList()
     {
-        return m_cdtCodesList.getModelStrings();
+        return m_cdtCodesList.getReprStrings();
     }
 
     public String[] getCDTCodesListStringArray()
     {
-        return m_cdtCodesList.getModelStringArray();
+        return m_cdtCodesList.getReprStringArray();
     }
 
     public static CommonSessionSingleton getInstance() {
