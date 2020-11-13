@@ -30,6 +30,10 @@ public class CDTCodesModel {
     private boolean m_selected;
 
     public CDTCodesModel(JSONObject obj, boolean selected) throws Exception {
+        CDTCodesModelInit(obj, selected);
+    }
+
+    public void CDTCodesModelInit(JSONObject obj, boolean selected) throws Exception {
         this.m_obj = obj;
 
         try {
@@ -37,7 +41,7 @@ public class CDTCodesModel {
             this.m_category = m_obj.getString("category");
             this.m_code = m_obj.getString("code");
             this.m_desc = m_obj.getString("desc");
-            this.m_repr = String.format("%s - %s", m_code, m_desc);   // what is displayed and searched
+            this.m_repr = String.format("%s %s %s", m_category, m_code, m_desc);   // what is displayed and searched
         }
         catch (JSONException e) {
             throw e;

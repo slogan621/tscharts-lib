@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /*
@@ -29,30 +30,27 @@ import java.util.List;
 
 public class CDTCodesModelList {
     static private CDTCodesModelList m_instance = null;
-    private List<CDTCodesModel> m_list = new ArrayList<CDTCodesModel>();
-    private ArrayList<JSONObject> m_objs = new ArrayList<JSONObject>();
-    private ArrayList<String> m_strs = new ArrayList<String>();
-    private ArrayList<String> m_categories = new ArrayList<String>();
+    private HashMap<String, CDTCodesModel> m_list = new HashMap<String, CDTCodesModel>();
 
-    public List<CDTCodesModel> getModel() {
-        return m_list;
+    public List<CDTCodesModel> getModels() {
+        return (List<CDTCodesModel>) m_list.values();
     }
 
-    public String[] getModelStringArray() {
+    public String[] getReprStringArray() {
         String [] ret;
 
-        ret = m_strs.toArray(new String[0]);
+        ret = m_list.keySet().toArray(new String[0]);
         return ret;
     }
 
-    public ArrayList<String> getModelStrings() {
-        return m_strs;
+    public CDTCodesModel getModel(String repr) {
+        return m_list.get(repr);
     }
 
-    public ArrayList<String> getCategoryStrings() {
-        return m_categories;
+    public ArrayList<String> getReprStrings() {
+        return (ArrayList<String>) m_list.keySet();
     }
-    
+
     private CDTCodesModelList(){}
 
     synchronized static public CDTCodesModelList getInstance()
@@ -65,14 +63,11 @@ public class CDTCodesModelList {
 
     public boolean setModelData(JSONArray items) {
         boolean ret = true;
-        m_strs.clear();
         m_list.clear();
         for (int i = 0; i < items.length(); i++) {
             try {
                 CDTCodesModel model = new CDTCodesModel(items.getJSONObject(i), false);
-                m_list.add(model);
-                m_categories.add(model.getCategory());
-                m_strs.add(model.repr());
+                m_list.put(model.repr(), model);
             } catch (Exception e) {
                 ret = false;
                 break;
