@@ -132,7 +132,7 @@ public class CDTCodesREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("%s://%s:%s/tscharts/v1/cdtcodes/",  getProtocol(), getIP(), getPort());
+        String url = String.format("%s://%s:%s/tscharts/v1/dentalcdt/",  getProtocol(), getIP(), getPort());
 
         AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetCDTCodesResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
