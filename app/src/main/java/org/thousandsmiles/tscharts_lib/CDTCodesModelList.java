@@ -32,8 +32,8 @@ public class CDTCodesModelList {
     static private CDTCodesModelList m_instance = null;
     private HashMap<String, CDTCodesModel> m_list = new HashMap<String, CDTCodesModel>();
 
-    public List<CDTCodesModel> getModels() {
-        return (List<CDTCodesModel>) m_list.values();
+    public ArrayList<CDTCodesModel> getModels() {
+        return new ArrayList<CDTCodesModel>(m_list.values());
     }
 
     public String[] getReprStringArray() {
@@ -48,7 +48,7 @@ public class CDTCodesModelList {
     }
 
     public ArrayList<String> getReprStrings() {
-        return (ArrayList<String>) m_list.keySet();
+        return new ArrayList<String>(m_list.keySet());
     }
 
     private CDTCodesModelList(){}
