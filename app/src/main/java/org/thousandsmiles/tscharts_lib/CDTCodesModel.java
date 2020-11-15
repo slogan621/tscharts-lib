@@ -27,13 +27,12 @@ public class CDTCodesModel {
     private String m_desc;
     private int m_id;
     private JSONObject m_obj;
-    private boolean m_selected;
 
-    public CDTCodesModel(JSONObject obj, boolean selected) throws Exception {
-        CDTCodesModelInit(obj, selected);
+    public CDTCodesModel(JSONObject obj) throws Exception {
+        CDTCodesModelInit(obj);
     }
 
-    public void CDTCodesModelInit(JSONObject obj, boolean selected) throws Exception {
+    public void CDTCodesModelInit(JSONObject obj) throws Exception {
         this.m_obj = obj;
 
         try {
@@ -46,7 +45,6 @@ public class CDTCodesModel {
         catch (JSONException e) {
             throw e;
         }
-        this.m_selected = selected;
     }
 
     public int getId() {
@@ -67,13 +65,5 @@ public class CDTCodesModel {
 
     public String repr() {
         return m_repr;
-    }
-
-    public boolean isSelected() {
-        return m_selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.m_selected = selected;
     }
 }

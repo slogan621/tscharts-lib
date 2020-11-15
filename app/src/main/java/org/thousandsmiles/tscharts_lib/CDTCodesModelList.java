@@ -66,7 +66,7 @@ public class CDTCodesModelList {
         m_list.clear();
         for (int i = 0; i < items.length(); i++) {
             try {
-                CDTCodesModel model = new CDTCodesModel(items.getJSONObject(i), false);
+                CDTCodesModel model = new CDTCodesModel(items.getJSONObject(i));
                 m_list.put(model.repr(), model);
             } catch (Exception e) {
                 ret = false;
