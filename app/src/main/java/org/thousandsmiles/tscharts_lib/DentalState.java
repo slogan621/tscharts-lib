@@ -21,6 +21,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class DentalState implements Serializable {
 
@@ -39,6 +40,19 @@ public class DentalState implements Serializable {
         DENTAL_STATE_OTHER
     }
 
+    public enum Surface {
+        DENTAL_SURFACE_NONE,
+        DENTAL_SURFACE_BUCCAL,
+        DENTAL_SURFACE_LINGUAL,
+        DENTAL_SURFACE_MESIAL,
+        DENTAL_SURFACE_OCCLUSAL,
+        DENTAL_SURFACE_LABIAL,
+        DENTAL_SURFACE_INCISAL,
+        DENTAL_SURFACE_WHOLE_MOUTH_OR_VISIT,
+        DENTAL_SURFACE_OTHER
+    }
+
+    private ArrayList<Surface> m_surfaces = new ArrayList<Surface>();
     private State m_state = State.DENTAL_STATE_NONE;
 
     public int getTooth() {
@@ -63,6 +77,26 @@ public class DentalState implements Serializable {
 
     public void setState(State m_state) {
         this.m_state = m_state;
+    }
+
+    public ArrayList<Surface> getSurfaces() {
+        return m_surfaces;
+    }
+
+    public void addSurface(Surface surface) {
+        this.m_surfaces.add(surface);
+    }
+
+    public void setSurfaces(ArrayList<Surface> values) {
+        this.m_surfaces = values;
+    }
+
+    public void removeSurface(Surface surface) {
+        this.m_surfaces.remove(surface);
+    }
+
+    public void clearSurfaces() {
+        this.m_surfaces.clear();
     }
 
     public int getPatient() {
@@ -134,6 +168,79 @@ public class DentalState implements Serializable {
         return ret;
     }
 
+    public String surfaceToString(Surface val) {
+        String ret = "none";
+
+        if (val == Surface.DENTAL_SURFACE_NONE) {
+            ret = "none";
+        } else if (val == Surface.DENTAL_SURFACE_BUCCAL) {
+            ret = "buccal";
+        } else if (val == Surface.DENTAL_SURFACE_LINGUAL) {
+            ret = "lingual";
+        } else if (val == Surface.DENTAL_SURFACE_MESIAL) {
+            ret = "mesial";
+        } else if (val == Surface.DENTAL_SURFACE_OCCLUSAL) {
+            ret = "occlusal";
+        } else if (val == Surface.DENTAL_SURFACE_LABIAL) {
+            ret = "labial";
+        } else if (val == Surface.DENTAL_SURFACE_INCISAL) {
+            ret = "incisal";
+        } else if (val == Surface.DENTAL_SURFACE_WHOLE_MOUTH_OR_VISIT) {
+            ret = "whole_mouth_or_visit";
+        } else if (val == Surface.DENTAL_SURFACE_OTHER) {
+            ret = "other";
+        }
+        return ret;
+    }
+
+    public Surface surfaceToEnum(String val) {
+        Surface ret = Surface.DENTAL_SURFACE_NONE;
+
+        if (val.equals("none")) {
+            ret = Surface.DENTAL_SURFACE_NONE;
+        } else if (val.equals("buccal")) {
+             ret = Surface.DENTAL_SURFACE_BUCCAL;
+        } else if (val.equals("buccal")) {
+            ret = Surface.DENTAL_SURFACE_LINGUAL;
+        } else if (val.equals("mesial")) {
+            ret = Surface.DENTAL_SURFACE_MESIAL;
+        } else if (val.equals("occlusal")) {
+            ret = Surface.DENTAL_SURFACE_OCCLUSAL;
+        } else if (val.equals("labial")) {
+            ret = Surface.DENTAL_SURFACE_LABIAL;
+        } else if (val.equals("incisal")) {
+            ret =  Surface.DENTAL_SURFACE_INCISAL;
+        } else if (val.equals("whole_mouth_or_visit")) {
+            ret = Surface.DENTAL_SURFACE_WHOLE_MOUTH_OR_VISIT;
+        } else if (val.equals("other")) {
+            ret = Surface.DENTAL_SURFACE_OTHER;
+        }
+        return ret;
+    }
+
+    public ArrayList<Surface> CSVToSurfaceList(String csv) {
+      ArrayList<Surface> ret = new ArrayList<Surface>();
+
+      String[] values = csv.split(",");
+      for (int i = 0; i < values.length; i++) {
+          ret.add(surfaceToEnum(values[i]));
+      }
+
+      return ret;
+    }
+
+    public String surfaceListToCSV(ArrayList<Surface> list) {
+        String ret = "";
+        for (int i = 0; i < list.size(); i++) {
+            String surface = surfaceToString(list.get(i));
+            if (ret.length() > 0) {
+                ret += ",";
+            }
+            ret += surface;
+        }
+        return ret;
+    }
+
     public int fromJSONObject(JSONObject o)
     {
         int ret = 0;
@@ -143,6 +250,7 @@ public class DentalState implements Serializable {
             setTooth(o.getInt("tooth"));
             setCode(o.getInt("code"));
             setState(stateToEnum(o.getString("state")));
+            setSurfaces(CSVToSurfaceList(o.getString("surface")));
 
             setId(o.getInt("id"));
             setPatient(o.getInt("patient"));
@@ -171,6 +279,7 @@ public class DentalState implements Serializable {
             data.put("tooth", getTooth());
             data.put("code", getCode());
             data.put("state", stateToString(getState()));
+            data.put("surface", surfaceListToCSV(getSurfaces()));
 
         } catch(Exception e) {
             // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
@@ -191,6 +300,7 @@ public class DentalState implements Serializable {
         m_username = rhs.m_username;
 
         m_state = rhs.m_state;
+        m_surfaces = (ArrayList<Surface>) rhs.m_surfaces.clone();
         m_code = rhs.m_code;
         m_tooth = rhs.m_tooth;
     }
