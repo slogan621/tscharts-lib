@@ -27,52 +27,52 @@ public class DentalTreatment implements Serializable {
     private int m_patient;
     private int m_clinic;
     private int m_id;
-    private String m_comment;
-    private String m_username;
+    private String m_comment = "";
+    private String m_username = "";
 
-    private boolean m_exam;
-    private String m_examComment;
+    private boolean m_exam = false;
+    private String m_examComment = "";
 
-    private boolean m_prophy;
-    private String m_prophyComment;
+    private boolean m_prophy = false;
+    private String m_prophyComment = "";
 
-    private boolean m_srpUR;
-    private boolean m_srpLR;
-    private boolean m_srpUL;
-    private boolean m_srpLL;
-    private String m_srpComment;
+    private boolean m_srpUR = false;
+    private boolean m_srpLR = false;
+    private boolean m_srpUL = false;
+    private boolean m_srpLL = false;
+    private String m_srpComment = "";
 
-    private boolean m_xraysViewed;
-    private String m_xraysViewedComment;
+    private boolean m_xraysViewed = false;
+    private String m_xraysViewedComment = "";
 
-    private boolean m_headNeckOralCancerExam;
-    private String m_headNeckOralCancerExamComment;
+    private boolean m_headNeckOralCancerExam = false;
+    private String m_headNeckOralCancerExamComment = "";
 
-    private boolean m_oralHygieneInstruction;
-    private String m_oralHygieneInstructionComment;
+    private boolean m_oralHygieneInstruction = false;
+    private String m_oralHygieneInstructionComment = "";
 
-    private boolean m_flourideTxVarnish;
-    private String m_flourideTxVarnishComment;
+    private boolean m_flourideTxVarnish = false;
+    private String m_flourideTxVarnishComment = "";
 
-    private boolean m_nutritionalCounseling;
-    private String m_nutritionalCounselingComment;
+    private boolean m_nutritionalCounseling = false;
+    private String m_nutritionalCounselingComment = "";
 
-    private boolean m_orthoEvaluation;
-    private String m_orthoEvaluationComment;
-    private boolean m_orthoTx;
-    private String m_orthoTxComment;
+    private boolean m_orthoEvaluation = false;
+    private String m_orthoEvaluationComment = "";
+    private boolean m_orthoTx = false;
+    private String m_orthoTxComment = "";
 
-    private boolean m_oralSurgeryEvaluation;
-    private String m_oralSurgeryEvaluationComment;
-    private boolean m_oralSurgeryTx ;
-    private String m_oralSurgeryTxComment;
+    private boolean m_oralSurgeryEvaluation = false;
+    private String m_oralSurgeryEvaluationComment = "";
+    private boolean m_oralSurgeryTx = false;
+    private String m_oralSurgeryTxComment = "";
 
-    private boolean m_localAnestheticBenzocaine;
-    private boolean m_localAnestheticLidocaine;
-    private boolean m_localAnestheticSeptocaine;
-    private boolean m_localAnestheticOther;
-    private int m_localAnestheticNumberCarps;
-    private String m_localAnestheticComment;
+    private boolean m_localAnestheticBenzocaine = false;
+    private boolean m_localAnestheticLidocaine = false;
+    private boolean m_localAnestheticSeptocaine = false;
+    private boolean m_localAnestheticOther = false;
+    private int m_localAnestheticNumberCarps = 0;
+    private String m_localAnestheticComment = "";
 
     public boolean getExam() {
         return m_exam;
@@ -405,7 +405,7 @@ public class DentalTreatment implements Serializable {
 
         try {
 
-            setExam(o.getBoolean("exam"));
+            setExam(stringToBool(o.getString("exam")));
 
             setExamComment(o.getString("examComment"));
 
