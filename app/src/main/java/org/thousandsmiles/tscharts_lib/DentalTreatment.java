@@ -526,7 +526,7 @@ public class DentalTreatment implements Serializable {
 
             data.put("oralSurgeryEvaluation", getOralSurgeryEvaluation());
             data.put("oralSurgeryEvaluationComment", getOralSurgeryEvaluationComment());
-            data.put("oralSurgeryTx ", getOralSurgeryTx());
+            data.put("oralSurgeryTx", getOralSurgeryTx());
             data.put("oralSurgeryTxComment", getOralSurgeryTxComment());
 
             data.put("localAnestheticBenzocaine", getLocalAnestheticBenzocaine());
