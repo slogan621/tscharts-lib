@@ -67,15 +67,10 @@ public class DentalTreatment implements Serializable {
     private boolean m_oralSurgeryTx ;
     private String m_oralSurgeryTxComment;
 
-    public enum Anesthetic {
-        DENTAL_ANESTHETIC_NONE,
-        DENTAL_ANESTHETIC_BENZOCAINE_TOPICAL,
-        DENTAL_ANESTHETIC_LIDOCAINE,
-        DENTAL_ANESTHETIC_SEPTOCAINE,
-        DENTAL_ANESTHETIC_OTHER
-    }
-
-    private Anesthetic m_localAnesthetic = DentalTreatment.Anesthetic.DENTAL_ANESTHETIC_NONE;
+    private boolean m_localAnestheticBenzocaine;
+    private boolean m_localAnestheticLidocaine;
+    private boolean m_localAnestheticSeptocaine;
+    private boolean m_localAnestheticOther;
     private int m_localAnestheticNumberCarps;
     private String m_localAnestheticComment;
 
@@ -295,12 +290,36 @@ public class DentalTreatment implements Serializable {
         this.m_oralSurgeryTxComment = m_oralSurgeryTxComment;
     }
 
-    public Anesthetic getLocalAnesthetic() {
-        return m_localAnesthetic;
+    public boolean getLocalAnestheticBenzocaine() {
+        return m_localAnestheticBenzocaine;
     }
 
-    public void setLocalAnesthetic(Anesthetic m_localAnesthetic) {
-        this.m_localAnesthetic = m_localAnesthetic;
+    public void setLocalAnestheticBenzocaine(boolean val) {
+        this.m_localAnestheticBenzocaine = val;
+    }
+
+    public boolean getLocalAnestheticLidocaine() {
+        return m_localAnestheticLidocaine;
+    }
+
+    public void setLocalAnestheticLidocaine(boolean val) {
+        this.m_localAnestheticLidocaine = val;
+    }
+
+    public boolean getLocalAnestheticSeptocaine() {
+        return m_localAnestheticSeptocaine;
+    }
+
+    public void setLocalAnestheticSeptocaine(boolean val) {
+        this.m_localAnestheticSeptocaine = val;
+    }
+
+    public boolean getLocalAnestheticOther() {
+        return m_localAnestheticOther;
+    }
+
+    public void setLocalAnestheticOther(boolean val) {
+        this.m_localAnestheticOther = val;
     }
 
     public int getLocalAnestheticNumberCarps() {
@@ -380,39 +399,6 @@ public class DentalTreatment implements Serializable {
         return ret;
     }
 
-    public Anesthetic anestheticToEnum(String val)
-    {
-        Anesthetic ret = Anesthetic.DENTAL_ANESTHETIC_NONE;
-
-        if (val.equals("benzocaine")) {
-            ret = Anesthetic.DENTAL_ANESTHETIC_BENZOCAINE_TOPICAL;
-        } else if (val.equals("lidocaine")) {
-            ret = Anesthetic.DENTAL_ANESTHETIC_LIDOCAINE;
-        } else if (val.equals("septocaine")) {
-            ret = Anesthetic.DENTAL_ANESTHETIC_SEPTOCAINE;
-        } else if (val.equals("other")) {
-            ret = Anesthetic.DENTAL_ANESTHETIC_OTHER;
-        }
-        return ret;
-    }
-
-    public String anestheticToString(Anesthetic val)
-    {
-        String ret = "none";
-
-        if (val == Anesthetic.DENTAL_ANESTHETIC_BENZOCAINE_TOPICAL) {
-            ret = "benzocaine";
-        } else if (val == Anesthetic.DENTAL_ANESTHETIC_LIDOCAINE) {
-            ret = "lidocaine";
-        } else if (val == Anesthetic.DENTAL_ANESTHETIC_SEPTOCAINE) {
-            ret = "septocaine";
-        } else if (val == Anesthetic.DENTAL_ANESTHETIC_OTHER) {
-            ret = "other";
-        }
-
-        return ret;
-    }
-
     public int fromJSONObject(JSONObject o)
     {
         int ret = 0;
@@ -473,7 +459,10 @@ public class DentalTreatment implements Serializable {
 
             setOralSurgeryTxComment(o.getString("oralSurgeryTxComment"));
 
-            setLocalAnesthetic(anestheticToEnum(o.getString("localAnesthetic")));
+            setLocalAnestheticBenzocaine(stringToBool(o.getString("localAnestheticBenzocaine")));
+            setLocalAnestheticLidocaine(stringToBool(o.getString("localAnestheticLidocaine")));
+            setLocalAnestheticSeptocaine(stringToBool(o.getString("localAnestheticSeptocaine")));
+            setLocalAnestheticOther(stringToBool(o.getString("localAnestheticOther")));
 
             setLocalAnestheticNumberCarps(o.getInt("LocalAnestheticNumberCarps"));
 
@@ -540,7 +529,10 @@ public class DentalTreatment implements Serializable {
             data.put("oralSurgeryTx ", getOralSurgeryTx());
             data.put("oralSurgeryTxComment", getOralSurgeryTxComment());
 
-            data.put("localAnesthetic", anestheticToString(getLocalAnesthetic()));
+            data.put("localAnestheticBenzocaine", getLocalAnestheticBenzocaine());
+            data.put("localAnestheticLidocaine", getLocalAnestheticLidocaine());
+            data.put("localAnestheticSeptocaine", getLocalAnestheticSeptocaine());
+            data.put("localAnestheticOther", getLocalAnestheticOther());
             data.put("localAnestheticNumberCarps", getLocalAnestheticNumberCarps());
             data.put("localAnestheticComment", getLocalAnestheticComment());
         } catch(Exception e) {
@@ -598,7 +590,10 @@ public class DentalTreatment implements Serializable {
         m_oralSurgeryTx = rhs.m_oralSurgeryTx;
         m_oralSurgeryTxComment = rhs.m_oralSurgeryTxComment;
 
-        m_localAnesthetic = rhs.m_localAnesthetic;
+        m_localAnestheticBenzocaine = rhs.m_localAnestheticBenzocaine;
+        m_localAnestheticLidocaine = rhs.m_localAnestheticLidocaine;
+        m_localAnestheticSeptocaine = rhs.m_localAnestheticSeptocaine;
+        m_localAnestheticOther = rhs.m_localAnestheticOther;
         m_localAnestheticNumberCarps = rhs.m_localAnestheticNumberCarps;
         m_localAnestheticComment = rhs.m_localAnestheticComment;
     }
