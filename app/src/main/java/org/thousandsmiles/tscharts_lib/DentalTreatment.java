@@ -492,47 +492,47 @@ public class DentalTreatment implements Serializable {
             data.put("comment", getComment());
             data.put("username", getUsername());
 
-            data.put("exam", getExam());
+            data.put("exam", boolToString(getExam()));
             data.put("examComment", getExamComment());
 
-            data.put("prophy", getProphy());
+            data.put("prophy", boolToString(getProphy()));
             data.put("prophyComment", getProphyComment());
 
-            data.put("srpUR", getSrpUR());
-            data.put("srpLR", getSrpLR());
-            data.put("srpUL", getSrpUL());
-            data.put("srpLL", getSrpLL());
+            data.put("srpUR", boolToString(getSrpUR()));
+            data.put("srpLR", boolToString(getSrpLR()));
+            data.put("srpUL", boolToString(getSrpUL()));
+            data.put("srpLL", boolToString(getSrpLL()));
             data.put("srpComment", getSrpComment());
 
-            data.put("xraysViewed", getXraysViewed());
+            data.put("xraysViewed", boolToString(getXraysViewed()));
             data.put("xraysViewedComment", getXraysViewedComment());
 
-            data.put("headNeckOralCancerExam", getHeadNeckOralCancerExam());
+            data.put("headNeckOralCancerExam", boolToString(getHeadNeckOralCancerExam()));
             data.put("headNeckOralCancerExamComment", getHeadNeckOralCancerExamComment());
 
-            data.put("oralHygieneInstruction", getOralHygieneInstruction());
+            data.put("oralHygieneInstruction", boolToString(getOralHygieneInstruction()));
             data.put("oralHygieneInstructionComment", getOralHygieneInstructionComment());
 
-            data.put("flourideTxVarnish", getFlourideTxVarnish());
+            data.put("flourideTxVarnish", boolToString(getFlourideTxVarnish()));
             data.put("flourideTxVarnishComment", getFlourideTxVarnishComment());
 
-            data.put("nutritionalCounseling", getNutritionalCounseling());
+            data.put("nutritionalCounseling", boolToString(getNutritionalCounseling()));
             data.put("nutritionalCounselingComment", getNutritionalCounselingComment());
 
-            data.put("orthoEvaluation", getOrthoEvaluation());
+            data.put("orthoEvaluation", boolToString(getOrthoEvaluation()));
             data.put("orthoEvaluationComment", getOrthoEvaluationComment());
-            data.put("orthoTx", getOrthoTx());
+            data.put("orthoTx", boolToString(getOrthoTx()));
             data.put("orthoTxComment", getOrthoTxComment());
 
-            data.put("oralSurgeryEvaluation", getOralSurgeryEvaluation());
+            data.put("oralSurgeryEvaluation", boolToString(getOralSurgeryEvaluation()));
             data.put("oralSurgeryEvaluationComment", getOralSurgeryEvaluationComment());
-            data.put("oralSurgeryTx", getOralSurgeryTx());
+            data.put("oralSurgeryTx", boolToString(getOralSurgeryTx()));
             data.put("oralSurgeryTxComment", getOralSurgeryTxComment());
 
-            data.put("localAnestheticBenzocaine", getLocalAnestheticBenzocaine());
-            data.put("localAnestheticLidocaine", getLocalAnestheticLidocaine());
-            data.put("localAnestheticSeptocaine", getLocalAnestheticSeptocaine());
-            data.put("localAnestheticOther", getLocalAnestheticOther());
+            data.put("localAnestheticBenzocaine", boolToString(getLocalAnestheticBenzocaine()));
+            data.put("localAnestheticLidocaine", boolToString(getLocalAnestheticLidocaine()));
+            data.put("localAnestheticSeptocaine", boolToString(getLocalAnestheticSeptocaine()));
+            data.put("localAnestheticOther", boolToString(getLocalAnestheticOther()));
             data.put("localAnestheticNumberCarps", getLocalAnestheticNumberCarps());
             data.put("localAnestheticComment", getLocalAnestheticComment());
         } catch(Exception e) {
