@@ -464,7 +464,7 @@ public class DentalTreatment implements Serializable {
             setLocalAnestheticSeptocaine(stringToBool(o.getString("localAnestheticSeptocaine")));
             setLocalAnestheticOther(stringToBool(o.getString("localAnestheticOther")));
 
-            setLocalAnestheticNumberCarps(o.getInt("LocalAnestheticNumberCarps"));
+            setLocalAnestheticNumberCarps(o.getInt("localAnestheticNumberCarps"));
 
             setLocalAnestheticComment(o.getString("localAnestheticComment"));
             
