@@ -37,6 +37,7 @@ public class DentalState implements Serializable {
         DENTAL_STATE_NONE,
         DENTAL_STATE_UNTREATED,
         DENTAL_STATE_TREATED,
+        DENTAL_STATE_MISSING,
         DENTAL_STATE_OTHER
     }
 
@@ -147,6 +148,8 @@ public class DentalState implements Serializable {
             ret = State.DENTAL_STATE_TREATED;
         } else if (val.equals("untreated")) {
             ret = State.DENTAL_STATE_UNTREATED;
+        } else if (val.equals("missing")) {
+            ret = State.DENTAL_STATE_MISSING;
         } else if (val.equals("other")) {
             ret = State.DENTAL_STATE_OTHER;
         }
@@ -163,6 +166,8 @@ public class DentalState implements Serializable {
             ret = "untreated";
         } else if (val == State.DENTAL_STATE_OTHER) {
             ret = "other";
+        } else if (val == State.DENTAL_STATE_MISSING) {
+            ret = "missing";
         }
 
         return ret;
