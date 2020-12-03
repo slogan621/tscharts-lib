@@ -32,6 +32,12 @@ public class DentalState implements Serializable {
     private String m_username;
     private int m_tooth;
     private int m_code;
+    private Location m_location;
+
+    public enum Location {
+        DENTAL_LOCATION_TOP,
+        DENTAL_LOCATION_BOTTOM
+    }
 
     public enum State {
         DENTAL_STATE_NONE,
@@ -62,6 +68,14 @@ public class DentalState implements Serializable {
 
     public void setTooth(int m_tooth) {
         this.m_tooth = m_tooth;
+    }
+
+    public Location getLocation() {
+        return m_location;
+    }
+
+    public void setLocation(Location val) {
+        this.m_location = val;
     }
 
     public int getCode() {
@@ -138,6 +152,31 @@ public class DentalState implements Serializable {
 
     public void setUsername(String username) {
         m_username = username;
+    }
+
+    public Location locationToEnum(String val)
+    {
+        Location ret = Location.DENTAL_LOCATION_TOP;
+
+        if (val.equals("top")) {
+            ret = Location.DENTAL_LOCATION_TOP;
+        } else if (val.equals("bottom")) {
+            ret = Location.DENTAL_LOCATION_BOTTOM;
+        }
+        return ret;
+    }
+
+    public String locationToString(Location val)
+    {
+        String ret = "top";
+
+        if (val == Location.DENTAL_LOCATION_TOP) {
+            ret = "top";
+        } else if (val == Location.DENTAL_LOCATION_BOTTOM) {
+            ret = "bottom";
+        }
+
+        return ret;
     }
 
     public State stateToEnum(String val)
@@ -251,10 +290,10 @@ public class DentalState implements Serializable {
         int ret = 0;
 
         try {
-
             setTooth(o.getInt("tooth"));
             setCode(o.getInt("code"));
             setState(stateToEnum(o.getString("state")));
+            setLocation(locationToEnum(o.getString("location")));
             setSurfaces(CSVToSurfaceList(o.getString("surface")));
 
             setId(o.getInt("id"));
@@ -284,6 +323,7 @@ public class DentalState implements Serializable {
             data.put("tooth", getTooth());
             data.put("code", getCode());
             data.put("state", stateToString(getState()));
+            data.put("location", locationToString(getLocation()));
             data.put("surface", surfaceListToCSV(getSurfaces()));
 
         } catch(Exception e) {
@@ -305,6 +345,7 @@ public class DentalState implements Serializable {
         m_username = rhs.m_username;
 
         m_state = rhs.m_state;
+        m_location = rhs.m_location;
         m_surfaces = (ArrayList<Surface>) rhs.m_surfaces.clone();
         m_code = rhs.m_code;
         m_tooth = rhs.m_tooth;
