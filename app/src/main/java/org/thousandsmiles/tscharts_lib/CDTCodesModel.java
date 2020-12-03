@@ -32,6 +32,15 @@ public class CDTCodesModel {
         CDTCodesModelInit(obj);
     }
 
+    public CDTCodesModel(CDTCodesModel rhs) {
+        this.m_repr = rhs.m_repr;
+        this.m_code = rhs.m_code;
+        this.m_category = rhs.m_category;
+        this.m_desc = rhs.m_desc;
+        this.m_id = rhs.m_id;
+        this.m_obj = rhs.m_obj;
+    }
+
     public void CDTCodesModelInit(JSONObject obj) throws Exception {
         this.m_obj = obj;
 
