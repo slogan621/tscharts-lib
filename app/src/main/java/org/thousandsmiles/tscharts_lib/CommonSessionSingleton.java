@@ -779,6 +779,10 @@ public class CommonSessionSingleton {
         return m_cdtCodesList.getReprStringArray();
     }
 
+    public CDTCodesModelList getCDTCodeModelList() {
+        return m_cdtCodesList;
+    }
+
     public static CommonSessionSingleton getInstance() {
         if (m_instance == null) {
             m_instance = new CommonSessionSingleton();

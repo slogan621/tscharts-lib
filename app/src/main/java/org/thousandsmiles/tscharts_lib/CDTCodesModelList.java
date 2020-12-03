@@ -31,6 +31,7 @@ import java.util.List;
 public class CDTCodesModelList {
     static private CDTCodesModelList m_instance = null;
     private HashMap<String, CDTCodesModel> m_list = new HashMap<String, CDTCodesModel>();
+    private HashMap<Integer, CDTCodesModel> m_idHash = new HashMap<Integer, CDTCodesModel>();
 
     public ArrayList<CDTCodesModel> getModels() {
         return new ArrayList<CDTCodesModel>(m_list.values());
@@ -45,6 +46,10 @@ public class CDTCodesModelList {
 
     public CDTCodesModel getModel(String repr) {
         return m_list.get(repr);
+    }
+
+    public CDTCodesModel getModel(int id) {
+        return m_idHash.get(id);
     }
 
     public ArrayList<String> getReprStrings() {
@@ -68,6 +73,7 @@ public class CDTCodesModelList {
             try {
                 CDTCodesModel model = new CDTCodesModel(items.getJSONObject(i));
                 m_list.put(model.repr(), model);
+                m_idHash.put(model.getId(), model);
             } catch (Exception e) {
                 ret = false;
                 break;
