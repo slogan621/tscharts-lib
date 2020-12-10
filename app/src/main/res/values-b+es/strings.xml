@@ -12,5 +12,18 @@
     <string name="October">Octubre</string>
     <string name="November">Noviembre</string>
     <string name="December">Diciembre</string>
+
+    <string name="JAN">ENE</string>
+    <string name="FEB">FEB</string>
+    <string name="MAR">MAR</string>
+    <string name="APR">ABR</string>
+    <string name="MAY">MAY</string>
+    <string name="JUN">JUN</string>
+    <string name="JUL">JUL</string>
+    <string name="AUG">AGO</string>
+    <string name="SEP">SEP</string>
+    <string name="OCT">OCT</string>
+    <string name="NOV">NOV</string>
+    <string name="DEC">DIC</string>
 </resources>
 

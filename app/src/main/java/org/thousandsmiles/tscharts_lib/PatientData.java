@@ -50,6 +50,26 @@ public class PatientData implements Parcelable {
     private boolean m_valid;
     private boolean m_isCurrentXray;
     private ArrayList<String> m_months = null;
+    private ArrayList<String> m_abbreviatedMonths = null;
+
+    private void initAbbreviatedMonthStrings(Context ctx) {
+        if (m_abbreviatedMonths == null) {
+            m_abbreviatedMonths = new ArrayList<String>();
+
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.JAN));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.FEB));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.MAR));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.APR));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.MAY));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.JUN));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.JUL));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.AUG));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.SEP));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.OCT));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.NOV));
+            m_abbreviatedMonths.add(ctx.getResources().getString(R.string.DEC));
+        }
+    }
 
     private void initMonthStrings(Context ctx) {
         if (m_months == null) {
@@ -260,6 +280,27 @@ public class PatientData implements Parcelable {
         } catch(NumberFormatException ex){
             ret = m_dob;
         }
+        return ret;
+    }
+
+    public String fromDobMilitary(Context ctx, String m_dob) {
+
+        String ret;
+
+        // lazy instantiate the month LUT
+
+        initAbbreviatedMonthStrings(ctx);
+        initMonthStrings(ctx);
+
+        // value is ddMMMYYYY, convert to mm/dd/YYYY, where MMM is a 3-character month string
+
+        String day = m_dob.substring(0, 2);
+        String month = m_dob.substring(2, 5);
+        month = String.format("%02d", m_abbreviatedMonths.indexOf(month) + 1);
+        String year = m_dob.substring(5, 9);
+
+        ret = String.format("%s/%s/%s", month, day, year);
+
         return ret;
     }
 
