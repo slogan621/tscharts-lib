@@ -50,6 +50,18 @@ public class DentalStateREST extends RESTful {
         }
     }
 
+    private class DeleteResponseListener implements Response.Listener<JSONObject> {
+
+        @Override
+        public void onResponse(JSONObject response) {
+            synchronized (m_lock) {
+                setStatus(200);
+                onSuccess(200, "", response);
+                m_lock.notify();
+            }
+        }
+    }
+
     private class ErrorListener implements Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
@@ -220,6 +232,24 @@ public class DentalStateREST extends RESTful {
 
         return m_lock;
     }
+
+    public Object deleteDentalState(int id) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/dentalstate/%d/", getProtocol(), getIP(), getPort(), id);
+
+        DentalStateREST.AuthJSONObjectRequest request = new DentalStateREST.AuthJSONObjectRequest(Request.Method.DELETE, url, null,  new DentalStateREST.DeleteResponseListener(), new DentalStateREST.ErrorListener());
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
 
     public Object updateDentalState(DentalState state) {
 
