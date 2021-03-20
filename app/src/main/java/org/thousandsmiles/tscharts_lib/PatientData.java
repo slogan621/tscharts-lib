@@ -293,14 +293,27 @@ public class PatientData implements Parcelable {
         initMonthStrings(ctx);
 
         // value is ddMMMYYYY, convert to mm/dd/YYYY, where MMM is a 3-character month string
+        // if is already in mm/dd/YYYY, try should throw an exception, so just set ret to m_dob
 
-        String day = m_dob.substring(0, 2);
-        String month = m_dob.substring(2, 5);
-        month = String.format("%02d", m_abbreviatedMonths.indexOf(month) + 1);
-        String year = m_dob.substring(5, 9);
+        try {
+            String delims = "[/]";
 
-        ret = String.format("%s/%s/%s", month, day, year);
+            String[] tokens = m_dob.split(delims);
+            int month = Integer.parseInt(tokens[0]);
+            String tmp  = String.format("%s%s%s", tokens[1], m_months.get(month - 1).toUpperCase().substring(0, 3), tokens[2]);
+            // all good, was already in proper format
+            ret = m_dob;
+        } catch(NumberFormatException ex) {
 
+            // string was not in mm/dd/YYYY so must be (XXX) military, so convert it.
+
+            String day = m_dob.substring(0, 2);
+            String month = m_dob.substring(2, 5);
+            month = String.format("%02d", m_abbreviatedMonths.indexOf(month) + 1);
+            String year = m_dob.substring(5, 9);
+
+            ret = String.format("%s/%s/%s", month, day, year);
+        }
         return ret;
     }
 
@@ -554,7 +567,7 @@ public class PatientData implements Parcelable {
             data.put("maternal_last", getMotherLast());
             data.put("first", getFirst());
             data.put("middle", getMiddle());
-            data.put("dob", getDob());
+            data.put("dob", fromDobMilitary(null, getDob()));
             data.put("gender", getGender());
             data.put("street1", getStreet1());
             data.put("street2", getStreet2());
