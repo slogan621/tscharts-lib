@@ -115,8 +115,8 @@ public class HeadshotImage implements ImageReadyListener {
                 m_imageView.setBackground(null);
                 if (m_imageType == "Headshot") {
                     m_imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                    m_imageView.setAdjustViewBounds(false);
-                    Picasso.with(m_context).load(file).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(m_imageView);
+                    m_imageView.setAdjustViewBounds(true);
+                    Picasso.with(m_context).load(file).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).fit().into(m_imageView);
                 } else {
                     m_imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     m_imageView.setAdjustViewBounds(true);
