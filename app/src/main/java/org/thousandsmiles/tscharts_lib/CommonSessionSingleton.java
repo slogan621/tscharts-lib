@@ -737,6 +737,24 @@ public class CommonSessionSingleton {
         m_storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
     }
 
+    static void traverseDelete(File dir) {
+        if (dir != null && dir.exists()) {
+            File[] files = dir.listFiles();
+            for (int i = 0; i < files.length; ++i) {
+                File file = files[i];
+                if (file.isDirectory()) {
+                    traverseDelete(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+    }
+
+    public void clearStorageDir() {
+        traverseDelete(getStorageDir());
+    }
+
     public File getStorageDir() {
         return m_storageDir;
     }
