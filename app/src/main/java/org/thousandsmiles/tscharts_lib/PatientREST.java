@@ -190,7 +190,7 @@ public class PatientREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        JSONObject data = pd.toJSONObject();
+        JSONObject data = pd.toJSONObject(getContext());
 
         String url = String.format("%s://%s:%s/tscharts/v1/patient/", getProtocol(), getIP(), getPort());
 
@@ -363,7 +363,7 @@ public class PatientREST extends RESTful {
         return m_lock;
     }
 
-    public Object updatePatient(PatientData pd) {
+    public Object updatePatient(Context ctx, PatientData pd) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
@@ -371,7 +371,7 @@ public class PatientREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        JSONObject data = pd.toJSONObject();
+        JSONObject data = pd.toJSONObject(ctx);
 
         String url = String.format("%s://%s:%s/tscharts/v1/patient/%d/", getProtocol(), getIP(), getPort(), pd.getId());
 

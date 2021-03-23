@@ -554,7 +554,7 @@ public class PatientData implements Parcelable {
         return ret;
     }
 
-    public JSONObject toJSONObject()
+    public JSONObject toJSONObject(Context ctx)
     {
         JSONObject data = new JSONObject();
         try {
@@ -567,7 +567,7 @@ public class PatientData implements Parcelable {
             data.put("maternal_last", getMotherLast());
             data.put("first", getFirst());
             data.put("middle", getMiddle());
-            data.put("dob", fromDobMilitary(null, getDob()));
+            data.put("dob", fromDobMilitary(ctx, getDob()));
             data.put("gender", getGender());
             data.put("street1", getStreet1());
             data.put("street2", getStreet2());
