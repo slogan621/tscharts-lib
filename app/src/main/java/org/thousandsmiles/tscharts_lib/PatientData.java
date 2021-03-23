@@ -53,7 +53,7 @@ public class PatientData implements Parcelable {
     private ArrayList<String> m_abbreviatedMonths = null;
 
     private void initAbbreviatedMonthStrings(Context ctx) {
-        if (m_abbreviatedMonths == null) {
+        if (m_abbreviatedMonths == null || m_abbreviatedMonths.size() == 0) {
             m_abbreviatedMonths = new ArrayList<String>();
 
             m_abbreviatedMonths.add(ctx.getResources().getString(R.string.JAN));
@@ -72,7 +72,7 @@ public class PatientData implements Parcelable {
     }
 
     private void initMonthStrings(Context ctx) {
-        if (m_months == null) {
+        if (m_months == null || m_months.size() == 0) {
             m_months = new ArrayList<String>();
 
             m_months.add(ctx.getResources().getString(R.string.January));
