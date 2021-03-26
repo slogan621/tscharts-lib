@@ -558,7 +558,7 @@ public class CommonSessionSingleton {
         ActivityManager.MemoryInfo memoryInfo = getAvailableMemory();
 
         if (memoryInfo != null) {
-            if (!memoryInfo.lowMemory && ((float) memoryInfo.availMem / memoryInfo.totalMem) < 0.75) {
+            if (!memoryInfo.lowMemory && ((float) memoryInfo.availMem / memoryInfo.totalMem) < 0.2) {
                 HeadshotImage hs;
                 if (m_headshotJobs.size() > 0) {
                     hs = m_headshotJobs.remove(0);
