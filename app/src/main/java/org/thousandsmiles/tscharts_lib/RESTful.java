@@ -29,8 +29,8 @@ import java.util.ArrayList;
 public abstract class RESTful {
     private Context m_context;
     private int m_status;
-    private int m_timeout = 60000;  // Milliseconds
-    private int m_retries = 5;
+    private int m_timeout = 5000;  // Milliseconds
+    private int m_retries = 2;
     private ArrayList<RESTCompletionListener> m_listener = new ArrayList<RESTCompletionListener>();
 
     public void addListener(RESTCompletionListener o) {
