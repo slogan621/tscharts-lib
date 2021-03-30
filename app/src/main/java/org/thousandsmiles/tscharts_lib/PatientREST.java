@@ -226,31 +226,31 @@ public class PatientREST extends RESTful {
 
         try {
             if (o.has("name")) {
-                ret += String.format("%s", empty ? o.getString("name") : "&" + o.getString("name"));
+                ret += String.format("name=%s", empty ? o.getString("name") : "&" + o.getString("name"));
                 empty = false;
             }
             if (o.has("dob")) {
-                ret += String.format("%s", empty ? o.getString("dob") : "&" + o.getString("dob"));
+                ret += String.format("dob=%s", empty ? o.getString("dob") : "&" + o.getString("dob"));
                 empty = false;
             }
             if (o.has("gender")) {
-                ret += String.format("%s", empty ? o.getString("gender") : "&" + o.getString("gender"));
+                ret += String.format("gender=%s", empty ? o.getString("gender") : "&" + o.getString("gender"));
                 empty = false;
             }
             if (o.has("paternal_last")) {
-                ret += String.format("%s", empty ? o.getString("paternal_last") : "&" + o.getString("paternal_last"));
+                ret += String.format("parental_last=%s", empty ? o.getString("paternal_last") : "&" + o.getString("paternal_last"));
                 empty = false;
             }
             if (o.has("maternal_last")) {
-                ret += String.format("%s", empty ? o.getString("maternal_last") : "&" + o.getString("maternal_last"));
+                ret += String.format("maternal_last=%s", empty ? o.getString("maternal_last") : "&" + o.getString("maternal_last"));
                 empty = false;
             }
             if (o.has("curp")) {
-                ret += String.format("%s", empty ? o.getString("curp") : "&" + o.getString("curp"));
+                ret += String.format("curp=%s", empty ? o.getString("curp") : "&" + o.getString("curp"));
                 empty = false;
             }
             if (o.has("first")) {
-                ret += String.format("%s", empty ? o.getString("first") : "&" + o.getString("first"));
+                ret += String.format("first=%s", empty ? o.getString("first") : "&" + o.getString("first"));
                 empty = false;
             }
         } catch (Exception e) {
