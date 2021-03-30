@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2017-2020
- * (C) Copyright Thousand Smiles Foundation 2017-2020
+ * (C) Copyright Syd Logan 2017-2021
+ * (C) Copyright Thousand Smiles Foundation 2017-2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -216,6 +216,72 @@ public class PatientREST extends RESTful {
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    private String createQueryString(JSONObject o) throws JSONException {
+        String ret = "";
+        boolean empty = true;
+
+        try {
+            if (o.has("name")) {
+                ret += String.format("%s", empty ? o.getString("name") : "&" + o.getString("name"));
+                empty = false;
+            }
+            if (o.has("dob")) {
+                ret += String.format("%s", empty ? o.getString("dob") : "&" + o.getString("dob"));
+                empty = false;
+            }
+            if (o.has("gender")) {
+                ret += String.format("%s", empty ? o.getString("gender") : "&" + o.getString("gender"));
+                empty = false;
+            }
+            if (o.has("paternal_last")) {
+                ret += String.format("%s", empty ? o.getString("paternal_last") : "&" + o.getString("paternal_last"));
+                empty = false;
+            }
+            if (o.has("maternal_last")) {
+                ret += String.format("%s", empty ? o.getString("maternal_last") : "&" + o.getString("maternal_last"));
+                empty = false;
+            }
+            if (o.has("curp")) {
+                ret += String.format("%s", empty ? o.getString("curp") : "&" + o.getString("curp"));
+                empty = false;
+            }
+            if (o.has("first")) {
+                ret += String.format("%s", empty ? o.getString("first") : "&" + o.getString("first"));
+                empty = false;
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+        return ret;
+    }
+
+    public Object findPatientsBySearchTerms(JSONObject object) throws JSONException {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String qs = null;
+
+        try {
+            qs = createQueryString(object);
+        } catch (Exception e) {
+            throw e;
+        }
+
+        String url = String.format("%s://%s:%s/tscharts/v1/patient?%s", getProtocol(), getIP(), getPort(),
+                qs);
+
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new ArrayResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(request);
 
         return m_lock;
     }
