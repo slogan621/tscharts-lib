@@ -188,7 +188,7 @@ public class LoginREST extends RESTful {
         return m_lock;
     }
 
-    public Object createUser(String username, String password, String eMail, String pin) {
+    public Object createUser(String first, String last, String password, String eMail, String pin) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
@@ -201,7 +201,8 @@ public class LoginREST extends RESTful {
         JSONObject data = new JSONObject();
 
         try {
-            data.put("username", username);
+            data.put("first", first);
+            data.put("last", last);
             data.put("password", password);
             data.put("email", eMail);
             data.put("pin", pin);
