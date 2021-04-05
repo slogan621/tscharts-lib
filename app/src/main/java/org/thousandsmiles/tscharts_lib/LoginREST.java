@@ -135,6 +135,39 @@ public class LoginREST extends RESTful {
         return m_lock;
     }
 
+    public Object signIn(String username, String password, String pin) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/login/", getProtocol(), getIP(), getPort());
+
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("username", username);
+            if (password != null && password.length() > 0) {
+                data.put("password", password);
+            }
+            if (pin != null && pin.length() > 0) {
+                data.put("pin", pin);
+            }
+        } catch(Exception e) {
+            // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
+            // because of the bad JSON sent
+        }
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.POST, url, data,  new SignonResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
     public Object signOut() {
 
         VolleySingleton volley = VolleySingleton.getInstance();
@@ -154,4 +187,34 @@ public class LoginREST extends RESTful {
 
         return m_lock;
     }
+
+    public Object createUser(String username, String password, String pin) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/createuser/", getProtocol(), getIP(), getPort());
+
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("username", username);
+            data.put("password", password);
+            data.put("pin", pin);
+        } catch(Exception e) {
+            // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
+            // because of the bad JSON sent
+        }
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.POST, url, data,  new SignonResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
 }
