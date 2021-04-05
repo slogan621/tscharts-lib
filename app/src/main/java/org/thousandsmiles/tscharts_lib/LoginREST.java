@@ -188,7 +188,7 @@ public class LoginREST extends RESTful {
         return m_lock;
     }
 
-    public Object createUser(String username, String password, String pin) {
+    public Object createUser(String username, String password, String eMail, String pin) {
 
         VolleySingleton volley = VolleySingleton.getInstance();
 
@@ -203,6 +203,7 @@ public class LoginREST extends RESTful {
         try {
             data.put("username", username);
             data.put("password", password);
+            data.put("email", eMail);
             data.put("pin", pin);
         } catch(Exception e) {
             // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
