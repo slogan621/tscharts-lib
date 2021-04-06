@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2017
- * (C) Copyright Thousand Smiles Foundation 2017
+ * (C) Copyright Syd Logan 2017-2021
+ * (C) Copyright Thousand Smiles Foundation 2017-2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class LoginREST extends RESTful {
         }
     }
 
-    private class CreateUserResponseListener implements Response.Listener<JSONObject> {
+    private class AuthenticationAPIResponseListener implements Response.Listener<JSONObject> {
 
         @Override
         public void onResponse(JSONObject response) {
@@ -223,7 +223,63 @@ public class LoginREST extends RESTful {
             // because of the bad JSON sent
         }
 
-        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.POST, url, data,  new CreateUserResponseListener(), new ErrorListener());
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.POST, url, data,  new AuthenticationAPIResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object updatePassword(String username, String password) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/updatepassword/", getProtocol(), getIP(), getPort());
+
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("username", username);
+            data.put("password", password);
+        } catch(Exception e) {
+            // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
+            // because of the bad JSON sent
+        }
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.PUT, url, data,  new AuthenticationAPIResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object updatePIN(String username, String pin) {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/updatepin/", getProtocol(), getIP(), getPort());
+
+        JSONObject data = new JSONObject();
+
+        try {
+            data.put("first", username);
+            data.put("pin", pin);
+        } catch(Exception e) {
+            // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
+            // because of the bad JSON sent
+        }
+
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.PUT, url, data,  new AuthenticationAPIResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonObjectRequest) request);
