@@ -53,6 +53,18 @@ public class LoginREST extends RESTful {
         }
     }
 
+    private class CreateUserResponseListener implements Response.Listener<JSONObject> {
+
+        @Override
+        public void onResponse(JSONObject response) {
+
+            synchronized (m_lock) {
+                setStatus(200);
+                m_lock.notify();
+            }
+        }
+    }
+
     private class SignoffResponseListener implements Response.Listener<JSONObject> {
 
         @Override
@@ -211,7 +223,7 @@ public class LoginREST extends RESTful {
             // because of the bad JSON sent
         }
 
-        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.POST, url, data,  new SignonResponseListener(), new ErrorListener());
+        AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.POST, url, data,  new CreateUserResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonObjectRequest) request);
