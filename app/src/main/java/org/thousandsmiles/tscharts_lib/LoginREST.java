@@ -272,7 +272,7 @@ public class LoginREST extends RESTful {
         JSONObject data = new JSONObject();
 
         try {
-            data.put("first", username);
+            data.put("username", username);
             data.put("pin", pin);
         } catch(Exception e) {
             // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
