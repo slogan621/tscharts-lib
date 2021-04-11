@@ -31,34 +31,45 @@ public abstract class RESTful {
     private int m_status;
     private int m_timeout = 5000;  // Milliseconds
     private int m_retries = 3;
+    private Object lock = new Object();
     private ArrayList<RESTCompletionListener> m_listener = new ArrayList<RESTCompletionListener>();
 
     public void addListener(RESTCompletionListener o) {
-        m_listener.add(o);
+        synchronized(lock) {
+            m_listener.add(o);
+        }
     }
 
     public void removeListener(RESTCompletionListener o) {
-        m_listener.remove(o);
+        synchronized(lock) {
+            m_listener.remove(o);
+        }
     }
 
     protected void onSuccess(int code, String message, JSONArray a)
     {
-        for (RESTCompletionListener x : m_listener) {
-            x.onSuccess(code, message, a);
+        synchronized(lock) {
+            for (RESTCompletionListener x : m_listener) {
+                x.onSuccess(code, message, a);
+            }
         }
     }
 
     protected void onSuccess(int code, String message, JSONObject o)
     {
-        for (RESTCompletionListener x : m_listener) {
-            x.onSuccess(code, message, o);
+        synchronized(lock) {
+            for (RESTCompletionListener x : m_listener) {
+                x.onSuccess(code, message, o);
+            }
         }
     }
 
     protected void onSuccess(int code, String message)
     {
-        for (RESTCompletionListener x : m_listener) {
-            x.onSuccess(code, message);
+        synchronized(lock) {
+            for (RESTCompletionListener x : m_listener) {
+                x.onSuccess(code, message);
+            }
         }
     }
 
@@ -74,8 +85,10 @@ public abstract class RESTful {
 
     protected void onFail(int code, String message)
     {
-        for (RESTCompletionListener x : m_listener) {
-            x.onFail(code, message);
+        synchronized(lock) {
+            for (RESTCompletionListener x : m_listener) {
+                x.onFail(code, message);
+            }
         }
     }
 
