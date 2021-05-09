@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2018-2020
- * (C) Copyright Thousand Smiles Foundation 2018-2020
+ * (C) Copyright Syd Logan 2018-2021
+ * (C) Copyright Thousand Smiles Foundation 2018-2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +60,7 @@ public class CommonSessionSingleton {
     private ArrayList<String> m_medicationsList = new ArrayList<String>();
     private CDTCodesModelList m_cdtCodesList;
     private MedicalHistory m_patientMedicalHistory = null;
+    private Vaccination m_patientVaccination = null;
     private XRay m_patientXRay = null;
     private ENTHistory m_patientENTHistory = null;
     private ENTDiagnosis m_patientENTDiagnosis = null;
@@ -250,6 +251,43 @@ public class CommonSessionSingleton {
     {
         return m_patientRoutingSlipId;
     }
+
+    /** vaccinations */
+
+    public void resetPatientVaccination() {
+        m_patientVaccination = null;
+    }
+
+    public void setVaccinationId(int id) {
+        m_patientVaccination.setId(id);
+    }
+
+    public void setPatientVaccination(JSONObject o)
+    {
+        if (m_patientVaccination == null) {
+            m_patientVaccination = new Vaccination();
+        }
+        m_patientVaccination.fromJSONObject(o);
+    }
+
+    public void updatePatientVaccination(Vaccination vaccination) {
+        m_patientVaccination = vaccination;
+    }
+
+    public Vaccination getPatientVaccination()
+    {
+        return m_patientVaccination;
+    }
+
+    public Vaccination getNewPatientVaccination()
+    {
+        if (m_patientVaccination == null) {
+            m_patientVaccination = new Vaccination();
+        }
+        return m_patientVaccination;
+    }
+
+    /** end vaccinations */
 
     public void resetPatientMedicalHistory() {
         m_patientMedicalHistory = null;
