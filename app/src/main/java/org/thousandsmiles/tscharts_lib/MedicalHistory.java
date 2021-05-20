@@ -61,6 +61,9 @@ public class MedicalHistory {
     private boolean m_heightMetric = true;
     private int m_weight = 10;
     private boolean m_weightMetric = true;
+    private boolean m_born_with_cleft_lip = false;
+    private boolean m_born_with_cleft_palate = false;
+
 
     public boolean isBirthWeightMetric() {
         return m_birthWeightMetric;
@@ -313,6 +316,22 @@ public class MedicalHistory {
         m_siblingsCleft = siblingsCleft;
     }
 
+    public boolean isBornWithCleftLip() {
+        return m_born_with_cleft_lip;
+    }
+
+    public void setBornWithCleftLip(boolean bornWithCleftLip) {
+        m_born_with_cleft_lip = bornWithCleftLip;
+    }
+
+    public boolean isBornWithCleftPalate() {
+        return m_born_with_cleft_palate;
+    }
+
+    public void setBornWithCleftPalate(boolean bornWithCleftPalate) {
+        m_born_with_cleft_palate = bornWithCleftPalate;
+    }
+
     public String getMeds() {
         return m_meds;
     }
@@ -538,6 +557,14 @@ public class MedicalHistory {
         if (this.m_weightMetric != other.m_weightMetric) {
             return false;
         }
+
+        if (this.m_born_with_cleft_lip != other.m_born_with_cleft_lip) {
+            return false;
+        }
+
+        if (this.m_born_with_cleft_palate != other.m_born_with_cleft_palate) {
+            return false;
+        }
         return true;
     }
 
@@ -585,6 +612,8 @@ public class MedicalHistory {
             this.setTuberculosis(o.getBoolean("tuberculosis"));
             this.setWeight(o.getInt("weight"));
             this.setWeightMetric(o.getBoolean("weight_metric"));
+            this.setBornWithCleftLip(o.getBoolean("born_with_cleft_lip"));
+            this.setBornWithCleftPalate(o.getBoolean("born_with_cleft_palate"));
         } catch (JSONException e) {
             ret = -1;
         }
@@ -636,6 +665,8 @@ public class MedicalHistory {
             data.put("tuberculosis", this.isTuberculosis());
             data.put("weight", this.getWeight());
             data.put("weight_metric", this.isWeightMetric());
+            data.put("born_with_cleft_lip", this.isBornWithCleftLip());
+            data.put("born_with_cleft_palate", this.isBornWithCleftPalate());
         } catch(Exception e) {
             // not sure this would ever happen, ignore. Continue on with the request with the expectation it fails
             // because of the bad JSON sent
