@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2019-2020
- * (C) Copyright Thousand Smiles Foundation 2019-2020
+ * (C) Copyright Syd Logan 2019-2021
+ * (C) Copyright Thousand Smiles Foundation 2019-2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,6 +82,8 @@ public class ENTExam implements Serializable {
     private ENTHistory.EarSide m_normal;
     private ENTHistory.EarSide m_microtia;
     private ENTHistory.EarSide m_wax;
+    private ENTHistory.EarSide m_effusion;
+    private ENTHistory.EarSide m_middleEarInfection;
     private ENTHistory.EarSide m_drainage;
     private ENTHistory.EarSide m_externalOtitis;
     private ENTHistory.EarSide m_fb;
@@ -136,6 +138,22 @@ public class ENTExam implements Serializable {
 
     public void setWax(ENTHistory.EarSide m_wax) {
         this.m_wax = m_wax;
+    }
+
+    public ENTHistory.EarSide getEffusion() {
+        return m_effusion;
+    }
+
+    public void setEffusion(ENTHistory.EarSide val) {
+        this.m_effusion = val;
+    }
+
+    public ENTHistory.EarSide getMiddleEarInfection() {
+        return m_middleEarInfection;
+    }
+
+    public void setMiddleEarInfection(ENTHistory.EarSide val) {
+        this.m_middleEarInfection = val;
     }
 
     public ENTHistory.EarSide getDrainage() {
@@ -575,6 +593,8 @@ public class ENTExam implements Serializable {
             m_normal = earSideToEnum(o.getString("normal"));
             m_microtia = earSideToEnum(o.getString("microtia"));
             m_wax = earSideToEnum(o.getString("wax"));
+            m_effusion = earSideToEnum(o.getString("effusion"));
+            m_middleEarInfection = earSideToEnum(o.getString("middle_ear_infection"));
             m_drainage = earSideToEnum(o.getString("drainage"));
             m_externalOtitis = earSideToEnum(o.getString("externalOtitis"));
             m_fb = earSideToEnum(o.getString("fb"));
@@ -627,6 +647,8 @@ public class ENTExam implements Serializable {
             data.put("normal", earSideToString(m_normal));
             data.put("microtia", earSideToString(m_microtia));
             data.put("wax", earSideToString(m_wax));
+            data.put("effusion", earSideToString(m_effusion));
+            data.put("middle_ear_infection", earSideToString(m_middleEarInfection));
             data.put("drainage", earSideToString(m_drainage));
             data.put("externalOtitis", earSideToString(m_externalOtitis));
             data.put("fb", earSideToString(m_fb));
@@ -663,6 +685,8 @@ public class ENTExam implements Serializable {
         this.m_normal = ENTHistory.EarSide.EAR_SIDE_NONE;
         this.m_microtia = ENTHistory.EarSide.EAR_SIDE_NONE;
         this.m_wax = ENTHistory.EarSide.EAR_SIDE_NONE;
+        this.m_effusion = ENTHistory.EarSide.EAR_SIDE_NONE;
+        this.m_middleEarInfection = ENTHistory.EarSide.EAR_SIDE_NONE;
         this.m_drainage = ENTHistory.EarSide.EAR_SIDE_NONE;
         this.m_externalOtitis = ENTHistory.EarSide.EAR_SIDE_NONE;
         this.m_fb = ENTHistory.EarSide.EAR_SIDE_NONE;
@@ -700,6 +724,8 @@ public class ENTExam implements Serializable {
         this.m_normal = rhs.m_normal;
         this.m_microtia = rhs.m_microtia;
         this.m_wax = rhs.m_wax;
+        this.m_effusion = rhs.m_effusion;
+        this.m_middleEarInfection = rhs.m_middleEarInfection;
         this.m_drainage = rhs.m_drainage;
         this.m_externalOtitis = rhs.m_externalOtitis;
         this.m_fb = rhs.m_fb;
