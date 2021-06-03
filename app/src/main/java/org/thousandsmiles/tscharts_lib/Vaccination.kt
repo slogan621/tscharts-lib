@@ -1,7 +1,3 @@
-package org.thousandsmiles.tscharts_lib
-import org.json.JSONException
-import org.json.JSONObject
-
 /*
  * (C) Copyright Syd Logan 2021
  * (C) Copyright Thousand Smiles Foundation 2021
@@ -18,6 +14,10 @@ import org.json.JSONObject
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+package org.thousandsmiles.tscharts_lib
+import org.json.JSONException
+import org.json.JSONObject
 
 class Vaccination {
     var id = 0
