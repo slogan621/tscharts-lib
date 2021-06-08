@@ -21,7 +21,9 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.DatePicker;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -31,6 +33,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog ret;
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);

@@ -23,6 +23,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -74,6 +75,146 @@ public class CommonSessionSingleton {
     private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, Boolean> m_hasCurrentXRayMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, JSONObject> m_clinicMap = new HashMap<Integer, JSONObject>();
+    private boolean m_isNewPatient = false;
+    private boolean m_isNewVaccination = false;
+
+    public void setIsNewVaccination(boolean isNew) {
+        m_isNewVaccination = isNew;
+    }
+
+    public boolean getIsNewVaccination() {
+        return m_isNewVaccination;
+    }
+
+    public Vaccination getVaccination(int clinicid, int patientid)
+    {
+        boolean ret = false;
+        Vaccination vacc = null;
+
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            final VaccinationREST vaccData = new VaccinationREST(getContext());
+            Object lock = vaccData.getVaccinationData(clinicid, patientid);
+
+            synchronized (lock) {
+                // we loop here in case of race conditions or spurious interrupts
+                while (true) {
+                    try {
+                        lock.wait();
+                        break;
+                    } catch (InterruptedException e) {
+                        continue;
+                    }
+                }
+            }
+
+            int status = vaccData.getStatus();
+            if (status == 200) {
+                vacc = getPatientVaccination();
+            }
+        }
+        return vacc;
+    }
+
+    public void createVaccination(final RESTCompletionListener listener) {
+        boolean ret = false;
+
+        Thread thread = new Thread() {
+            public void run() {
+                // note we use session context because this may be called after onPause()
+                VaccinationREST rest = new VaccinationREST(getContext());
+                rest.addListener(listener);
+                Object lock;
+                int status;
+
+                getPatientVaccination().setPatient(getPatientId());
+                lock = rest.createVaccination(getPatientVaccination());
+
+                synchronized (lock) {
+                    // we loop here in case of race conditions or spurious interrupts
+                    while (true) {
+                        try {
+                            lock.wait();
+                            break;
+                        } catch (InterruptedException e) {
+                            continue;
+                        }
+                    }
+                }
+                status = rest.getStatus();
+                if (status != 200) {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), getContext().getString(R.string.msg_unable_to_save_vaccination), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    setIsNewVaccination(false);
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), getContext().getString(R.string.msg_successfully_saved_vaccination), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        };
+        thread.start();
+    }
+
+    public void updateVaccination(final RESTCompletionListener listener)
+    {
+        boolean ret = false;
+
+        Thread thread = new Thread(){
+            public void run() {
+                // note we use session context because this may be called after onPause()
+                VaccinationREST rest = new VaccinationREST(getContext());
+                rest.addListener(listener);
+                Object lock;
+                int status;
+
+                lock = rest.updateVaccination(getPatientVaccination());
+
+                synchronized (lock) {
+                    // we loop here in case of race conditions or spurious interrupts
+                    while (true) {
+                        try {
+                            lock.wait();
+                            break;
+                        } catch (InterruptedException e) {
+                            continue;
+                        }
+                    }
+                }
+                status = rest.getStatus();
+                if (status != 200) {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), getContext().getString(R.string.msg_unable_to_update_vaccination), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } else {
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getContext(), getContext().getString(R.string.msg_successfully_updated_vaccination), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        };
+        thread.start();
+    }
+
+    public void setIsNewPatient(boolean isNew) {
+        m_isNewPatient = isNew;
+    }
+
+    public boolean getIsNewPatient() {
+        return m_isNewPatient;
+    }
 
     private class IsNewPatientListener implements RESTCompletionListener
     {
@@ -918,6 +1059,33 @@ public class CommonSessionSingleton {
             }
         }
         return s;
+    }
+
+    public boolean isValidPatientBirthDate(String dateStr)
+    {
+        final Date date = CommonSessionSingleton.getInstance().isDateString(dateStr);
+        boolean ret = false;
+        Date today;
+
+        /*
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        sdf.setLenient(true);
+        date = sdf.parse(dateStr, new ParsePosition(0));
+
+        if (date == null) {
+            sdf = new SimpleDateFormat("MM/dd/yyyy");
+            sdf.setLenient(true);
+            date = sdf.parse(dateStr, new ParsePosition(0));
+        }
+        */
+
+        if (date != null) {
+            today = new Date();
+            if (date.compareTo(today) < 0) {
+                ret = true;
+            }
+        }
+        return ret;
     }
 
     public Date isDateString(String s) {

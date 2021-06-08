@@ -162,7 +162,7 @@ public class VaccinationREST extends RESTful {
 
         JSONObject data = vaccination.toJSONObject(false);
 
-        String url = String.format("%s://%s:%s/tscharts/v1/vaccination/", getProtocol(), getIP(), getPort());
+        String url = String.format("%s://%s:%s/tscharts/v1/vaccine/", getProtocol(), getIP(), getPort());
 
         VaccinationREST.AuthJSONObjectRequest request = new VaccinationREST.AuthJSONObjectRequest(Request.Method.POST, url, data, new PostResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -180,7 +180,7 @@ public class VaccinationREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("%s://%s:%s/tscharts/v1/vaccination/%d/", getProtocol(), getIP(), getPort(), vaccinationid);
+        String url = String.format("%s://%s:%s/tscharts/v1/vaccine/%d/", getProtocol(), getIP(), getPort(), vaccinationid);
 
         AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new ResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -198,7 +198,7 @@ public class VaccinationREST extends RESTful {
 
         RequestQueue queue = volley.getQueue();
 
-        String url = String.format("%s://%s:%s/tscharts/v1/vaccination/?clinic=%d&patient=%d",
+        String url = String.format("%s://%s:%s/tscharts/v1/vaccine/?clinic=%d&patient=%d",
                 getProtocol(), getIP(), getPort(), clinicid, patientid);
 
         AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new ResponseListener(), new ErrorListener());
@@ -219,7 +219,7 @@ public class VaccinationREST extends RESTful {
 
         JSONObject data = vaccination.toJSONObject(true);
 
-        String url = String.format("%s://%s:%s/tscharts/v1/vaccination/%d/", getProtocol(), getIP(), getPort(), vaccination.getId());
+        String url = String.format("%s://%s:%s/tscharts/v1/vaccine/%d/", getProtocol(), getIP(), getPort(), vaccination.getId());
 
         AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.PUT, url, data, new PutResponseListener(), new ErrorListener());
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
