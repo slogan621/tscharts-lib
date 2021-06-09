@@ -44,6 +44,33 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
     private var m_view: View? = null
     private lateinit var m_nextActivity : Class<*>
     private var m_curTextView: Int = 0
+    private var m_switchTextPairs = arrayOf<SwitchTextPairs>(
+        SwitchTextPairs(R.id.vaccine_covid19, R.id.vaccine_covid19_date),
+        SwitchTextPairs(R.id.vaccine_covid19_booster, R.id.vaccine_covid19_booster_date),
+        SwitchTextPairs(R.id.vaccine_dtap, R.id.vaccine_dtap_date),
+        SwitchTextPairs(R.id.vaccine_dt, R.id.vaccine_dt_date),
+        SwitchTextPairs(R.id.vaccine_hib, R.id.vaccine_hib_date),
+        SwitchTextPairs(R.id.vaccine_hepa, R.id.vaccine_hepa),
+        SwitchTextPairs(R.id.vaccine_hepb, R.id.vaccine_hepb_date),
+        SwitchTextPairs(R.id.vaccine_hpv, R.id.vaccine_hpv_date),
+        SwitchTextPairs(R.id.vaccine_iiv, R.id.vaccine_iiv_date),
+        SwitchTextPairs(R.id.vaccine_laiv4, R.id.vaccine_laiv4_date),
+        SwitchTextPairs(R.id.vaccine_mmr, R.id.vaccine_mmr_date),
+        SwitchTextPairs(R.id.vaccine_menacwy, R.id.vaccine_menacwy_date),
+        SwitchTextPairs(R.id.vaccine_menb, R.id.vaccine_menb_date),
+        SwitchTextPairs(R.id.vaccine_pcv13, R.id.vaccine_pcv13_date),
+        SwitchTextPairs(R.id.vaccine_ppsv23, R.id.vaccine_ppsv23_date),
+        SwitchTextPairs(R.id.vaccine_ipv, R.id.vaccine_ipv_date),
+        SwitchTextPairs(R.id.vaccine_rv, R.id.vaccine_rv_date),
+        SwitchTextPairs(R.id.vaccine_tap, R.id.vaccine_tap_date),
+        SwitchTextPairs(R.id.vaccine_td, R.id.vaccine_td_date),
+        SwitchTextPairs(R.id.vaccine_vari, R.id.vaccine_vari_date),
+        SwitchTextPairs(R.id.vaccine_dtap_hepb_ipv, R.id.vaccine_dtap_hepb_ipv_date),
+        SwitchTextPairs(R.id.vaccine_dtap_ipv_hib, R.id.vaccine_dtap_ipv_hib_date),
+        SwitchTextPairs(R.id.vaccine_dtap_ipv, R.id.vaccine_dtap_ipv_date),
+        SwitchTextPairs(R.id.vaccine_dtap_ipv_hib_hepb, R.id.vaccine_dtap_ipv_hib_hepb_date),
+        SwitchTextPairs(R.id.vaccine_mmvr, R.id.vaccine_mmvr_date),
+    )
 
     fun setNextActivity(activity: Class<*>) {
         m_nextActivity = activity
@@ -128,6 +155,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_covid19_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.covid19_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         rb = m_view!!.findViewById<View>(R.id.radio_button_vaccine_covid19_dosages_zero) as RadioButton
         if (rb != null) {
@@ -148,6 +176,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_covid19_booster_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.covid19_booster_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_dtap) as Switch
         if (sw != null) {
@@ -156,6 +185,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.dtap_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_dt) as Switch
         if (sw != null) {
@@ -164,6 +194,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_dt_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.dt_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_hib) as Switch
         if (sw != null) {
@@ -172,6 +203,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_hib_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.hib_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_hepa) as Switch
         if (sw != null) {
@@ -180,6 +212,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_hepa_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.hepa_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_hepb) as Switch
         if (sw != null) {
@@ -188,6 +221,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_hepb_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.hepb_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_hpv) as Switch
         if (sw != null) {
@@ -196,6 +230,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_hpv_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.hpv_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_iiv) as Switch
         if (sw != null) {
@@ -204,6 +239,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_iiv_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.iiv_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_laiv4) as Switch
         if (sw != null) {
@@ -212,6 +248,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_laiv4_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.laiv4_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_mmr) as Switch
         if (sw != null) {
@@ -220,6 +257,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_mmr_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.mmr_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_menacwy) as Switch
         if (sw != null) {
@@ -228,6 +266,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_menacwy_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.menacwy_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_menb) as Switch
         if (sw != null) {
@@ -236,6 +275,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_menb_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.menb_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_pcv13) as Switch
         if (sw != null) {
@@ -244,6 +284,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_pcv13_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.pcv13_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_ppsv23) as Switch
         if (sw != null) {
@@ -252,6 +293,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_ppsv23_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.ppsv23_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_ipv) as Switch
         if (sw != null) {
@@ -260,6 +302,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_ipv_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.ipv_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_rv) as Switch
         if (sw != null) {
@@ -268,6 +311,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_rv_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.rv_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_tap) as Switch
         if (sw != null) {
@@ -276,6 +320,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_tap_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.tap_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_td) as Switch
         if (sw != null) {
@@ -284,6 +329,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_td_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.td_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_vari) as Switch
         if (sw != null) {
@@ -292,6 +338,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_vari_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.varicella_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_dtap_hepb_ipv) as Switch
         if (sw != null) {
@@ -300,6 +347,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_hepb_ipv_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.dtap_hepb_ipv_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_hib) as Switch
         if (sw != null) {
@@ -308,6 +356,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_hib_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.dtap_ipv_hib_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv) as Switch
         if (sw != null) {
@@ -316,6 +365,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.dtap_ipv_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_hib_hepb) as Switch
         if (sw != null) {
@@ -324,6 +374,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_hib_hepb_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.dtap_ipv_hib_hepb_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
         sw = m_view!!.findViewById<View>(R.id.vaccine_mmvr) as Switch
         if (sw != null) {
@@ -332,6 +383,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         tx = m_view!!.findViewById<View>(R.id.vaccine_mmvr_date) as TextView
         if (tx != null) {
             tx.setText(m_vaccination!!.mmvr_date?.let { military.getDobMilitary(m_activity, it) })
+            tx.setEnabled(sw.isChecked)
         }
 
         clearDirty()
@@ -371,480 +423,31 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
     private fun setDatePickerListeners() {
         var tx: TextView
 
-        tx = m_view!!.findViewById<View>(R.id.vaccine_covid19_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
+        for (x in m_switchTextPairs) {
+            tx = m_view!!.findViewById<View>(x.tx) as TextView
+            if (tx != null) {
+                tx.setShowSoftInputOnFocus(false)
+                tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
+                    if (hasFocus) {
+                        val fragment = DatePickerFragment()
+                        m_curTextView = x.tx
+                        fragment.setListeningActivity(this@AppVaccineFragment)
+                        fragment.show(m_activity!!.fragmentManager, "date")
+                    }
+                })
+                tx.setOnClickListener(View.OnClickListener {
                     val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_covid19_date
+                    m_curTextView = x.tx
                     fragment.setListeningActivity(this@AppVaccineFragment)
                     fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_covid19_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
+                })
+            }
         }
+    }
 
-        tx = m_view!!.findViewById<View>(R.id.vaccine_covid19_booster_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_covid19_booster_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_covid19_booster_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_dtap_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_dtap_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dt_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_dt_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_dt_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_hib_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_hib_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_hib_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_hepa_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_hepa_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_hepa_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_hepb_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_hepb_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_hepb_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_hpv_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_hpv_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_hpv_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_iiv_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_iiv_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_iiv_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_laiv4_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_laiv4_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_laiv4_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_mmr_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_mmr_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_mmr_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_menacwy_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_menacwy_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_menacwy_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_menb_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_menb_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_menb_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_pcv13_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_pcv13_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_pcv13_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_ppsv23_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_ppsv23_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_ppsv23_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_ipv_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_ipv_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_ipv_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_rv_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_rv_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_rv_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_tap_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_tap_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_tap_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_td_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_td_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_td_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_vari_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_vari_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_vari_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_hepb_ipv_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_dtap_hepb_ipv_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_dtap_hepb_ipv_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_hib_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_dtap_ipv_hib_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_dtap_ipv_hib_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_dtap_ipv_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_dtap_ipv_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_hib_hepb_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_dtap_ipv_hib_hepb_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_dtap_ipv_hib_hepb_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
-
-        tx = m_view!!.findViewById<View>(R.id.vaccine_mmvr_date) as TextView
-        if (tx != null) {
-            tx.setShowSoftInputOnFocus(false)
-            tx.setOnFocusChangeListener(OnFocusChangeListener { view, hasFocus ->
-                if (hasFocus) {
-                    val fragment = DatePickerFragment()
-                    m_curTextView = R.id.vaccine_mmvr_date
-                    fragment.setListeningActivity(this@AppVaccineFragment)
-                    fragment.show(m_activity!!.fragmentManager, "date")
-                }
-            })
-            tx.setOnClickListener(View.OnClickListener {
-                val fragment = DatePickerFragment()
-                m_curTextView = R.id.vaccine_mmvr_date
-                fragment.setListeningActivity(this@AppVaccineFragment)
-                fragment.show(m_activity!!.fragmentManager, "date")
-            })
-        }
+    class SwitchTextPairs(sw: Int, tx: Int) {
+        var sw: Int = sw
+        var tx: Int = tx
     }
 
     private fun setViewDirtyListeners() {
@@ -853,35 +456,47 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         var tx: TextView
         var rb: RadioButton
 
-        sw = m_view!!.findViewById<View>(R.id.vaccine_covid19) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_covid19_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
+        for (x in m_switchTextPairs) {
+            sw = m_view!!.findViewById<View>(x.sw) as Switch
+            if (sw != null) {
+                sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+                    override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
+                        setDirty()
+                        if (isChecked) {
+                            (m_view!!.findViewById<View>(x.tx) as View).setEnabled(
+                                true
+                            )
+                        } else {
+                            (m_view!!.findViewById<View>(x.tx) as View).setEnabled(
+                                false
+                            )
+                        }
+                    }
+                })
+            }
+            tx = m_view!!.findViewById<View>(x.tx) as TextView
+            if (tx != null) {
+                tx.addTextChangedListener(object : TextWatcher {
+                    override fun afterTextChanged(s: Editable) {}
+                    override fun beforeTextChanged(
+                        s: CharSequence, start: Int,
+                        count: Int, after: Int
+                    ) {
+                    }
 
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
+                    override fun onTextChanged(
+                        s: CharSequence, start: Int,
+                        before: Int, count: Int
+                    ) {
+                        setDirty()
+                    }
+                })
+            }
         }
+
         rb = m_view!!.findViewById<View>(R.id.radio_button_vaccine_covid19_dosages_zero) as RadioButton
         if (rb != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+            rb.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
                 override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
                     setDirty()
                 }
@@ -889,7 +504,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         }
         rb = m_view!!.findViewById<View>(R.id.radio_button_vaccine_covid19_dosages_one) as RadioButton
         if (rb != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+            rb.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
                 override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
                     setDirty()
                 }
@@ -897,632 +512,8 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         }
         rb = m_view!!.findViewById<View>(R.id.radio_button_vaccine_covid19_dosages_two) as RadioButton
         if (rb != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+            rb.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
                 override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_covid19_booster) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_covid19_booster_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_dtap) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_dt) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dt_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_hib) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_hib_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_hepa) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_hepa_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_hepb) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_hepb_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_hpv) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_hpv_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_iiv) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_iiv_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_laiv4) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_laiv4_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_mmr) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_mmr_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_menacwy) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_menacwy_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_menb) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_menb_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_pcv13) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_pcv13_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_ppsv23) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_ppsv23_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_ipv) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_ipv_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_rv) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_rv_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_tap) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_tap_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_td) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_td_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_vari) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_vari_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_dtap_hepb_ipv) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_hepb_ipv_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_hib) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_hib_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_hib_hepb) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_dtap_ipv_hib_hepb_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
-                    setDirty()
-                }
-            })
-        }
-        sw = m_view!!.findViewById<View>(R.id.vaccine_mmvr) as Switch
-        if (sw != null) {
-            sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
-                override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-                    setDirty()
-                }
-            })
-        }
-        tx = m_view!!.findViewById<View>(R.id.vaccine_mmvr_date) as TextView
-        if (tx != null) {
-            tx.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable) {}
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int,
-                    count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(
-                    s: CharSequence, start: Int,
-                    before: Int, count: Int
-                ) {
                     setDirty()
                 }
             })
