@@ -26,10 +26,10 @@
     <string name="NOV">NOV</string>
     <string name="DEC">DEC</string>
 
-    <string name="label_vaccine_covid19">Fully vaccinated COVID-19</string>
+    <string name="label_vaccine_covid19">COVID-19 vaccine</string>
     <string name="label_vaccine_covid19_dosages">Number of COVID-19 dosages received</string>
     <string name="label_vaccine_covid19_date">Date of most recent COVID-19 dosage</string>
-    <string name="label_vaccine_covid19_booster">Received COVID-19 booster</string>
+    <string name="label_vaccine_covid19_booster">COVID-19 booster</string>
     <string name="label_vaccine_covid19_booster_date">Date of most recent COVID-19 booster</string>
     <string name="label_vaccine_dtap">(DTAP) Diphtheria, tetanus, and acellular pertussis vaccine</string>
     <string name="label_vaccine_dtap_date">Date of DTAP</string>
