@@ -157,10 +157,13 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
             tx.setText(m_vaccination!!.covid19_date?.let { military.getDobMilitary(m_activity, it) })
             tx.setEnabled(sw.isChecked)
         }
+        /*
         rb = m_view!!.findViewById<View>(R.id.radio_button_vaccine_covid19_dosages_zero) as RadioButton
         if (rb != null) {
             rb.isChecked = m_vaccination!!.covid19_doses == 0
         }
+
+         */
         rb = m_view!!.findViewById<View>(R.id.radio_button_vaccine_covid19_dosages_one) as RadioButton
         if (rb != null) {
             rb.isChecked = m_vaccination!!.covid19_doses == 1
@@ -494,6 +497,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
             }
         }
 
+        /*
         rb = m_view!!.findViewById<View>(R.id.radio_button_vaccine_covid19_dosages_zero) as RadioButton
         if (rb != null) {
             rb.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
@@ -502,6 +506,8 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
                 }
             })
         }
+        */
+
         rb = m_view!!.findViewById<View>(R.id.radio_button_vaccine_covid19_dosages_one) as RadioButton
         if (rb != null) {
             rb.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
@@ -547,12 +553,15 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
                 vaccinations.covid19_date = null
             }
         }
+
+        /*
         rb = m_view!!.findViewById<View>(R.id.radio_button_vaccine_covid19_dosages_zero) as RadioButton
         if (rb != null) {
             if (rb.isChecked()) {
                 vaccinations.covid19_doses = 0
             }
         }
+         */
         rb = m_view!!.findViewById<View>(R.id.radio_button_vaccine_covid19_dosages_one) as RadioButton
         if (rb != null) {
             if (rb.isChecked()) {

@@ -26,6 +26,19 @@
     <string name="NOV">NOV</string>
     <string name="DEC">DEC</string>
 
+    <string name="label_vaccine_category_covid19">COVID-19</string>
+    <string name="label_vaccine_category_chickenpox">Chickenpox</string>
+    <string name="label_vaccine_category_diphtheria">Diphtheria, tetanus, and pertussis</string>
+    <string name="label_vaccine_category_hib">Haemophilus influenzae type b (Hib)</string>
+    <string name="label_vaccine_category_hepatitis">Hepatitis</string>
+    <string name="label_vaccine_category_flu">Influenza (Flu)</string>
+    <string name="label_vaccine_category_mmr">Measles, mumps, and rubella</string>
+    <string name="label_vaccine_category_polio">Polio</string>
+    <string name="label_vaccine_category_pneumococcal">Pneumococcal</string>
+    <string name="label_vaccine_category_rotavirus">Rotavirus</string>
+    <string name="label_vaccine_category_meningococcal">Meningococcal disease, meningitis</string>
+
+
     <string name="label_vaccine_covid19">COVID-19 vaccine</string>
     <string name="label_vaccine_covid19_dosages">Number of COVID-19 dosages received</string>
     <string name="label_vaccine_covid19_date">Date of most recent COVID-19 dosage</string>
@@ -96,4 +109,5 @@
     <string name="msg_unable_to_save_vaccination">Unable to save vaccinations</string>
     <string name="msg_successfully_saved_vaccination">Successfully saved vaccinations</string>
     <string name="section_title_vaccines">Vaccinations</string>
+    <string name="label_vaccine_category_combination">Combination Vaccines</string>
 </resources>

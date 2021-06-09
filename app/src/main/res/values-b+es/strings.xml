@@ -26,6 +26,19 @@
     <string name="NOV">NOV</string>
     <string name="DEC">DIC</string>
 
+    <string name="label_vaccine_category_covid19">COVID-19</string>
+    <string name="label_vaccine_category_chickenpox">Varicela</string>
+    <string name="label_vaccine_category_diphtheria">Difteria, tétanos y tos ferina</string>
+    <string name="label_vaccine_category_hib">Haemophilus influenzae type b (Hib)</string>
+    <string name="label_vaccine_category_hepatitis">Hepatitis</string>
+    <string name="label_vaccine_category_flu">Influenza (gripe)</string>
+    <string name="label_vaccine_category_mmr">El sarampión, las paperas y la rubéola</string>
+    <string name="label_vaccine_category_polio">Polio</string>
+    <string name="label_vaccine_category_pneumococcal">Neumococo</string>
+    <string name="label_vaccine_category_rotavirus">Rotavirus</string>
+    <string name="label_vaccine_category_combination">Vacunas combinadas</string>
+    <string name="label_vaccine_category_meningococcal">Enfermedad meningocócica, meningitis</string>
+
     <string name="label_vaccine_covid19">Vacuna para el COVID-19</string>
     <string name="label_vaccine_covid19_dosages">Número de dosis de COVID-19 recibidas</string>
     <string name="label_vaccine_covid19_date">Fecha de la dosis más reciente de COVID-19e</string>
