@@ -110,4 +110,10 @@
     <string name="msg_successfully_saved_vaccination">Successfully saved vaccinations</string>
     <string name="section_title_vaccines">Vaccinations</string>
     <string name="label_vaccine_category_combination">Combination Vaccines</string>
+
+    <string name="title_covid19_type_dialog">Please select a COVID-19 vaccine</string>
+    <string name="select_covid19_type_select">Select</string>
+    <string name="select_covid19_type_cancel">Cancel</string>
+    <string name="title_select_covid19_type_dialog">Select COVID-19 Vaccine</string>
+    <string name="label_vaccine_covid19_type">COVID-19 vaccine type</string>
 </resources>

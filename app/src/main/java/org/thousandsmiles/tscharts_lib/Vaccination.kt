@@ -24,6 +24,7 @@ class Vaccination {
     var clinic = 0
     var patient = 0
     var covid19 = false
+    var covid19_type: String? = null
     var covid19_doses = 0
     var covid19_date: String? = null
     var covid19_booster = false
@@ -86,6 +87,9 @@ class Vaccination {
             ret = false
         }
         if (covid19_doses != other.covid19_doses) {
+            ret = false
+        }
+        if (covid19_type != other.covid19_type) {
             ret = false
         }
         if (covid19_date != other.covid19_date) {
@@ -246,6 +250,7 @@ class Vaccination {
             patient = o.getInt("patient")
 
             covid19 = o.getBoolean("covid19")
+            covid19_type = o.getString("covid19_type")
             covid19_doses = o.getInt("covid19_doses")
             covid19_date = o.getString("covid19_date") ?: null
             covid19_booster = o.getBoolean("covid19_booster")
@@ -311,6 +316,7 @@ class Vaccination {
             data!!.put("clinic", CommonSessionSingleton.getInstance().clinicId)
             data.put("patient", this.patient)
             data.put("covid19", covid19)
+            data.put("covid19_type", covid19_type)
             data.put("covid19_doses", covid19_doses)
             data.put("covid19_date", covid19_date ?: JSONObject.NULL)
             data.put("covid19_booster", covid19_booster)

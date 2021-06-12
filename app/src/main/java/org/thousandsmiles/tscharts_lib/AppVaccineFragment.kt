@@ -24,7 +24,6 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -44,6 +43,35 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
     private var m_view: View? = null
     private lateinit var m_nextActivity : Class<*>
     private var m_curTextView: Int = 0
+    private var m_switchEnableDepencies = arrayOf<SwitchEnableDependencies>(
+        SwitchEnableDependencies(R.id.vaccine_covid19, arrayOf<Int>(R.id.vaccine_covid19_date, R.id.vaccine_covid19_type,
+            R.id.radio_button_vaccine_covid19_dosages_one, R.id.radio_button_vaccine_covid19_dosages_two)),
+        SwitchEnableDependencies(R.id.vaccine_covid19_booster, arrayOf<Int>(R.id.vaccine_covid19_booster_date)),
+        SwitchEnableDependencies(R.id.vaccine_dtap, arrayOf<Int>(R.id.vaccine_dtap_date)),
+        SwitchEnableDependencies(R.id.vaccine_dt, arrayOf<Int>(R.id.vaccine_dt_date)),
+        SwitchEnableDependencies(R.id.vaccine_hib, arrayOf<Int>(R.id.vaccine_hib_date)),
+        SwitchEnableDependencies(R.id.vaccine_hepa, arrayOf<Int>(R.id.vaccine_hepa)),
+        SwitchEnableDependencies(R.id.vaccine_hepb, arrayOf<Int>(R.id.vaccine_hepb_date)),
+        SwitchEnableDependencies(R.id.vaccine_hpv, arrayOf<Int>(R.id.vaccine_hpv_date)),
+        SwitchEnableDependencies(R.id.vaccine_iiv, arrayOf<Int>(R.id.vaccine_iiv_date)),
+        SwitchEnableDependencies(R.id.vaccine_laiv4, arrayOf<Int>(R.id.vaccine_laiv4_date)),
+        SwitchEnableDependencies(R.id.vaccine_mmr, arrayOf<Int>(R.id.vaccine_mmr_date)),
+        SwitchEnableDependencies(R.id.vaccine_menacwy, arrayOf<Int>(R.id.vaccine_menacwy_date)),
+        SwitchEnableDependencies(R.id.vaccine_menb, arrayOf<Int>(R.id.vaccine_menb_date)),
+        SwitchEnableDependencies(R.id.vaccine_pcv13, arrayOf<Int>(R.id.vaccine_pcv13_date)),
+        SwitchEnableDependencies(R.id.vaccine_ppsv23, arrayOf<Int>(R.id.vaccine_ppsv23_date)),
+        SwitchEnableDependencies(R.id.vaccine_ipv, arrayOf<Int>(R.id.vaccine_ipv_date)),
+        SwitchEnableDependencies(R.id.vaccine_rv, arrayOf<Int>(R.id.vaccine_rv_date)),
+        SwitchEnableDependencies(R.id.vaccine_tap, arrayOf<Int>(R.id.vaccine_tap_date)),
+        SwitchEnableDependencies(R.id.vaccine_td, arrayOf<Int>(R.id.vaccine_td_date)),
+        SwitchEnableDependencies(R.id.vaccine_vari, arrayOf<Int>(R.id.vaccine_vari_date)),
+        SwitchEnableDependencies(R.id.vaccine_dtap_hepb_ipv, arrayOf<Int>(R.id.vaccine_dtap_hepb_ipv_date)),
+        SwitchEnableDependencies(R.id.vaccine_dtap_ipv_hib, arrayOf<Int>(R.id.vaccine_dtap_ipv_hib_date)),
+        SwitchEnableDependencies(R.id.vaccine_dtap_ipv, arrayOf<Int>(R.id.vaccine_dtap_ipv_date)),
+        SwitchEnableDependencies(R.id.vaccine_dtap_ipv_hib_hepb, arrayOf<Int>(R.id.vaccine_dtap_ipv_hib_hepb_date)),
+        SwitchEnableDependencies(R.id.vaccine_mmvr, arrayOf<Int>(R.id.vaccine_mmvr_date)),
+    )
+
     private var m_switchTextPairs = arrayOf<SwitchTextPairs>(
         SwitchTextPairs(R.id.vaccine_covid19, R.id.vaccine_covid19_date),
         SwitchTextPairs(R.id.vaccine_covid19_booster, R.id.vaccine_covid19_booster_date),
@@ -151,6 +179,11 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         sw = m_view!!.findViewById<View>(R.id.vaccine_covid19) as Switch
         if (sw != null) {
             sw.isChecked = m_vaccination!!.covid19
+        }
+        tx = m_view!!.findViewById<View>(R.id.vaccine_covid19_type) as TextView
+        if (tx != null) {
+            tx.setText(m_vaccination!!.covid19_type?.let { it })
+            tx.setEnabled(sw.isChecked)
         }
         tx = m_view!!.findViewById<View>(R.id.vaccine_covid19_date) as TextView
         if (tx != null) {
@@ -448,6 +481,11 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         }
     }
 
+    class SwitchEnableDependencies(sw: Int, dependencies: Array<Int>) {
+        var sw: Int = sw
+        var dependencies: Array<Int> = dependencies
+    }
+
     class SwitchTextPairs(sw: Int, tx: Int) {
         var sw: Int = sw
         var tx: Int = tx
@@ -459,41 +497,47 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         var tx: TextView
         var rb: RadioButton
 
-        for (x in m_switchTextPairs) {
+        for (x in m_switchEnableDepencies) {
             sw = m_view!!.findViewById<View>(x.sw) as Switch
             if (sw != null) {
                 sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
                     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
                         setDirty()
                         if (isChecked) {
-                            (m_view!!.findViewById<View>(x.tx) as View).setEnabled(
-                                true
-                            )
+                            for (y in x.dependencies) {
+                                (m_view!!.findViewById<View>(y) as View).setEnabled(
+                                    true
+                                )
+                            }
                         } else {
-                            (m_view!!.findViewById<View>(x.tx) as View).setEnabled(
-                                false
-                            )
+                            for (y in x.dependencies) {
+                                (m_view!!.findViewById<View>(y) as View).setEnabled(
+                                    false
+                                )
+                            }
                         }
                     }
                 })
             }
-            tx = m_view!!.findViewById<View>(x.tx) as TextView
-            if (tx != null) {
-                tx.addTextChangedListener(object : TextWatcher {
-                    override fun afterTextChanged(s: Editable) {}
-                    override fun beforeTextChanged(
-                        s: CharSequence, start: Int,
-                        count: Int, after: Int
-                    ) {
-                    }
+            for (y in x.dependencies) {
+                tx = m_view!!.findViewById<View>(y) as TextView
+                if (tx != null) {
+                    tx.addTextChangedListener(object : TextWatcher {
+                        override fun afterTextChanged(s: Editable) {}
+                        override fun beforeTextChanged(
+                            s: CharSequence, start: Int,
+                            count: Int, after: Int
+                        ) {
+                        }
 
-                    override fun onTextChanged(
-                        s: CharSequence, start: Int,
-                        before: Int, count: Int
-                    ) {
-                        setDirty()
-                    }
-                })
+                        override fun onTextChanged(
+                            s: CharSequence, start: Int,
+                            before: Int, count: Int
+                        ) {
+                            setDirty()
+                        }
+                    })
+                }
             }
         }
 
@@ -524,6 +568,32 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
                 }
             })
         }
+
+        val tx1 = m_view!!.findViewById<View>(R.id.vaccine_covid19_type) as TextView
+        if (tx1 != null) {
+
+            tx1.showSoftInputOnFocus = false
+            tx1.onFocusChangeListener = OnFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    val mld = COVIDTypeDialogFragment()
+                    mld.init()
+                    mld.setTextField(tx1)
+                    mld.show(
+                        fragmentManager,
+                        m_activity!!.getString(R.string.title_covid19_type_dialog)
+                    )
+                }
+            }
+            tx1.setOnClickListener { view
+                    val mld = COVIDTypeDialogFragment()
+                    mld.init()
+                    mld.setTextField(tx1)
+                    mld.show(
+                        fragmentManager,
+                        m_activity!!.getString(R.string.title_covid19_type_dialog)
+                    )
+                }
+            };
     }
 
     private fun copyVaccinationDataFromUI(): Vaccination? {
@@ -544,6 +614,17 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         if (sw != null) {
             vaccinations.covid19 = sw.isChecked()
         }
+
+        tx = m_view!!.findViewById<View>(R.id.vaccine_covid19_type) as TextView
+        if (tx != null) {
+            var v: String = tx.getText().toString()
+            if (v != null && v != "" && v != "null") {
+                vaccinations.covid19_type = v
+            } else {
+                vaccinations.covid19_type = null
+            }
+        }
+
         tx = m_view!!.findViewById<View>(R.id.vaccine_covid19_date) as TextView
         if (tx != null) {
             var v: String = tx.getText().toString()
@@ -961,6 +1042,10 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         super.onPause()
     }
 
+    private fun getCOVID19Types() {
+        Thread { m_commonSessionSingleton?.getCOVID19Types() }.start()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -970,7 +1055,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         m_view = view
 
         m_commonSessionSingleton = CommonSessionSingleton.getInstance()
-
+        getCOVID19Types()
         return view
     }
 

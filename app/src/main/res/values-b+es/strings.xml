@@ -109,5 +109,11 @@
     <string name="msg_unable_to_save_vaccination">No se pueden guardar las vacunas</string>
     <string name="msg_successfully_saved_vaccination">Vacunas guardadas con éxito</string>
     <string name="section_title_vaccines">Vacunas</string>
+
+    <string name="title_covid19_type_dialog">Seleccione una vacuna COVID-19</string>
+    <string name="select_covid19_type_select">Seleccione</string>
+    <string name="select_covid19_type_cancel">Cancelar</string>
+    <string name="title_select_covid19_type_dialog">Seleccione la vacuna COVID-19</string>
+    <string name="label_vaccine_covid19_type">Tipo de vacuna COVID-19</string>
 </resources>
 

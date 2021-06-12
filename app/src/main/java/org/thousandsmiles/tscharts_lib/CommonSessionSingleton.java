@@ -75,6 +75,7 @@ public class CommonSessionSingleton {
     private static HashMap<Integer, Boolean> m_isNewPatientMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, Boolean> m_hasCurrentXRayMap = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, JSONObject> m_clinicMap = new HashMap<Integer, JSONObject>();
+    private ArrayList<String> m_covid19Types = new ArrayList<String>();
     private boolean m_isNewPatient = false;
     private boolean m_isNewVaccination = false;
 
@@ -160,6 +161,54 @@ public class CommonSessionSingleton {
             }
         };
         thread.start();
+    }
+
+    public void addCOVID19Types(JSONArray response) {
+        m_covid19Types.clear();
+        for (int i = 0; i < response.length(); i++) {
+            try {
+                String s = response.getJSONObject(i).getString("name");
+                m_covid19Types.add(s);
+            } catch (JSONException e) {
+            }
+        }
+    }
+
+    public ArrayList<String> getCOVID19TypesList()
+    {
+        return m_covid19Types;
+    }
+
+    public boolean getCOVID19Types() {
+        boolean ret = false;
+
+        if (m_covid19Types.size() > 0) {
+            ret = true;
+        } else {
+            m_covid19Types.clear();
+            if (Looper.myLooper() != Looper.getMainLooper()) {
+                final COVIDVacREST covid19TypesData = new COVIDVacREST(getContext());
+                Object lock = covid19TypesData.getCOVID19Types();
+
+                synchronized (lock) {
+                    // we loop here in case of race conditions or spurious interrupts
+                    while (true) {
+                        try {
+                            lock.wait();
+                            break;
+                        } catch (InterruptedException e) {
+                            continue;
+                        }
+                    }
+                }
+
+                int status = covid19TypesData.getStatus();
+                if (status == 200) {
+                    ret = true;
+                }
+            }
+        }
+        return ret;
     }
 
     public void updateVaccination(final RESTCompletionListener listener)
