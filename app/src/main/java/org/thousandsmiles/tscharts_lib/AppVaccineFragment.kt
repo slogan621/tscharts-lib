@@ -24,6 +24,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -31,26 +33,26 @@ import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.*
-import androidx.fragment.app.Fragment
 import java.text.DateFormatSymbols
 import java.util.*
 
-class AppVaccineFragment : Fragment(), OnDateSetListener {
-    private var m_activity: Activity? = null
+class AppVaccineFragment : FormDirtyNotifierFragment(), OnDateSetListener, FormSaveListener, PatientCheckoutListener {
+    private var m_activity: FormSaveAndPatientCheckoutNotifierActivity? = null
     private var m_commonSessionSingleton: CommonSessionSingleton? = null
     private var m_vaccination: Vaccination? = null
     private var m_dirty = false
     private var m_view: View? = null
     private lateinit var m_nextActivity : Class<*>
+    private val m_listeners: ArrayList<FormDirtyListener?> = ArrayList<FormDirtyListener?>()
     private var m_curTextView: Int = 0
-    private var m_switchEnableDepencies = arrayOf<SwitchEnableDependencies>(
+    private var m_switchEnableDependencies = arrayOf<SwitchEnableDependencies>(
         SwitchEnableDependencies(R.id.vaccine_covid19, arrayOf<Int>(R.id.vaccine_covid19_date, R.id.vaccine_covid19_type,
             R.id.radio_button_vaccine_covid19_dosages_one, R.id.radio_button_vaccine_covid19_dosages_two)),
         SwitchEnableDependencies(R.id.vaccine_covid19_booster, arrayOf<Int>(R.id.vaccine_covid19_booster_date)),
         SwitchEnableDependencies(R.id.vaccine_dtap, arrayOf<Int>(R.id.vaccine_dtap_date)),
         SwitchEnableDependencies(R.id.vaccine_dt, arrayOf<Int>(R.id.vaccine_dt_date)),
         SwitchEnableDependencies(R.id.vaccine_hib, arrayOf<Int>(R.id.vaccine_hib_date)),
-        SwitchEnableDependencies(R.id.vaccine_hepa, arrayOf<Int>(R.id.vaccine_hepa)),
+        SwitchEnableDependencies(R.id.vaccine_hepa, arrayOf<Int>(R.id.vaccine_hepa_date)),
         SwitchEnableDependencies(R.id.vaccine_hepb, arrayOf<Int>(R.id.vaccine_hepb_date)),
         SwitchEnableDependencies(R.id.vaccine_hpv, arrayOf<Int>(R.id.vaccine_hpv_date)),
         SwitchEnableDependencies(R.id.vaccine_iiv, arrayOf<Int>(R.id.vaccine_iiv_date)),
@@ -78,7 +80,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         SwitchTextPairs(R.id.vaccine_dtap, R.id.vaccine_dtap_date),
         SwitchTextPairs(R.id.vaccine_dt, R.id.vaccine_dt_date),
         SwitchTextPairs(R.id.vaccine_hib, R.id.vaccine_hib_date),
-        SwitchTextPairs(R.id.vaccine_hepa, R.id.vaccine_hepa),
+        SwitchTextPairs(R.id.vaccine_hepa, R.id.vaccine_hepa_date),
         SwitchTextPairs(R.id.vaccine_hepb, R.id.vaccine_hepb_date),
         SwitchTextPairs(R.id.vaccine_hpv, R.id.vaccine_hpv_date),
         SwitchTextPairs(R.id.vaccine_iiv, R.id.vaccine_iiv_date),
@@ -107,7 +109,13 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is Activity) {
-            m_activity = context as Activity
+            m_activity = context as FormSaveAndPatientCheckoutNotifierActivity
+            VaccinationDataFromREST
+            try {
+                (m_activity as FormSavePublisher).subscribeSave(this as FormSaveListener)
+                (m_activity as PatientCheckoutPublisher).subscribeCheckout(this as PatientCheckoutListener)
+            } catch (e: Exception) {
+            }
         }
     }
 
@@ -427,10 +435,16 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
 
     private fun setDirty() {
         m_dirty = true
+        for (i in m_listeners.indices) {
+            m_listeners[i]?.dirty(true)
+        }
     }
 
     private fun clearDirty() {
         m_dirty = false
+        for (i in m_listeners.indices) {
+            m_listeners[i]?.dirty(false)
+        }
     }
 
     private fun setDate(calendar: Calendar) {
@@ -444,10 +458,6 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
             year
         )
         (m_view!!.findViewById<View>(m_curTextView) as TextView).text = dateString
-        //m_curTextView?.text = dateString // XXX m_curTextView is a somewhat hacky way of associating
-                                         // this callback to a text view, but should work since only
-                                         // one should be active at any time. Better option would be
-                                         // a view class that wraps all of this.
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, day: Int) {
@@ -497,7 +507,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
         var tx: TextView
         var rb: RadioButton
 
-        for (x in m_switchEnableDepencies) {
+        for (x in m_switchEnableDependencies) {
             sw = m_view!!.findViewById<View>(x.sw) as Switch
             if (sw != null) {
                 sw.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
@@ -983,6 +993,7 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
                         )
                         if (m_vaccination == null) {
                             m_activity!!.runOnUiThread(Runnable {
+                                m_commonSessionSingleton?.resetPatientVaccination()
                                 m_vaccination = m_commonSessionSingleton?.getNewPatientVaccination()
                                 copyVaccinationDataToUI()
                                 m_commonSessionSingleton?.setIsNewVaccination(true)
@@ -1019,17 +1030,6 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
     }
 
     private fun initialize() {
-        if (m_commonSessionSingleton?.getIsNewPatient() === false) {
-            m_vaccination = m_commonSessionSingleton?.getPatientVaccination()
-            if (m_vaccination == null) {
-                VaccinationDataFromREST
-            } else {
-                copyVaccinationDataToUI()
-            }
-        } else {
-            m_vaccination = m_commonSessionSingleton?.getNewPatientVaccination()
-            copyVaccinationDataToUI()
-        }
         setViewDirtyListeners()
         setDatePickerListeners()
     }
@@ -1066,6 +1066,140 @@ class AppVaccineFragment : Fragment(), OnDateSetListener {
     companion object {
         fun newInstance(): AppVaccineFragment {
             return AppVaccineFragment()
+        }
+    }
+
+    private fun validate(): Boolean {
+        return validateFields()
+    }
+
+    fun updateVaccinations() {
+        val ret = false
+        val thread: Thread = object : Thread() {
+            override fun run() {
+                // note we use session context because this may be called after onPause()
+                val rest = VaccinationREST(m_commonSessionSingleton?.getContext())
+                val lock: Any
+                val status: Int
+                if (m_commonSessionSingleton?.getIsNewVaccination() === true) {
+                    lock = rest.createVaccination(copyVaccinationDataFromUI())
+                } else {
+                    lock = rest.updateVaccination(copyVaccinationDataFromUI())
+                }
+                synchronized(lock) {
+                    // we loop here in case of race conditions or spurious interrupts
+                    while (true) {
+                        try {
+                            (lock as java.lang.Object).wait()
+                            break
+                        } catch (e: InterruptedException) {
+                            continue
+                        }
+                    }
+                }
+                status = rest.status
+                if (status != 200) {
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.post {
+                        Toast.makeText(
+                            m_activity,
+                            m_activity!!.getString(R.string.msg_unable_to_save_vaccination),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } else {
+                    m_commonSessionSingleton?.setIsNewVaccination(false)
+                    val handler = Handler(Looper.getMainLooper())
+                    handler.post {
+                        clearDirty()
+                        m_vaccination = copyVaccinationDataFromUI()
+                        Toast.makeText(
+                            m_activity,
+                            m_activity!!.getString(R.string.msg_successfully_saved_vaccination),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+                }
+            }
+        }
+        thread.start()
+    }
+
+    private fun saveInternal(showReturnToClinic: Boolean): Boolean {
+        val ret: Boolean = validate()
+        if (ret == true) {
+            val builder = androidx.appcompat.app.AlertDialog.Builder(
+                m_activity!!
+            )
+            builder.setTitle(m_activity!!.getString(R.string.title_unsaved_vaccinations))
+            builder.setMessage(m_activity!!.getString(R.string.msg_save_vaccinations))
+            builder.setPositiveButton(
+                m_activity!!.getString(R.string.button_yes)
+            ) { dialog, which ->
+                updateVaccinations()
+                if (showReturnToClinic == true) {
+                    notifyReadyForCheckout(true)
+                } else {
+                    notifySaveDone(true)
+                }
+                dialog.dismiss()
+            }
+            builder.setNegativeButton(
+                m_activity!!.getString(R.string.button_no)
+            ) { dialog, which ->
+                if (showReturnToClinic == true) {
+                    notifyReadyForCheckout(false)
+                } else {
+                    notifySaveDone(false)
+                }
+                dialog.dismiss()
+            }
+            val alert = builder.create()
+            alert.show()
+        }
+        return ret
+    }
+
+    override fun save(): Boolean {
+        var ret = true
+        if (m_dirty) {
+            ret = saveInternal(false)
+        } else {
+            notifySaveDone(true);
+        }
+        return ret
+    }
+
+    override fun checkout(): Boolean {
+        if (m_dirty) {
+            saveInternal(true)
+        } else {
+            notifyReadyForCheckout(true)
+        }
+        return true
+    }
+
+    fun notifyReadyForCheckout(success: Boolean) {
+        m_activity?.fragmentReadyForCheckout(success)
+    }
+
+    fun notifySaveDone(success: Boolean) {
+        m_activity?.fragmentSaveDone(success)
+    }
+
+    override fun subscribeDirty(instance: FormDirtyListener?) {
+        m_listeners.add(instance)
+    }
+
+    override fun unsubscribeDirty(instance: FormDirtyListener?) {
+        m_listeners.remove(instance)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (m_activity != null) {
+            m_activity!!.unsubscribeSave(this)
+            m_activity!!.unsubscribeCheckout(this)
         }
     }
 }

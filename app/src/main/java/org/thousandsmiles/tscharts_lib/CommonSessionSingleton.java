@@ -473,6 +473,8 @@ public class CommonSessionSingleton {
     {
         if (m_patientVaccination == null) {
             m_patientVaccination = new Vaccination();
+            m_patientVaccination.setClinic(getClinicId());
+            m_patientVaccination.setPatient(getPatientId());
         }
         return m_patientVaccination;
     }
