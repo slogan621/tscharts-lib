@@ -122,6 +122,11 @@ public abstract class RESTful {
     }
 
     public String getProtocol() {
-        return "https";
+        String ret = "https";
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(m_context);
+        if (sharedPref.getString("port", "443").equals("80")) {
+            ret = "http";
+        }
+        return ret;
     }
 }
