@@ -50,6 +50,7 @@ public class DentalState implements Serializable {
     public enum Surface {
         DENTAL_SURFACE_NONE,
         DENTAL_SURFACE_BUCCAL,
+        DENTAL_SURFACE_DISTAL,
         DENTAL_SURFACE_LINGUAL,
         DENTAL_SURFACE_MESIAL,
         DENTAL_SURFACE_OCCLUSAL,
@@ -227,6 +228,8 @@ public class DentalState implements Serializable {
             ret = "occlusal";
         } else if (val == Surface.DENTAL_SURFACE_LABIAL) {
             ret = "labial";
+        } else if (val == Surface.DENTAL_SURFACE_DISTAL) {
+            ret = "distal";
         } else if (val == Surface.DENTAL_SURFACE_INCISAL) {
             ret = "incisal";
         } else if (val == Surface.DENTAL_SURFACE_WHOLE_MOUTH_OR_VISIT) {
@@ -248,6 +251,8 @@ public class DentalState implements Serializable {
             ret = Surface.DENTAL_SURFACE_LINGUAL;
         } else if (val.equals("mesial")) {
             ret = Surface.DENTAL_SURFACE_MESIAL;
+        } else if (val.equals("distal")) {
+            ret = Surface.DENTAL_SURFACE_DISTAL;
         } else if (val.equals("occlusal")) {
             ret = Surface.DENTAL_SURFACE_OCCLUSAL;
         } else if (val.equals("labial")) {
