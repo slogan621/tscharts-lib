@@ -125,24 +125,24 @@ public class PatientData implements Parcelable {
     protected PatientData(Parcel in) {
         m_id = in.readInt();
         m_oldId = in.readInt();
-        m_fatherLast = in.readString();
-        m_motherLast = in.readString();
-        m_first = in.readString();
-        m_middle = in.readString();
-        m_dob = in.readString();
-        m_gender = in.readString();
-        m_street1 = in.readString();
-        m_street2 = in.readString();
-        m_colonia = in.readString();
-        m_city = in.readString();
-        m_state = in.readString();
-        m_phone1 = in.readString();
-        m_phone2 = in.readString();
-        m_email = in.readString();
-        m_emergencyFullName = in.readString();
-        m_emergencyPhone = in.readString();
-        m_emergencyEmail = in.readString();
-        m_curp = in.readString();
+        m_fatherLast = in.readString().trim();
+        m_motherLast = in.readString().trim();
+        m_first = in.readString().trim();
+        m_middle = in.readString().trim();
+        m_dob = in.readString().trim();
+        m_gender = in.readString().trim();
+        m_street1 = in.readString().trim();
+        m_street2 = in.readString().trim();
+        m_colonia = in.readString().trim();
+        m_city = in.readString().trim();
+        m_state = in.readString().trim();
+        m_phone1 = in.readString().trim();
+        m_phone2 = in.readString().trim();
+        m_email = in.readString().trim();
+        m_emergencyFullName = in.readString().trim();
+        m_emergencyPhone = in.readString().trim();
+        m_emergencyEmail = in.readString().trim();
+        m_curp = in.readString().trim();
         m_valid = in.readByte() != 0;
         m_isCurrentXray = in.readByte() != 0;
     }
@@ -168,24 +168,24 @@ public class PatientData implements Parcelable {
 
         dest.writeByte((byte) (m_isCurrentXray == false ? 0 : 1));
         dest.writeByte((byte) (m_valid == false ? 0 : 1));
-        dest.writeString(m_curp);
-        dest.writeString(m_emergencyEmail);
-        dest.writeString(m_emergencyPhone);
-        dest.writeString(m_emergencyFullName);
-        dest.writeString(m_email);
-        dest.writeString(m_phone2);
-        dest.writeString(m_phone1);
-        dest.writeString(m_state);
-        dest.writeString(m_city);
-        dest.writeString(m_colonia);
-        dest.writeString(m_street2);
-        dest.writeString(m_street1);
-        dest.writeString(m_gender);
-        dest.writeString(m_dob);
-        dest.writeString(m_middle);
-        dest.writeString(m_first);
-        dest.writeString(m_motherLast);
-        dest.writeString(m_fatherLast);
+        dest.writeString(m_curp.trim());
+        dest.writeString(m_emergencyEmail.trim());
+        dest.writeString(m_emergencyPhone.trim());
+        dest.writeString(m_emergencyFullName.trim());
+        dest.writeString(m_email.trim());
+        dest.writeString(m_phone2.trim());
+        dest.writeString(m_phone1.trim());
+        dest.writeString(m_state.trim());
+        dest.writeString(m_city.trim());
+        dest.writeString(m_colonia.trim());
+        dest.writeString(m_street2.trim());
+        dest.writeString(m_street1.trim());
+        dest.writeString(m_gender.trim());
+        dest.writeString(m_dob.trim());
+        dest.writeString(m_middle.trim());
+        dest.writeString(m_first.trim());
+        dest.writeString(m_motherLast.trim());
+        dest.writeString(m_fatherLast.trim());
         dest.writeInt(m_oldId);
         dest.writeInt(m_id);
     }
@@ -202,11 +202,11 @@ public class PatientData implements Parcelable {
     }
 
     public String getCURP() {
-        return m_curp;
+        return m_curp.trim();
     }
 
     public void setCURP(String curp) {
-        m_curp = curp;
+        m_curp = curp.trim();
     }
 
     public int getOldId() {
@@ -226,39 +226,39 @@ public class PatientData implements Parcelable {
     }
 
     public String getFatherLast() {
-        return m_fatherLast;
+        return m_fatherLast.trim();
     }
 
     public void setFatherLast(String fatherLast) {
-        m_fatherLast = fatherLast;
+        m_fatherLast = fatherLast.trim();
     }
 
     public String getMotherLast() {
-        return m_motherLast;
+        return m_motherLast.trim();
     }
 
     public void setMotherLast(String motherLast) {
-        m_motherLast = motherLast;
+        m_motherLast = motherLast.trim();
     }
 
     public String getFirst() {
-        return m_first;
+        return m_first.trim();
     }
 
     public void setFirst(String first) {
-        m_first = first;
+        m_first = first.trim();
     }
 
     public String getMiddle() {
-        return m_middle;
+        return m_middle.trim();
     }
 
     public void setMiddle(String middle) {
-        m_middle = middle;
+        m_middle = middle.trim();
     }
 
     public String getDob() {
-        return m_dob;
+        return m_dob.trim();
     }
 
     public String getDobMilitary(Context ctx) {
@@ -280,7 +280,7 @@ public class PatientData implements Parcelable {
         } catch(NumberFormatException ex){
             ret = m_dob;
         }
-        return ret;
+        return ret.trim();
     }
 
     public String fromDobMilitary(Context ctx, String m_dob) {
@@ -314,107 +314,107 @@ public class PatientData implements Parcelable {
 
             ret = String.format("%s/%s/%s", month, day, year);
         }
-        return ret;
+        return ret.trim();
     }
 
     public void setDob(String dob) {
-        m_dob = dob;
+        m_dob = dob.trim();
     }
 
     public String getGender() {
-        return m_gender;
+        return m_gender.trim();
     }
 
     public void setGender(String gender) {
-        m_gender = gender;
+        m_gender = gender.trim();
     }
 
     public String getStreet1() {
-        return m_street1;
+        return m_street1.trim();
     }
 
     public void setStreet1(String street1) {
-        m_street1 = street1;
+        m_street1 = street1.trim();
     }
 
     public String getStreet2() {
-        return m_street2;
+        return m_street2.trim();
     }
 
     public void setStreet2(String street2) {
-        m_street2 = street2;
+        m_street2 = street2.trim();
     }
 
     public String getColonia() {
-        return m_colonia;
+        return m_colonia.trim();
     }
 
     public void setColonia(String colonia) {
-        m_colonia = colonia;
+        m_colonia = colonia.trim();
     }
 
     public String getCity() {
-        return m_city;
+        return m_city.trim();
     }
 
     public void setCity(String city) {
-        m_city = city;
+        m_city = city.trim();
     }
 
     public String getState() {
-        return m_state;
+        return m_state.trim();
     }
 
     public void setState(String state) {
-        m_state = state;
+        m_state = state.trim();
     }
 
     public String getPhone1() {
-        return m_phone1;
+        return m_phone1.trim();
     }
 
     public void setPhone1(String phone1) {
-        m_phone1 = phone1;
+        m_phone1 = phone1.trim();
     }
 
     public String getPhone2() {
-        return m_phone2;
+        return m_phone2.trim();
     }
 
     public void setPhone2(String phone2) {
-        m_phone2 = phone2;
+        m_phone2 = phone2.trim();
     }
 
     public String getEmail() {
-        return m_email;
+        return m_email.trim();
     }
 
     public void setEmail(String email) {
-        m_email = email;
+        m_email = email.trim();
     }
 
     public String getEmergencyFullName() {
-        return m_emergencyFullName;
+        return m_emergencyFullName.trim();
     }
 
     public void setEmergencyFullName(String emergencyFullName) {
-        m_emergencyFullName = emergencyFullName;
+        m_emergencyFullName = emergencyFullName.trim();
     }
 
     public String getEmergencyPhone() {
-        return m_emergencyPhone;
+        return m_emergencyPhone.trim();
     }
 
     public void setEmergencyPhone(String emergencyPhone) {
-        m_emergencyPhone = emergencyPhone;
+        m_emergencyPhone = emergencyPhone.trim();
     }
 
     public String getEmergencyEmail() {
-        return m_emergencyEmail;
+        return m_emergencyEmail.trim();
     }
 
     public void setEmergencyEmail(String emergencyEmail) {
-        m_emergencyEmail = emergencyEmail;
+        m_emergencyEmail = emergencyEmail.trim();
     }
 
     public boolean getValid()
@@ -528,24 +528,24 @@ public class PatientData implements Parcelable {
             } catch (Exception e) {
                 setOldId(-1);
             }
-            setCURP(o.getString("curp"));
-            setFatherLast(o.getString("paternal_last"));
-            setMotherLast(o.getString("maternal_last"));
-            setFirst(o.getString("first"));
-            setMiddle(o.getString("middle"));
-            setDob(o.getString("dob"));
-            setGender(o.getString("gender"));
-            setStreet1(o.getString("street1"));
-            setStreet2(o.getString("street2"));
-            setColonia(o.getString("colonia"));
-            setCity(o.getString("city"));
-            setState(o.getString("state"));
-            setPhone1(o.getString("phone1"));
-            setPhone2(o.getString("phone2"));
-            setEmail(o.getString("email"));
-            setEmergencyFullName(o.getString("emergencyfullname"));
-            setEmergencyPhone(o.getString("emergencyphone"));
-            setEmergencyEmail(o.getString("emergencyemail"));
+            setCURP(o.getString("curp").trim());
+            setFatherLast(o.getString("paternal_last").trim());
+            setMotherLast(o.getString("maternal_last").trim());
+            setFirst(o.getString("first").trim());
+            setMiddle(o.getString("middle").trim());
+            setDob(o.getString("dob").trim());
+            setGender(o.getString("gender").trim());
+            setStreet1(o.getString("street1").trim());
+            setStreet2(o.getString("street2").trim());
+            setColonia(o.getString("colonia").trim());
+            setCity(o.getString("city").trim());
+            setState(o.getString("state").trim());
+            setPhone1(o.getString("phone1").trim());
+            setPhone2(o.getString("phone2").trim());
+            setEmail(o.getString("email").trim());
+            setEmergencyFullName(o.getString("emergencyfullname").trim());
+            setEmergencyPhone(o.getString("emergencyphone").trim());
+            setEmergencyEmail(o.getString("emergencyemail").trim());
             m_valid = true;
             m_isCurrentXray = false;
         } catch (JSONException e) {
@@ -563,23 +563,23 @@ public class PatientData implements Parcelable {
             }
             data.put("oldid", getOldId());
             data.put("curp", getCURP());
-            data.put("paternal_last", getFatherLast());
-            data.put("maternal_last", getMotherLast());
-            data.put("first", getFirst());
-            data.put("middle", getMiddle());
-            data.put("dob", fromDobMilitary(ctx, getDob()));
-            data.put("gender", getGender());
-            data.put("street1", getStreet1());
-            data.put("street2", getStreet2());
-            data.put("colonia", getColonia());
-            data.put("city", getCity());
-            data.put("state", getState());
-            data.put("phone1", getPhone1());
-            data.put("phone2", getPhone2());
-            data.put("email", getEmail());
-            data.put("emergencyfullname", getEmergencyFullName());
-            data.put("emergencyphone", getEmergencyPhone());
-            data.put("emergencyemail", getEmergencyEmail());
+            data.put("paternal_last", getFatherLast().trim());
+            data.put("maternal_last", getMotherLast().trim());
+            data.put("first", getFirst().trim());
+            data.put("middle", getMiddle().trim());
+            data.put("dob", fromDobMilitary(ctx, getDob().trim()));
+            data.put("gender", getGender().trim());
+            data.put("street1", getStreet1().trim());
+            data.put("street2", getStreet2().trim());
+            data.put("colonia", getColonia().trim());
+            data.put("city", getCity().trim());
+            data.put("state", getState().trim());
+            data.put("phone1", getPhone1().trim());
+            data.put("phone2", getPhone2().trim());
+            data.put("email", getEmail().trim());
+            data.put("emergencyfullname", getEmergencyFullName().trim());
+            data.put("emergencyphone", getEmergencyPhone().trim());
+            data.put("emergencyemail", getEmergencyEmail().trim());
 
             // we don't current support the following but the backend requires them
 
