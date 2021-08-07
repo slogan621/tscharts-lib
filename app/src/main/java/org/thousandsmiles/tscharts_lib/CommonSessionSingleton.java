@@ -23,6 +23,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -55,6 +56,7 @@ public class CommonSessionSingleton {
     private int m_patientRoutingSlipId;
     private String m_photoPath = "";
     private int m_clinicId = -1;
+    private int m_registrationId;
     private ArrayList<HeadshotImage> m_headshotImages = new ArrayList<HeadshotImage>();
     private ArrayList<HeadshotImage> m_headshotJobs = new ArrayList<HeadshotImage>();
     private ConcurrentHashMap<Integer, String> m_headshotIdToPath = new ConcurrentHashMap<Integer, String>();
@@ -78,6 +80,16 @@ public class CommonSessionSingleton {
     private ArrayList<String> m_covid19Types = new ArrayList<String>();
     private boolean m_isNewPatient = false;
     private boolean m_isNewVaccination = false;
+    private JSONArray m_registrationSearchResults = null;
+
+    public void clearRegistrationSearchResultData()
+    {
+        m_registrationSearchResults = null;
+    }
+
+    public void setRegistrationSearchResults(JSONArray response) {
+        m_registrationSearchResults = response;
+    }
 
     public void setIsNewVaccination(boolean isNew) {
         m_isNewVaccination = isNew;
@@ -1043,6 +1055,22 @@ public class CommonSessionSingleton {
     }
     public Context getContext() {
         return m_ctx;
+    }
+
+
+    public void setRegistrationId(JSONObject response) {
+        try {
+            String m;
+            m_registrationId = response.getInt("id");
+            m = String.format("setRegistrationId: %d", m_registrationId);
+            Log.e("setRegistrationId", m);
+        } catch (JSONException e) {
+            Log.e("setRegistrationId", "FAILED");
+        }
+    }
+
+    public int getRegistrationId() {
+        return m_registrationId;
     }
 
     public String militaryToConventionalDateString(String s)
