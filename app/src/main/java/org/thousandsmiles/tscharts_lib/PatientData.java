@@ -26,7 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class PatientData implements Parcelable {
+public class PatientData implements Parcelable, Comparable<PatientData> {
     private int m_id;
     private int m_oldId;
     private String m_fatherLast = "";
@@ -51,6 +51,7 @@ public class PatientData implements Parcelable {
     private boolean m_isCurrentXray;
     private ArrayList<String> m_months = null;
     private ArrayList<String> m_abbreviatedMonths = null;
+    private String m_timeOfArrival;
 
     private void initAbbreviatedMonthStrings(Context ctx) {
         if (m_abbreviatedMonths == null || m_abbreviatedMonths.size() == 0) {
@@ -113,6 +114,7 @@ public class PatientData implements Parcelable {
         m_curp = "";
         m_valid = true;
         m_isCurrentXray = false;
+        m_timeOfArrival = "";
     }
 
     public PatientData(JSONObject o) {
@@ -145,6 +147,7 @@ public class PatientData implements Parcelable {
         m_curp = in.readString().trim();
         m_valid = in.readByte() != 0;
         m_isCurrentXray = in.readByte() != 0;
+        m_timeOfArrival = in.readString().trim();
     }
 
     public static final Creator<PatientData> CREATOR = new Creator<PatientData>() {
@@ -166,6 +169,7 @@ public class PatientData implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
 
+        dest.writeString(m_timeOfArrival.trim());
         dest.writeByte((byte) (m_isCurrentXray == false ? 0 : 1));
         dest.writeByte((byte) (m_valid == false ? 0 : 1));
         dest.writeString(m_curp.trim());
@@ -223,6 +227,14 @@ public class PatientData implements Parcelable {
 
     public void setId(int id) {
         m_id = id;
+    }
+
+    public String getTimeOfArrival() {
+        return m_timeOfArrival;
+    }
+
+    public void setTimeOfArrival(String value) {
+        m_timeOfArrival = value;
     }
 
     public String getFatherLast() {
@@ -546,6 +558,7 @@ public class PatientData implements Parcelable {
             setEmergencyFullName(o.getString("emergencyfullname").trim());
             setEmergencyPhone(o.getString("emergencyphone").trim());
             setEmergencyEmail(o.getString("emergencyemail").trim());
+            setTimeOfArrival(""); // decorator, not in database but comes from registration
             m_valid = true;
             m_isCurrentXray = false;
         } catch (JSONException e) {
@@ -591,6 +604,13 @@ public class PatientData implements Parcelable {
             data = null;
         }
         return data;
+    }
+
+    // sort based on time of arrival
+
+    @Override
+    public int compareTo(PatientData patientData) {
+        return this.getTimeOfArrival().compareTo(patientData.getTimeOfArrival());
     }
 }
 
