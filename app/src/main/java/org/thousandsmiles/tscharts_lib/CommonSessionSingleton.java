@@ -81,6 +81,7 @@ public class CommonSessionSingleton {
     private boolean m_isNewPatient = false;
     private boolean m_isNewVaccination = false;
     private JSONArray m_registrationSearchResults = null;
+    private HashMap<Integer, Registration> m_clinicRegistrationResults = new HashMap<Integer, Registration>();
 
     public void clearRegistrationSearchResultData()
     {
@@ -89,6 +90,32 @@ public class CommonSessionSingleton {
 
     public void setRegistrationSearchResults(JSONArray response) {
         m_registrationSearchResults = response;
+    }
+
+    public void setClinicRegistrationResults(JSONArray response) {
+
+        for (int i = 0; i < response.length(); i++) {
+            Registration r = new Registration();
+            try {
+                JSONObject o = response.getJSONObject(i);
+                r.setClinic(o.getInt("clinic"));
+                r.setId(o.getInt("id"));
+                r.setDateTimeIn(o.getString("timein"));
+                r.setDateTimeOut(o.getString("timeout"));
+                r.setPatient(o.getInt("patient"));
+                m_clinicRegistrationResults.put(r.getPatient(), r);
+            } catch (JSONException e) {
+                // XXX continue on
+            }
+        }
+    }
+
+    public void clearClinicRegistrations() {
+        m_clinicRegistrationResults.clear();
+    }
+
+    public HashMap<Integer, Registration> getClinicRegistrations() {
+        return m_clinicRegistrationResults;
     }
 
     public void setIsNewVaccination(boolean isNew) {

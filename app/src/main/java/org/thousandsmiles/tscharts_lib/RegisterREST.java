@@ -29,6 +29,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -47,6 +48,21 @@ public class RegisterREST extends RESTful {
                 setStatus(200);
                 onSuccess(200, "");
                 sess.setRegistrationSearchResults(response);
+                m_lock.notify();
+            }
+        }
+    }
+
+    private class GetClinicRegistrationsResponseListener implements Response.Listener<JSONArray> {
+
+        @Override
+        public void onResponse(JSONArray response) {
+
+            synchronized (m_lock) {
+                CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
+                setStatus(200);
+                sess.setClinicRegistrationResults(response);
+                onSuccess(200, "");
                 m_lock.notify();
             }
         }
@@ -152,6 +168,27 @@ public class RegisterREST extends RESTful {
         request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object getClinicRegistrations(int clinic) {
+
+        CommonSessionSingleton.getInstance().clearClinicRegistrations();
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        JSONObject data = new JSONObject();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/register?clinic=%d", getProtocol(), getIP(), getPort(), clinic);
+
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetClinicRegistrationsResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(request);
 
         return m_lock;
     }
