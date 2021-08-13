@@ -18,7 +18,9 @@
 package org.thousandsmiles.tscharts_lib;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
+import android.os.Build;
 import android.widget.ImageView;
 
 import com.squareup.picasso.MemoryPolicy;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 
 public class HeadshotImage implements ImageReadyListener {
     private int m_id;
+    static private ImageCache m_headshotCache = new ImageCache();
     private ImageView m_imageView;
     private Context m_context;
     private Activity m_activity;
@@ -38,9 +41,14 @@ public class HeadshotImage implements ImageReadyListener {
     private ArrayList<ImageDisplayedListener> m_listener = new ArrayList<ImageDisplayedListener>();   // callback on success or error
 
     private void sendOnImageDisplayed(int id, String path) {
+        m_headshotCache.add(id, this);
         for (int i = 0; i < m_listener.size(); i++) {
             m_listener.get(i).onImageDisplayed(id, path);
         }
+    }
+
+    public static void removePatientHeadshotFromCache(int patient) {
+       m_headshotCache.remove(patient);
     }
 
     private void sendOnImageError(int id, String path, int code) {
@@ -62,18 +70,36 @@ public class HeadshotImage implements ImageReadyListener {
         m_imageType = imgType;
     }
 
+    public ImageDataReader getReader() {
+        return m_reader;
+    }
+
     public Thread getImage(int id) {
         m_id = id;
+
+        // if image is in cache, notify listeners here
+
+        HeadshotImage cached;
+        cached = m_headshotCache.getHeadshotImage(id);
+        if (cached != null) {
+            cached.m_imageView = m_imageView;
+            cached.onImageRead(cached.getReader().getFile());
+            return null; // no thread was created
+        }
+
+        // not in cache, continue
+
         if (m_reader == null) {
             m_reader = new ImageDataReader(m_context, m_id);
             m_reader.setImageType(m_imageType);
             m_reader.registerListener(this);
-            m_thread = new Thread(){
+            m_thread = new Thread() {
                 public void run() {
                     m_reader.read(m_id);
                 }
             };
         }
+        CommonSessionSingleton.getInstance().addHeadshotJob(this);
         return m_thread;
     }
 
@@ -82,7 +108,7 @@ public class HeadshotImage implements ImageReadyListener {
         m_thread.start();
     }
 
-    public  String getImageFileAbsolutePath()
+    public String getImageFileAbsolutePath()
     {
         String ret = null;
 
@@ -125,8 +151,14 @@ public class HeadshotImage implements ImageReadyListener {
                 //int w = m_imageView.getMeasuredWidth();
                 //int h = m_imageView.getMeasuredHeight();
 
-
-                sendOnImageDisplayed(m_id, getImageFileAbsolutePath());
+                HeadshotImage cached = m_headshotCache.getHeadshotImage(m_id);
+                String path;
+                if (cached != null) {
+                    path = cached.getImageFileAbsolutePath();
+                } else {
+                    path = getImageFileAbsolutePath();
+                }
+                sendOnImageDisplayed(m_id, path);
 
                 //Picasso.with(m_context).load(file).fit().centerInside().into(m_imageView);
                 //p.with(m_context).load(file).into(m_imageView);

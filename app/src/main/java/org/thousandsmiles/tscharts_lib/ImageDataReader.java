@@ -43,6 +43,10 @@ public class ImageDataReader {
         m_id = id;
     }
 
+    public File getFile() {
+        return m_file;
+    }
+
     public void setImageType(String imageType) {
         m_imageType = imageType;
     }
@@ -85,9 +89,9 @@ public class ImageDataReader {
         return m_file;
     }
 
-    private void onImageRead(File file) {
+    private void onImageRead() {
         for (int i = 0; i < m_listener.size(); i++) {
-            m_listener.get(i).onImageRead(file);
+            m_listener.get(i).onImageRead(m_file);
         }
     }
 
@@ -99,9 +103,9 @@ public class ImageDataReader {
 
     public void read(int id)
     {
-        if (m_isCached && m_file != null) {
+        if (m_file != null) {
             // notify the listener, if registered
-            onImageRead(m_file);
+            onImageRead();
         } else {
             if (m_context == null) {
                 onImageError(500);
@@ -137,7 +141,8 @@ public class ImageDataReader {
 
                 int status = m_imageData.getStatus();
                 if (status == 200) {
-                    onImageRead(m_file);
+                    m_isCached = true;
+                    onImageRead();
                 } else {
                     onImageError(status);
                 }
