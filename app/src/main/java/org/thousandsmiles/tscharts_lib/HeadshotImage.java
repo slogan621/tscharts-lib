@@ -81,7 +81,7 @@ public class HeadshotImage implements ImageReadyListener {
 
         HeadshotImage cached;
         cached = m_headshotCache.getHeadshotImage(id);
-        if (cached != null) {
+        if (cached != null && cached.m_imageType.equals("Headshot") == true) {
             cached.m_imageView = m_imageView;
             cached.onImageRead(cached.getReader().getFile());
             return null; // no thread was created
