@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2018-2020
- * (C) Copyright Thousand Smiles Foundation 2018-2020
+ * (C) Copyright Syd Logan 2018-2021
+ * (C) Copyright Thousand Smiles Foundation 2018-2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -105,7 +105,13 @@ public class HeadshotImage implements ImageReadyListener {
 
     public  void start()
     {
-        m_thread.start();
+        try {
+            if (m_thread.isAlive() == false) {
+                m_thread.start();
+            }
+        } catch (Exception e) {
+            // XXX do a better job of detecting this
+        }
     }
 
     public String getImageFileAbsolutePath()
