@@ -212,4 +212,24 @@ public class RegisterREST extends RESTful {
 
         return m_lock;
     }
+
+    public Object findRegistrations(int patient) {
+
+        CommonSessionSingleton.getInstance().clearRegistrationSearchResultData();
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/register?patient=%d", getProtocol(), getIP(), getPort(),
+                patient);
+
+        AuthJSONArrayRequest request = new AuthJSONArrayRequest(url, null, new GetArrayResponseListener(), new ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(request);
+
+        return m_lock;
+    }
 }

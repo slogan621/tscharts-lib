@@ -225,31 +225,43 @@ public class PatientREST extends RESTful {
         boolean empty = true;
 
         try {
+            if (o.has("exact")) {
+                // if true, exact case-insenstive match (Django iexact). Default in BE is Django icontains search
+                ret += String.format("%s", empty ? "exact=" + o.getBoolean("exact") : "&exact=" + o.getBoolean("exact"));
+                empty = false;
+            }
             if (o.has("name")) {
+                // exact does not apply to this search term
                 ret += String.format("%s", empty ? "name=" + o.getString("name") : "&name=" + o.getString("name"));
                 empty = false;
             }
             if (o.has("dob")) {
+                // exact does not apply to this search term
                 ret += String.format("%s", empty ? "dob=" + o.getString("dob") : "&dob=" + o.getString("dob"));
                 empty = false;
             }
             if (o.has("gender")) {
+                // exact does not apply to this search term
                 ret += String.format("%s", empty ? "gender=" + o.getString("gender") : "&gender=" + o.getString("gender"));
                 empty = false;
             }
             if (o.has("paternal_last")) {
+                // exact DOES apply to this search term
                 ret += String.format("%s", empty ? "paternal_last=" + o.getString("paternal_last") : "&paternal_last=" + o.getString("paternal_last"));
                 empty = false;
             }
             if (o.has("maternal_last")) {
+                // exact DOES apply to this search term
                 ret += String.format("%s", empty ? "maternal_last=" + o.getString("maternal_last") : "&maternal_last=" + o.getString("maternal_last"));
                 empty = false;
             }
             if (o.has("curp")) {
+                // exact does not apply to this search term
                 ret += String.format("%s", empty ? "curp=" + o.getString("curp") : "&curp=" + o.getString("curp"));
                 empty = false;
             }
             if (o.has("first")) {
+                // exact DOES apply to this search term
                 ret += String.format("%s", empty ? "first=" + o.getString("first") : "&first=" + o.getString("first"));
                 empty = false;
             }
