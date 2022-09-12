@@ -81,6 +81,7 @@ public class CommonSessionSingleton {
     private boolean m_isNewPatient = false;
     private boolean m_isNewVaccination = false;
     private JSONArray m_registrationSearchResults = null;
+    private JSONArray m_allClinics = null;
     private HashMap<Integer, Registration> m_clinicRegistrationResults = new HashMap<Integer, Registration>();
 
     public void clearRegistrationSearchResultData()
@@ -967,6 +968,55 @@ public class CommonSessionSingleton {
             };
             thread.start();
         }
+        return ret;
+    }
+
+    private class GetAllClinicsListener implements RESTCompletionListener {
+
+        public void onSuccess(int code, String message, JSONArray a) {
+            m_allClinics = a;
+        }
+
+        public void onSuccess(int code, String message, JSONObject a) {
+        }
+
+        public void onSuccess(int code, String message) {
+        }
+
+        public void onFail(int code, String message) {
+        }
+    }
+
+    public JSONArray getAllClinics() {
+
+        JSONArray ret = null;
+        if (m_allClinics != null && m_allClinics.length() > 0) {
+            return m_allClinics;
+        }
+
+        final Thread thread = new Thread() {
+            public void run() {
+                final ClinicREST clinicREST = new ClinicREST(getContext());
+                final GetAllClinicsListener listener = new GetAllClinicsListener();
+                clinicREST.addListener(listener);
+                final Object lock;
+
+                lock = clinicREST.getAllClinics();
+                synchronized (lock) {
+                    // we loop here in case of race conditions or spurious interrupts
+                    while (true) {
+                        try {
+                            lock.wait();
+                            break;
+                        } catch (InterruptedException e) {
+                            continue;
+                        }
+                    }
+                }
+            }
+        };
+        thread.start();
+        ret = m_allClinics;
         return ret;
     }
 

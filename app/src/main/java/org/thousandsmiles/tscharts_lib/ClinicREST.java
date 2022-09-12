@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2017-2019
- * (C) Copyright Thousand Smiles Foundation 2017-2019
+ * (C) Copyright Syd Logan 2017-2022
+ * (C) Copyright Thousand Smiles Foundation 2017-2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package org.thousandsmiles.tscharts_lib;
 import android.content.Context;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -55,8 +56,20 @@ public class ClinicREST extends RESTful {
         }
     }
 
-    private class GetByIdResponseListener implements Response.Listener<JSONObject> {
+    private class GetAllClinicsResponseListener implements Response.Listener<JSONArray> {
 
+        @Override
+        public void onResponse(JSONArray response) {
+            synchronized (m_lock) {
+                CommonSessionSingleton sess = CommonSessionSingleton.getInstance();
+                setStatus(200);
+                onSuccess(200, "", response);
+                m_lock.notify();
+            }
+        }
+    }
+
+    private class GetByIdResponseListener implements Response.Listener<JSONObject> {
         @Override
         public void onResponse(JSONObject response) {
 
@@ -164,6 +177,24 @@ public class ClinicREST extends RESTful {
         AuthJSONObjectRequest request = new AuthJSONObjectRequest(Request.Method.GET, url, null, new GetByIdResponseListener(), new ErrorListener());
 
         queue.add((JsonObjectRequest) request);
+
+        return m_lock;
+    }
+
+    public Object getAllClinics() {
+
+        VolleySingleton volley = VolleySingleton.getInstance();
+
+        volley.initQueueIf(getContext());
+
+        RequestQueue queue = volley.getQueue();
+
+        String url = String.format("%s://%s:%s/tscharts/v1/clinic/", getProtocol(), getIP(), getPort());
+
+        ClinicREST.AuthJSONArrayRequest request = new ClinicREST.AuthJSONArrayRequest(url, null, new ClinicREST.GetAllClinicsResponseListener(), new ClinicREST.ErrorListener());
+        request.setRetryPolicy(new DefaultRetryPolicy(getTimeoutInMillis(), getRetries(), DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(request);
 
         return m_lock;
     }
