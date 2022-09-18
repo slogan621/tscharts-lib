@@ -128,6 +128,8 @@ public class COVIDTypeDialogFragment extends DialogFragment {
                     }
                 });
         Dialog ret = builder.create();
+        ret.setCanceledOnTouchOutside(false);
+        ret.setCancelable(false);
         ret.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         ret.setTitle(R.string.title_select_covid19_type_dialog);

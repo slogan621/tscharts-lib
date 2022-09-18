@@ -141,6 +141,8 @@ class AppVaccineFragment : FormDirtyNotifierFragment(), OnDateSetListener, FormS
                     override fun onClick(dialog: DialogInterface, which: Int) {}
                 })
             val alert = builder.create()
+            alert.setCanceledOnTouchOutside(false)
+            alert.setCancelable(false)
             alert.show()
         } else if (m_dirty || vaccinations?.equals(m_vaccination) === false) {
             val builder = AlertDialog.Builder(
@@ -166,6 +168,8 @@ class AppVaccineFragment : FormDirtyNotifierFragment(), OnDateSetListener, FormS
                     }
                 })
             val alert = builder.create()
+            alert.setCanceledOnTouchOutside(false)
+            alert.setCancelable(false)
             alert.show()
         } else {
             startActivity(Intent(m_activity, m_nextActivity))
@@ -1155,6 +1159,8 @@ class AppVaccineFragment : FormDirtyNotifierFragment(), OnDateSetListener, FormS
                 dialog.dismiss()
             }
             val alert = builder.create()
+            alert.setCanceledOnTouchOutside(false)
+            alert.setCancelable(false)
             alert.show()
         }
         return ret
