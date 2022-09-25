@@ -1113,7 +1113,11 @@ public class CommonSessionSingleton {
 
     public String[] getCDTCodesListStringArray()
     {
-        return m_cdtCodesList.getReprStringArray();
+        if (m_cdtCodesList != null) {
+            return m_cdtCodesList.getReprStringArray();
+        }
+        String [] ret = new String[] {};
+        return ret;
     }
 
     public CDTCodesModelList getCDTCodeModelList() {
