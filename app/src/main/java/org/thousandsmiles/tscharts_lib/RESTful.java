@@ -29,6 +29,7 @@ import java.util.ArrayList;
 public abstract class RESTful {
     private Context m_context;
     private int m_status;
+    private String m_msg;
     private int m_timeout = 5000;  // Milliseconds
     private int m_retries = 3;
     private Object lock = new Object();
@@ -98,6 +99,14 @@ public abstract class RESTful {
 
     protected void setStatus(int status) {
         m_status = status;
+    }
+
+    public String getMessage() {
+        return m_msg;
+    }
+
+    protected void setMessage(String msg) {
+        m_msg = msg;
     }
 
     protected void setContext(Context context) {

@@ -82,8 +82,9 @@ public class LoginREST extends RESTful {
         public void onErrorResponse(VolleyError error) {
 
             synchronized (m_lock) {
+                setMessage(error.getMessage());
                 if (error.networkResponse == null) {
-                    if (error.getCause() instanceof java.net.ConnectException || error.getCause() instanceof  java.net.UnknownHostException) {
+                    if (error.getCause() instanceof java.net.ConnectException || error.getCause() instanceof java.net.UnknownHostException) {
                         setStatus(101);
                     } else {
                         setStatus(-1);
