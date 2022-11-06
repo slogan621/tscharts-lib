@@ -111,7 +111,9 @@ public class ImageREST extends RESTful {
 
     public void cancelPendingRequest(int tag)
     {
-       m_queue.cancelAll(tag);
+       if (m_queue != null) {
+           m_queue.cancelAll(tag);
+       }
     }
 
     private class ErrorListener implements Response.ErrorListener {
