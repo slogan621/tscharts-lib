@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2018-2020
- * (C) Copyright Thousand Smiles Foundation 2018-2020
+ * (C) Copyright Syd Logan 2018-2022
+ * (C) Copyright Thousand Smiles Foundation 2018-2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,9 +39,13 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        return new DatePickerDialog(getActivity(),
+        ret = new DatePickerDialog(getActivity(),
+                R.style.customDatePickerStyle,
                 this,
                 year, month, day);
+        ret.setCancelable(false);
+        ret.setCanceledOnTouchOutside(false);
+        return ret;
     }
 
     public void setListeningActivity(DatePickerDialog.OnDateSetListener listener)
