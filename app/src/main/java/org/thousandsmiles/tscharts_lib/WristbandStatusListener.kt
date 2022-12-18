@@ -21,4 +21,5 @@ interface WristbandStatusListener {
     fun OnSuccess(job : Int, status : WristbandPrinter.PrinterStatus)
     fun OnError(job: Int, status : WristbandPrinter.PrinterStatus, msg: String)
     fun OnStatusChange(job: Int, status : WristbandPrinter.PrinterStatus)
+    fun OnConnectionStatusChange(job: Int, status : WristbandPrinter.ConnectedStatus)
 }

@@ -38,10 +38,21 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
         // On success, call notifyOnSuccess with latest status reported by printer
         // On detecting status changes, call notifyOnStatusChange with status
         // On error,  call notifyOnSuccess with latest status reported by printer and custom msg or ""
+
+        var printer = connect(job);
+        if (printer == null) {
+            notifyOnError(job, m_printerStatus, "Unable to connect to printer")
+            return false
+        }
+
+        // ....
+
+        disconnect(job);
+        notifyOnSuccess(job, m_printerStatus)
         return true
     }
 
-    fun connect(): ZebraPrinter? {
+    fun connect(job :Int): ZebraPrinter? {
         //setStatus("Connecting...", Color.YELLOW)
         connection = null
         try {
@@ -60,7 +71,7 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
         } catch (e: ConnectionException) {
             //setStatus("Comm Error! Disconnecting", Color.RED)
             //DemoSleeper.sleep(1000)
-            disconnect()
+            disconnect(job)
         }
         var printer: ZebraPrinter? = null
         if ((connection as TcpConnection).isConnected()) {
@@ -73,29 +84,36 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
                 //setStatus("Unknown Printer Language", Color.RED)
                 printer = null
                 //DemoSleeper.sleep(1000)
-                disconnect()
+                disconnect(job)
             } catch (e: ZebraPrinterLanguageUnknownException) {
                 //setStatus("Unknown Printer Language", Color.RED)
                 printer = null
                 //DemoSleeper.sleep(1000)
-                disconnect()
+                disconnect(job)
             }
         }
+        changeConnectionStatus(job, ConnectedStatus.Connected)
         return printer
     }
 
-    fun disconnect() {
+    fun disconnect(job : Int) {
         try {
             //setStatus("Disconnecting", Color.RED)
             if (connection != null) {
                 connection!!.close()
             }
+            changeConnectionStatus(job, ConnectedStatus.Disconnected)
             //setStatus("Not Connected", Color.RED)
         } catch (e: ConnectionException) {
             //setStatus("COMM Error! Disconnected", Color.RED)
         } finally {
             //enableTestButton(true)
         }
+    }
+
+    fun changeConnectionStatus(job: Int, status: ConnectedStatus) {
+        m_connectedStatus = status;
+        notifyOnConnectionStatusChange(job, status)
     }
 
     fun notifyOnSuccess(job : Int, status : PrinterStatus) {
@@ -117,5 +135,11 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
              x.OnStatusChange(job, status)
          }
      }
+
+    fun notifyOnConnectionStatusChange(job : Int, status : ConnectedStatus) {
+        for (x in m_listeners) {
+            x.OnConnectionStatusChange(job, status)
+        }
+    }
 
 }

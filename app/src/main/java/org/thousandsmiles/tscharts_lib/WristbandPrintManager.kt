@@ -90,6 +90,12 @@ class WristbandPrintManager : WristbandStatusListener {
         }
     }
 
+    override fun OnConnectionStatusChange(job: Int, status: WristbandPrinter.ConnectedStatus) {
+        for (item in m_listeners) {
+            item.OnConnectionStatusChange(job, status)
+        }
+    }
+
     var m_listeners = ArrayList<WristbandStatusListener>()
 
     fun registerListener(job: Int, listener : WristbandStatusListener) {
