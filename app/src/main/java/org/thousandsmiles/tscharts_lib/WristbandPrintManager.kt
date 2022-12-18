@@ -35,6 +35,7 @@ class WristbandPrintManager : WristbandStatusListener {
     fun createJob(data : PatientData) : Int {
         var id : Int = -1
         // find a suitable printer
+
         for (x in m_printers) {
             var printerStatus = x.m_printerStatus
             var connectedStatus = x.m_connectedStatus
@@ -63,7 +64,7 @@ class WristbandPrintManager : WristbandStatusListener {
                 obj = WristbandPrintManager()
             }
             var wbp = obj as WristbandPrintManager
-            wbp.EnumeratePrinters()
+            wbp.enumeratePrinters()
             return wbp
         }
     }
@@ -106,7 +107,7 @@ class WristbandPrintManager : WristbandStatusListener {
         m_listeners.remove(listener)
     }
 
-    private fun EnumeratePrinters() {
+    private fun enumeratePrinters() {
         // read prefs
         // create list of printers based on configured prefs, for x in addr/port pairs
     }

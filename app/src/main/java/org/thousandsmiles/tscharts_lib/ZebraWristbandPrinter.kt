@@ -30,7 +30,8 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
 
     var m_port : Int = port
     var m_ipAddr : String = ipAddr
-    private var connection: Connection? = null
+    var m_printer: ZebraPrinter? = null
+    var m_connection : Connection? = null;
 
     override fun print(job: Int, patient: PatientData) : Boolean {
 
@@ -39,8 +40,8 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
         // On detecting status changes, call notifyOnStatusChange with status
         // On error,  call notifyOnSuccess with latest status reported by printer and custom msg or ""
 
-        var printer = connect(job);
-        if (printer == null) {
+        m_printer = connect(job);
+        if (m_printer == null) {
             notifyOnError(job, m_printerStatus, "Unable to connect to printer")
             return false
         }
@@ -54,10 +55,10 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
 
     fun connect(job :Int): ZebraPrinter? {
         //setStatus("Connecting...", Color.YELLOW)
-        connection = null
+
         try {
             val port: Int = m_port
-            connection = TcpConnection(m_ipAddr, port)
+            m_connection = TcpConnection(m_ipAddr, port)
             //SettingsHelper.saveIp(this, getTcpAddress())
             //SettingsHelper.savePort(this, getTcpPortNumber())
         } catch (e: NumberFormatException) {
@@ -66,7 +67,7 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
         }
 
         try {
-            (connection as TcpConnection).open()
+            (m_connection as TcpConnection).open()
             //setStatus("Connected", Color.GREEN)
         } catch (e: ConnectionException) {
             //setStatus("Comm Error! Disconnecting", Color.RED)
@@ -74,11 +75,11 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
             disconnect(job)
         }
         var printer: ZebraPrinter? = null
-        if ((connection as TcpConnection).isConnected()) {
+        if ((m_connection as TcpConnection).isConnected()) {
             try {
-                printer = ZebraPrinterFactory.getInstance(connection)
+                printer = ZebraPrinterFactory.getInstance(m_connection)
                 //setStatus("Determining Printer Language", Color.YELLOW)
-                val pl = SGD.GET("device.languages", connection)
+                val pl = SGD.GET("device.languages", m_connection)
                 //setStatus("Printer Language $pl", Color.BLUE)
             } catch (e: ConnectionException) {
                 //setStatus("Unknown Printer Language", Color.RED)
@@ -99,8 +100,9 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
     fun disconnect(job : Int) {
         try {
             //setStatus("Disconnecting", Color.RED)
-            if (connection != null) {
-                connection!!.close()
+            if (m_connection != null) {
+                m_connection!!.close()
+                m_connection = null
             }
             changeConnectionStatus(job, ConnectedStatus.Disconnected)
             //setStatus("Not Connected", Color.RED)
