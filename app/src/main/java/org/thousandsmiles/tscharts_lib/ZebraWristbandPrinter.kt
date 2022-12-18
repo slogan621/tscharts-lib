@@ -17,10 +17,20 @@
 
 package org.thousandsmiles.tscharts_lib
 
+import com.zebra.sdk.comm.Connection
+import com.zebra.sdk.comm.ConnectionException
+import com.zebra.sdk.comm.TcpConnection
+import com.zebra.sdk.printer.PrinterStatus
+import com.zebra.sdk.printer.SGD
+import com.zebra.sdk.printer.ZebraPrinter
+import com.zebra.sdk.printer.ZebraPrinterFactory
+import com.zebra.sdk.printer.ZebraPrinterLanguageUnknownException
+
 class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr, port) {
 
     var m_port : Int = port
     var m_ipAddr : String = ipAddr
+    private var connection: Connection? = null
 
     override fun print(job: Int, patient: PatientData) : Boolean {
 
@@ -29,6 +39,63 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
         // On detecting status changes, call notifyOnStatusChange with status
         // On error,  call notifyOnSuccess with latest status reported by printer and custom msg or ""
         return true
+    }
+
+    fun connect(): ZebraPrinter? {
+        //setStatus("Connecting...", Color.YELLOW)
+        connection = null
+        try {
+            val port: Int = m_port
+            connection = TcpConnection(m_ipAddr, port)
+            //SettingsHelper.saveIp(this, getTcpAddress())
+            //SettingsHelper.savePort(this, getTcpPortNumber())
+        } catch (e: NumberFormatException) {
+            //setStatus("Port Number Is Invalid", Color.RED)
+            return null
+        }
+
+        try {
+            (connection as TcpConnection).open()
+            //setStatus("Connected", Color.GREEN)
+        } catch (e: ConnectionException) {
+            //setStatus("Comm Error! Disconnecting", Color.RED)
+            //DemoSleeper.sleep(1000)
+            disconnect()
+        }
+        var printer: ZebraPrinter? = null
+        if ((connection as TcpConnection).isConnected()) {
+            try {
+                printer = ZebraPrinterFactory.getInstance(connection)
+                //setStatus("Determining Printer Language", Color.YELLOW)
+                val pl = SGD.GET("device.languages", connection)
+                //setStatus("Printer Language $pl", Color.BLUE)
+            } catch (e: ConnectionException) {
+                //setStatus("Unknown Printer Language", Color.RED)
+                printer = null
+                //DemoSleeper.sleep(1000)
+                disconnect()
+            } catch (e: ZebraPrinterLanguageUnknownException) {
+                //setStatus("Unknown Printer Language", Color.RED)
+                printer = null
+                //DemoSleeper.sleep(1000)
+                disconnect()
+            }
+        }
+        return printer
+    }
+
+    fun disconnect() {
+        try {
+            //setStatus("Disconnecting", Color.RED)
+            if (connection != null) {
+                connection!!.close()
+            }
+            //setStatus("Not Connected", Color.RED)
+        } catch (e: ConnectionException) {
+            //setStatus("COMM Error! Disconnected", Color.RED)
+        } finally {
+            //enableTestButton(true)
+        }
     }
 
     fun notifyOnSuccess(job : Int, status : PrinterStatus) {
