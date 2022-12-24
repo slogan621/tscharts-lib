@@ -116,4 +116,9 @@
     <string name="select_covid19_type_cancel">Cancel</string>
     <string name="title_select_covid19_type_dialog">Select COVID-19 Vaccine</string>
     <string name="label_vaccine_covid19_type">COVID-19 vaccine type</string>
+    <string name="button_label_print_wristband">Print Wristband</string>
+    <string name="ip_address">IP Address:</string>
+    <string name="port">Port:</string>
+    <string name="printer_status">Printer Status:</string>
+    <string name="job_status">Job Status:</string>
 </resources>

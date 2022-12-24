@@ -20,16 +20,15 @@ package org.thousandsmiles.tscharts_lib
 import com.zebra.sdk.comm.Connection
 import com.zebra.sdk.comm.ConnectionException
 import com.zebra.sdk.comm.TcpConnection
-import com.zebra.sdk.printer.PrinterStatus
 import com.zebra.sdk.printer.SGD
 import com.zebra.sdk.printer.ZebraPrinter
 import com.zebra.sdk.printer.ZebraPrinterFactory
 import com.zebra.sdk.printer.ZebraPrinterLanguageUnknownException
 
-class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr, port) {
+class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAddr, port) {
 
-    var m_port : Int = port
-    var m_ipAddr : String = ipAddr
+    var m_port : Int? = port
+    var m_ipAddr : String? = ipAddr
     var m_printer: ZebraPrinter? = null
     var m_connection : Connection? = null;
 
@@ -53,11 +52,31 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
         return true
     }
 
-    fun connect(job :Int): ZebraPrinter? {
+    override fun reachable(): Boolean {
+        var ret = false
+        val printer = connect();
+        if (printer != null) {
+            ret = true;
+            disconnect()
+        }
+        return ret
+    }
+
+    private fun connect(job :Int): ZebraPrinter? {
+        val printer = connect();
+        if (printer != null) {
+            changeConnectionStatus(job, ConnectedStatus.Connected)
+        } else {
+            disconnect(job)
+        }
+        return printer
+    }
+
+    private fun connect() : ZebraPrinter? {
         //setStatus("Connecting...", Color.YELLOW)
 
         try {
-            val port: Int = m_port
+            val port: Int = m_port!!
             m_connection = TcpConnection(m_ipAddr, port)
             //SettingsHelper.saveIp(this, getTcpAddress())
             //SettingsHelper.savePort(this, getTcpPortNumber())
@@ -72,7 +91,7 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
         } catch (e: ConnectionException) {
             //setStatus("Comm Error! Disconnecting", Color.RED)
             //DemoSleeper.sleep(1000)
-            disconnect(job)
+            return null
         }
         var printer: ZebraPrinter? = null
         if ((m_connection as TcpConnection).isConnected()) {
@@ -85,26 +104,27 @@ class ZebraWristbandPrinter(ipAddr: String, port: Int) : WristbandPrinter(ipAddr
                 //setStatus("Unknown Printer Language", Color.RED)
                 printer = null
                 //DemoSleeper.sleep(1000)
-                disconnect(job)
             } catch (e: ZebraPrinterLanguageUnknownException) {
                 //setStatus("Unknown Printer Language", Color.RED)
                 printer = null
                 //DemoSleeper.sleep(1000)
-                disconnect(job)
             }
         }
-        changeConnectionStatus(job, ConnectedStatus.Connected)
         return printer
     }
 
     fun disconnect(job : Int) {
+        disconnect()
+        changeConnectionStatus(job, ConnectedStatus.Disconnected)
+    }
+
+    private fun disconnect() {
         try {
             //setStatus("Disconnecting", Color.RED)
             if (m_connection != null) {
                 m_connection!!.close()
                 m_connection = null
             }
-            changeConnectionStatus(job, ConnectedStatus.Disconnected)
             //setStatus("Not Connected", Color.RED)
         } catch (e: ConnectionException) {
             //setStatus("COMM Error! Disconnected", Color.RED)

@@ -17,10 +17,19 @@
 
 package org.thousandsmiles.tscharts_lib
 
-class WristbandPrintManager : WristbandStatusListener {
+import android.content.Context
+import android.preference.PreferenceManager
+
+class WristbandPrintManager(context: Context) : WristbandStatusListener {
 
     var m_nextJobId : Int = 0
+    var m_context : Context? = context
     lateinit var m_printers : ArrayList<WristbandPrinter>
+
+    fun getPrinterList() :  ArrayList<WristbandPrinter> {
+        enumeratePrinters();
+        return m_printers;
+    }
 
     private fun getNextJob() : Int {
         var ret = m_nextJobId;
@@ -37,14 +46,24 @@ class WristbandPrintManager : WristbandStatusListener {
         // find a suitable printer
 
         for (x in m_printers) {
-            var printerStatus = x.m_printerStatus
-            var connectedStatus = x.m_connectedStatus
-            if (printerStatus == WristbandPrinter.PrinterStatus.Idle && connectedStatus == WristbandPrinter.ConnectedStatus.Disconnected) {
-                x.registerListener(this)
-                id = getNextJob()
-                m_jobs[id] = WristbandPrintJob(x, id, data)
+            if (createJob(x, data) != -1) {
+                break;
             }
         }
+        return id
+    }
+
+    fun createJob(printer: WristbandPrinter, data : PatientData) : Int {
+        var id : Int = -1
+
+        var printerStatus = printer.m_printerStatus
+        var connectedStatus = printer.m_connectedStatus
+        if (printerStatus == WristbandPrinter.PrinterStatus.Idle && connectedStatus == WristbandPrinter.ConnectedStatus.Disconnected) {
+            printer.registerListener(this)
+            id = getNextJob()
+            m_jobs[id] = WristbandPrintJob(printer, id, data)
+        }
+
         return id
     }
 
@@ -59,9 +78,9 @@ class WristbandPrintManager : WristbandStatusListener {
 
     companion object {
         private var obj: WristbandPrintManager? = null
-        fun getInstance(): WristbandPrintManager {
+        fun getInstance(context: Context): WristbandPrintManager {
             if (obj == null) {
-                obj = WristbandPrintManager()
+                obj = WristbandPrintManager(context)
             }
             var wbp = obj as WristbandPrintManager
             wbp.enumeratePrinters()
@@ -108,7 +127,36 @@ class WristbandPrintManager : WristbandStatusListener {
     }
 
     private fun enumeratePrinters() {
-        // read prefs
-        // create list of printers based on configured prefs, for x in addr/port pairs
+        m_printers = ArrayList<WristbandPrinter>()
+
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(m_context)
+
+        val ip_printer_1 = sharedPref.getString("WBPrinterIpAddress1", "")
+        val port_printer_1 = sharedPref.getString("WBPrinterPort1", "")
+        val ip_printer_2 = sharedPref.getString("WBPrinterIpAddress2", "")
+        val port_printer_2 = sharedPref.getString("WBPrinterPort2", "")
+        val ip_printer_3 = sharedPref.getString("WBPrinterIpAddress3", "")
+        val port_printer_3 = sharedPref.getString("WBPrinterPort3", "")
+
+        if (ip_printer_1 != "" && port_printer_1 != "") {
+            val wb = ip_printer_1?.let { ZebraWristbandPrinter(it, port_printer_1?.toInt()) }
+            if (wb != null) {
+                m_printers.add(wb)
+            };
+        }
+
+        if (ip_printer_2 != "" && port_printer_2 != "") {
+            val wb = ip_printer_2?.let { ZebraWristbandPrinter(it, port_printer_2?.toInt()) }
+            if (wb != null) {
+                m_printers.add(wb)
+            };
+        }
+
+        if (ip_printer_3 != "" && port_printer_3 != "") {
+            val wb = ip_printer_3?.let { ZebraWristbandPrinter(it, port_printer_3?.toInt()) }
+            if (wb != null) {
+                m_printers.add(wb)
+            };
+        }
     }
 }

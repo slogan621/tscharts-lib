@@ -17,7 +17,7 @@
 
 package org.thousandsmiles.tscharts_lib
 
-abstract class WristbandPrinter(var ipAddr : String, var port : Int) : WristbandStatusPublisher {
+abstract class WristbandPrinter(var ipAddr: String?, var port: Int?) : WristbandStatusPublisher {
 
     var m_connectedStatus : ConnectedStatus = ConnectedStatus.Disconnected
     var m_printerStatus : PrinterStatus =PrinterStatus.Idle
@@ -46,6 +46,8 @@ abstract class WristbandPrinter(var ipAddr : String, var port : Int) : Wristband
     }
 
     abstract fun print(job : Int, patient : PatientData) : Boolean
+
+    abstract fun reachable() : Boolean
 
     override fun registerListener(listener : WristbandStatusListener) {
         m_listeners.add(listener);
