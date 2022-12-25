@@ -32,7 +32,7 @@ abstract class WristbandPrinter(var ipAddr: String?, var port: Int?) : Wristband
         OutOfPaper,
         Jammed,
         Printing,
-        Restarting
+        Restarting,
     }
 
     fun checkPrinterStatus() : PrinterStatus {

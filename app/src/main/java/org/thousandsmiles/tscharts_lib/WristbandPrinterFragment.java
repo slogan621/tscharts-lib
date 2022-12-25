@@ -76,27 +76,90 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
         m_jobStatusThread = null;
     }
 
+    void displayPrintJobChangeToast(int job, @NonNull WristbandPrinter.PrinterStatus status, String msg) {
+        String displayMsg = "";
+
+        if (job != 1) {
+            displayMsg = String.format("Print job: %d: ", job);
+        }
+        switch(status) {
+            case Printing:
+                displayMsg += getActivity().getString(R.string.msg_printer_is_printing);
+                break;
+            case Jammed:
+                displayMsg += getActivity().getString(R.string.msg_printer_is_jammed);
+                break;
+            case OutOfPaper:
+                displayMsg += getActivity().getString(R.string.msg_printer_is_out_of_paper);
+                break;
+            case Idle:
+                displayMsg += getActivity().getString(R.string.msg_printer_is_idle);
+                break;
+            case Restarting:
+                displayMsg += getActivity().getString(R.string.msg_printer_is_restarting);
+                break;
+            default:
+                displayMsg += getActivity().getString(R.string.msg_printer_unknown_status);
+                break;
+        }
+
+        if (msg.length() != 0) {
+            displayMsg += ": ";
+            displayMsg += msg;
+        }
+        Toast.makeText(getActivity(), displayMsg, Toast.LENGTH_LONG).show();
+    }
+
+    void displayConnectionChangeToast(int job, @NonNull WristbandPrinter.ConnectedStatus status, String msg) {
+        String displayMsg = "";
+
+        if (job != 1) {
+            displayMsg = String.format("Print job: %d: ", job);
+        }
+        if (status == WristbandPrinter.ConnectedStatus.Connected) {
+            displayMsg += getActivity().getString(R.string.msg_printer_is_online);
+        } else {
+            displayMsg += getActivity().getString(R.string.msg_printer_is_offline);
+        }
+
+        if (msg.length() != 0) {
+            displayMsg += ": ";
+            displayMsg += msg;
+        }
+        Toast.makeText(getActivity(), displayMsg, Toast.LENGTH_LONG).show();
+    }
+
     @Override
     public void OnSuccess(int job, @NonNull WristbandPrinter.PrinterStatus status) {
+        displayPrintJobChangeToast(job, status, getActivity().getString(R.string.msg_wristband_printed_successfully));
     }
 
     @Override
     public void OnError(int job, @NonNull WristbandPrinter.PrinterStatus status, @NonNull String msg) {
+        displayPrintJobChangeToast(job, status, getActivity().getString(R.string.msg_wristband_failed_to_print) + ": " + msg);
     }
 
     @Override
     public void OnStatusChange(int job, @NonNull WristbandPrinter.PrinterStatus status) {
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                String msg;
+                if (status == WristbandPrinter.PrinterStatus.Printing) {
+                    msg = getActivity().getString(R.string.msg_printer_is_online);
+
+                } else {
+                    msg = getActivity().getString(R.string.msg_printer_is_offline);
+                }
+                Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
     public void OnConnectionStatusChange(int job, @NonNull WristbandPrinter.ConnectedStatus status) {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
-                if (status == WristbandPrinter.ConnectedStatus.Connected) {
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.msg_printer_is_online), Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.msg_printer_is_offline), Toast.LENGTH_LONG).show();
-                }
+                displayConnectionChangeToast(job, status, "");
             }
         });
     }
@@ -119,14 +182,15 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
                     getActivity().runOnUiThread(new Runnable() {
                         public void run() {
                             if (m_printer != null) {
+                                WristbandPrinter.ConnectedStatus status = m_printer.getM_connectedStatus();
                                 TextView txt = m_view.findViewById(R.id.printer_status);
                                 if (txt != null) {
                                     if (m_printer.reachable()) {
-                                        txt.setText("Able to connect: " + m_printer.getM_connectedStatus().toString());
+                                        txt.setText("Able to connect: " + status.toString());
                                         Button button = m_view.findViewById(R.id.print);
                                         button.setEnabled(true);
                                     } else {
-                                        txt.setText("Not able to connect: " + m_printer.getM_connectedStatus().toString());
+                                        txt.setText("Not able to connect: " + status.toString());
                                         Button button = m_view.findViewById(R.id.print);
                                         button.setEnabled(false);
                                     }

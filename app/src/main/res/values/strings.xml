@@ -123,4 +123,12 @@
     <string name="job_status">Job Status:</string>
     <string name="msg_printer_is_online">Printer is online</string>
     <string name="msg_printer_is_offline">Printer is offine</string>
+    <string name="msg_printer_is_printing">printer is printing</string>
+    <string name="msg_printer_is_jammed">printer is jammed</string>
+    <string name="msg_printer_is_out_of_paper">printer is out of paper</string>
+    <string name="msg_printer_is_idle">printer is idle</string>
+    <string name="msg_printer_is_restarting">printer is restarting</string>
+    <string name="msg_wristband_printed_successfully">wristband printed successfully</string>
+    <string name="msg_wristband_failed_to_print">wristband failed to print</string>
+    <string name="msg_printer_unknown_status">unknown printer status</string>
 </resources>

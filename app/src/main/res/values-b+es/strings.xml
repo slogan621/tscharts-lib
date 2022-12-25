@@ -122,5 +122,13 @@
     <string name="job_status">Estado del Trabajo</string>
     <string name="msg_printer_is_online">La impresora está en línea</string>
     <string name="msg_printer_is_offline">La impresora no está en línea</string>
+    <string name="msg_printer_is_printing">la impresora esta imprimiendo</string>
+    <string name="msg_printer_is_jammed">la impresora está atascada</string>
+    <string name="msg_printer_is_out_of_paper">printer is out of paper</string>
+    <string name="msg_printer_is_idle">la impresora no tiene papel</string>
+    <string name="msg_printer_is_restarting">la impresora no se reinicia</string>
+    <string name="msg_wristband_printed_successfully">pulsera impresa con éxito</string>
+    <string name="msg_wristband_failed_to_print">la pulsera no se imprimió</string>
+    <string name="msg_printer_unknown_status">estado desconocido de la impresora</string>
 </resources>
 
