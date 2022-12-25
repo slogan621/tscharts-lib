@@ -121,4 +121,6 @@
     <string name="port">Port:</string>
     <string name="printer_status">Printer Status:</string>
     <string name="job_status">Job Status:</string>
+    <string name="msg_printer_is_online">Printer is online</string>
+    <string name="msg_printer_is_offline">Printer is offine</string>
 </resources>

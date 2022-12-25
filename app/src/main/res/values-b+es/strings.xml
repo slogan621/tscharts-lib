@@ -116,9 +116,11 @@
     <string name="title_select_covid19_type_dialog">Seleccione la vacuna COVID-19</string>
     <string name="label_vaccine_covid19_type">Tipo de vacuna COVID-19</string>
     <string name="button_label_print_wristband">Imprimir Pulsera</string>
-    <string name="ip_address">IP Address</string>
-    <string name="port">Port</string>
-    <string name="printer_status">Printer Status</string>
-    <string name="job_status">Job Status</string>
+    <string name="ip_address">Dirección IP</string>
+    <string name="port">Puerto</string>
+    <string name="printer_status">Estado de la Impresora</string>
+    <string name="job_status">Estado del Trabajo</string>
+    <string name="msg_printer_is_online">La impresora está en línea</string>
+    <string name="msg_printer_is_offline">La impresora no está en línea</string>
 </resources>
 
