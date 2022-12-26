@@ -23,12 +23,21 @@ import android.preference.PreferenceManager
 class WristbandPrintManager(context: Context) : WristbandStatusListener {
 
     var m_nextJobId : Int = 0
+    lateinit var m_patientData : PatientData
     var m_context : Context? = context
     lateinit var m_printers : ArrayList<WristbandPrinter>
 
     fun getPrinterList() :  ArrayList<WristbandPrinter> {
         enumeratePrinters();
         return m_printers;
+    }
+
+    fun setPatientData(data : PatientData) {
+        m_patientData = data;
+    }
+
+    fun getPatientData() : PatientData {
+        return m_patientData;
     }
 
     private fun getNextJob() : Int {
@@ -58,7 +67,7 @@ class WristbandPrintManager(context: Context) : WristbandStatusListener {
 
         var printerStatus = printer.m_printerStatus
         var connectedStatus = printer.m_connectedStatus
-        if (printerStatus == WristbandPrinter.PrinterStatus.Idle && connectedStatus == WristbandPrinter.ConnectedStatus.Disconnected) {
+        if (printerStatus == WristbandPrinter.PrinterStatus.Idle && connectedStatus != WristbandPrinter.ConnectedStatus.Disconnected) {
             printer.registerListener(this)
             id = getNextJob()
             m_jobs[id] = WristbandPrintJob(printer, id, data)

@@ -129,12 +129,20 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
 
     @Override
     public void OnSuccess(int job, @NonNull WristbandPrinter.PrinterStatus status) {
-        displayPrintJobChangeToast(job, status, getActivity().getString(R.string.msg_wristband_printed_successfully));
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                displayPrintJobChangeToast(job, status, getActivity().getString(R.string.msg_wristband_printed_successfully));
+            }
+        });
     }
 
     @Override
     public void OnError(int job, @NonNull WristbandPrinter.PrinterStatus status, @NonNull String msg) {
-        displayPrintJobChangeToast(job, status, getActivity().getString(R.string.msg_wristband_failed_to_print) + ": " + msg);
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                displayPrintJobChangeToast(job, status, getActivity().getString(R.string.msg_wristband_failed_to_print) +": "+msg);
+            }
+        });
     }
 
     @Override
@@ -167,13 +175,19 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
             public void run() {
                 WristbandPrintManager manager = WristbandPrintManager.Companion.getInstance(m_view.getContext());
                 int jobId = manager.createJob(m_printer, pd);
-                manager.startJob(jobId);
+                if(jobId != -1) {
+                    manager.startJob(jobId);
+                } else {
+                    OnError(jobId, m_printer.getM_printerStatus(), m_printer.getM_connectedStatus().toString());
+                }
             }
         };
         thread.start();
     }
 
     public void printWristbandCb(View v) {
+        PatientData pd = WristbandPrintManager.Companion.getInstance(m_view.getContext()).getPatientData();
+        startPrintJob(pd);
     }
 
     private void startConnectivityThread() {
