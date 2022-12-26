@@ -64,8 +64,6 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        startConnectivityThread();
-        startJobStatusThread();
     }
 
     @Override
@@ -175,6 +173,9 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
         thread.start();
     }
 
+    public void printWristbandCb(View v) {
+    }
+
     private void startConnectivityThread() {
         m_connectivityThread = new Thread() {
             public void run() {
@@ -188,11 +189,11 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
                                     if (m_printer.reachable()) {
                                         txt.setText("Able to connect: " + status.toString());
                                         Button button = m_view.findViewById(R.id.print);
-                                        button.setEnabled(true);
+                                        //button.setEnabled(true);
                                     } else {
                                         txt.setText("Not able to connect: " + status.toString());
                                         Button button = m_view.findViewById(R.id.print);
-                                        button.setEnabled(false);
+                                        //button.setEnabled(false);
                                     }
                                 }
                             }
@@ -206,12 +207,14 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
                 }
             }
         };
+        m_connectivityThread.setName("wristband connectivity status thread");
         m_connectivityThread.start();
     }
 
     private void startJobStatusThread() {
         m_jobStatusThread = new Thread() {
             public void run() {
+
                 while (Thread.currentThread() == m_jobStatusThread) {
                     getActivity().runOnUiThread(new Runnable() {
                         public void run() {
@@ -231,6 +234,7 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
                 }
             }
         };
+        m_jobStatusThread.setName("wristband job status thread");
         m_jobStatusThread.start();
     }
 
@@ -248,7 +252,18 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
             txt.setText(m_printer.getIpAddr());
             txt = m_view.findViewById(R.id.port);
             txt.setText(m_printer.getPort().toString());
+            Button button = m_view.findViewById(R.id.print);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    printWristbandCb(view);
+                }
+            });
         }
+        stopConnectivityThread();
+        startJobStatusThread();
+        startConnectivityThread();
+        startJobStatusThread();
     }
 
     @Override
