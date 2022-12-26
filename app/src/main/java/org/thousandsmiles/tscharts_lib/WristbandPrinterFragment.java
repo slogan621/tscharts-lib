@@ -189,11 +189,11 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
                                     if (m_printer.reachable()) {
                                         txt.setText("Able to connect: " + status.toString());
                                         Button button = m_view.findViewById(R.id.print);
-                                        //button.setEnabled(true);
+                                        button.setEnabled(true);
                                     } else {
                                         txt.setText("Not able to connect: " + status.toString());
                                         Button button = m_view.findViewById(R.id.print);
-                                        //button.setEnabled(false);
+                                        button.setEnabled(false);
                                     }
                                 }
                             }
