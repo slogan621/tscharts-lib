@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2022
- * (C) Copyright Thousand Smiles Foundation 2022
+ * (C) Copyright Syd Logan 2022-2023
+ * (C) Copyright Thousand Smiles Foundation 2022-2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAd
     var m_printer: ZebraPrinter? = null
     var m_connection : Connection? = null;
 
-    override fun print(job: Int, patient: PatientData) : Boolean {
+    @Synchronized override fun print(job: Int, patient: PatientData) : Boolean {
 
         // code to print to zebra goes here.
         // On success, call notifyOnSuccess with latest status reported by printer
@@ -90,14 +90,17 @@ class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAd
         } catch (e: ConnectionException) {
         }
         m_connection?.write(configLabel)
-        
+
         disconnect(job);
         notifyOnSuccess(job, m_printerStatus)
         return true
     }
 
-    override fun reachable(): Boolean {
+    @Synchronized override fun reachable(): Boolean {
         var ret = false
+        if (m_printer != null && m_printer?.connection?.isConnected ?: false) {
+            ret = true;
+        }
         val printer = connect();
         if (printer != null) {
             ret = true;
@@ -106,7 +109,7 @@ class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAd
         return ret
     }
 
-    private fun connect(job :Int): ZebraPrinter? {
+    @Synchronized private fun connect(job :Int): ZebraPrinter? {
         val printer = connect();
         if (printer != null) {
             changeConnectionStatus(job, ConnectedStatus.Connected)
@@ -116,7 +119,7 @@ class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAd
         return printer
     }
 
-    private fun connect() : ZebraPrinter? {
+    @Synchronized private fun connect() : ZebraPrinter? {
         //setStatus("Connecting...", Color.YELLOW)
 
         try {
@@ -162,7 +165,7 @@ class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAd
         changeConnectionStatus(job, ConnectedStatus.Disconnected)
     }
 
-    private fun disconnect() {
+    @Synchronized private fun disconnect() {
         try {
             //setStatus("Disconnecting", Color.RED)
             if (m_connection != null) {

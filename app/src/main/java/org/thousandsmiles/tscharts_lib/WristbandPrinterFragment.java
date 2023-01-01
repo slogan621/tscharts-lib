@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2022
- * (C) Copyright Thousand Smiles Foundation 2022
+ * (C) Copyright Syd Logan 2022-2023
+ * (C) Copyright Thousand Smiles Foundation 2022-2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -170,7 +170,7 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
         });
     }
 
-    private void startPrintJob(final PatientData pd) {
+    private synchronized void startPrintJob(final PatientData pd) {
         Thread thread = new Thread() {
             public void run() {
                 WristbandPrintManager manager = WristbandPrintManager.Companion.getInstance(m_view.getContext());
@@ -194,27 +194,33 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
         m_connectivityThread = new Thread() {
             public void run() {
                 while (Thread.currentThread() == m_connectivityThread) {
-                    getActivity().runOnUiThread(new Runnable() {
+                    boolean isReachable = false;
+                    if (m_printer != null) {
+                        isReachable = m_printer.reachable();
+                    }
+                    boolean finalIsReachable = isReachable;
+                    Activity activity = getActivity();
+                    if (activity == null) {
+                        break;
+                    }
+                    activity.runOnUiThread(new Runnable() {
                         public void run() {
-                            if (m_printer != null) {
-                                WristbandPrinter.ConnectedStatus status = m_printer.getM_connectedStatus();
-                                TextView txt = m_view.findViewById(R.id.printer_status);
-                                if (txt != null) {
-                                    if (m_printer.reachable()) {
-                                        txt.setText("Able to connect: " + status.toString());
-                                        Button button = m_view.findViewById(R.id.print);
-                                        button.setEnabled(true);
-                                    } else {
-                                        txt.setText("Not able to connect: " + status.toString());
-                                        Button button = m_view.findViewById(R.id.print);
-                                        button.setEnabled(false);
-                                    }
+                            TextView txt = m_view.findViewById(R.id.printer_status);
+                            if (txt != null) {
+                                if (finalIsReachable) {
+                                    txt.setText("Able to connect");
+                                    Button button = m_view.findViewById(R.id.print);
+                                    button.setEnabled(true);
+                                } else {
+                                    txt.setText("Not able to connect");
+                                    Button button = m_view.findViewById(R.id.print);
+                                    button.setEnabled(false);
                                 }
                             }
                         }
                     });
                     try {
-                        Thread.sleep(5000);
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         // ignore
                     }
@@ -228,18 +234,20 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
     private void startJobStatusThread() {
         m_jobStatusThread = new Thread() {
             public void run() {
-
                 while (Thread.currentThread() == m_jobStatusThread) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        public void run() {
-                            TextView txt = m_view.findViewById(R.id.job_status);
-                            if (txt != null) {
-                                if (m_printer != null) {
-                                    txt.setText(m_printer.getM_printerStatus().toString());
+                    Activity activity = getActivity();
+                    if (activity != null) {
+                        activity.runOnUiThread(new Runnable() {
+                            public void run() {
+                                TextView txt = m_view.findViewById(R.id.job_status);
+                                if (txt != null) {
+                                    if (m_printer != null) {
+                                        txt.setText(m_printer.getM_printerStatus().toString());
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException e) {

@@ -67,7 +67,7 @@ class WristbandPrintManager(context: Context) : WristbandStatusListener {
 
         var printerStatus = printer.m_printerStatus
         var connectedStatus = printer.m_connectedStatus
-        if (printerStatus == WristbandPrinter.PrinterStatus.Idle && connectedStatus != WristbandPrinter.ConnectedStatus.Disconnected) {
+        if (printerStatus == WristbandPrinter.PrinterStatus.Idle) {
             printer.registerListener(this)
             id = getNextJob()
             m_jobs[id] = WristbandPrintJob(printer, id, data)

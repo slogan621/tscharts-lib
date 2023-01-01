@@ -144,6 +144,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="49dp"
+        android:enabled="false"
         android:text="@string/button_label_print_wristband" />
 
 </LinearLayout>
