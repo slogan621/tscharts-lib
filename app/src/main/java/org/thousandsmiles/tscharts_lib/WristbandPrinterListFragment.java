@@ -39,8 +39,12 @@ public class WristbandPrinterListFragment extends Fragment implements WristbandS
     ArrayList<WristbandPrinterFragment> m_fragments = null;
     ArrayList<WristbandStatusListener> m_listeners = null;
 
-    public static WristbandPrinterListFragment newInstance() {
-        return new WristbandPrinterListFragment();
+    public WristbandPrinterListFragment(WristbandStatusListener parent) {
+        registerListener(parent);
+    }
+
+    public static WristbandPrinterListFragment newInstance(WristbandStatusListener parent) {
+        return new WristbandPrinterListFragment(parent);
     }
 
     @Override
@@ -56,18 +60,38 @@ public class WristbandPrinterListFragment extends Fragment implements WristbandS
 
     @Override
     public void OnSuccess(int job, @NonNull WristbandPrinter.PrinterStatus status) {
+        if (m_listeners != null) {
+            for (int i = 0; i < m_listeners.size(); i++) {
+                m_listeners.get(i).OnSuccess(job, status);
+            }
+        }
     }
 
     @Override
     public void OnError(int job, @NonNull WristbandPrinter.PrinterStatus status, @NonNull String msg) {
+        if (m_listeners != null) {
+            for (int i = 0; i < m_listeners.size(); i++) {
+                m_listeners.get(i).OnError(job, status, msg);
+            }
+        }
     }
 
     @Override
     public void OnStatusChange(int job, @NonNull WristbandPrinter.PrinterStatus status) {
+        if (m_listeners != null) {
+            for (int i = 0; i < m_listeners.size(); i++) {
+                m_listeners.get(i).OnStatusChange(job, status);
+            }
+        }
     }
 
     @Override
     public void OnConnectionStatusChange(int job, @NonNull WristbandPrinter.ConnectedStatus status) {
+        if (m_listeners != null) {
+            for (int i = 0; i < m_listeners.size(); i++) {
+                m_listeners.get(i).OnConnectionStatusChange(job, status);
+            }
+        }
     }
 
     private  void createPrinterFragments() {
@@ -76,6 +100,7 @@ public class WristbandPrinterListFragment extends Fragment implements WristbandS
         m_printers = manager.getPrinterList();
         int[] resource_ids = {R.id.printer_1, R.id.printer_2, R.id.printer_3};
         for (int i = 0; i < m_printers.size(); i++) {
+            m_printers.get(i).registerListener(this);
             m_context = getContext();
             Bundle arguments = new Bundle();
             WristbandPrinterFragment frag = new WristbandPrinterFragment(m_printers.get(i));
@@ -88,17 +113,6 @@ public class WristbandPrinterListFragment extends Fragment implements WristbandS
         }
     }
 
-    private void startPrintJob(final WristbandPrinter printer, final PatientData pd) {
-        Thread thread = new Thread() {
-            public void run() {
-                WristbandPrintManager manager = WristbandPrintManager.Companion.getInstance(m_context);
-                int jobId = manager.createJob(printer, pd);
-                manager.startJob(jobId);
-            }
-        };
-        thread.start();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,17 +122,6 @@ public class WristbandPrinterListFragment extends Fragment implements WristbandS
     @Override
     public void onResume() {
         super.onResume();
-        if (m_view != null) {
-            /*
-            TextView tx = (TextView) m_view.findViewById(R.id.phone_1);
-            tx.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-            tx = (TextView) m_view.findViewById(R.id.phone_2);
-            tx.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-            tx = (TextView) m_view.findViewById(R.id.emergency_phone);
-            tx.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
-
-             */
-        }
     }
 
     @Override
@@ -140,11 +143,16 @@ public class WristbandPrinterListFragment extends Fragment implements WristbandS
 
     @Override
     public void registerListener(@NonNull WristbandStatusListener listener) {
+        if (m_listeners == null) {
+            m_listeners = new ArrayList<WristbandStatusListener>();
+        }
         m_listeners.add(listener);
     }
 
     @Override
     public void removeListener(@NonNull WristbandStatusListener listener) {
-        m_listeners.remove(listener);
+        if (m_listeners != null) {
+            m_listeners.remove(listener);
+        }
     }
 }
