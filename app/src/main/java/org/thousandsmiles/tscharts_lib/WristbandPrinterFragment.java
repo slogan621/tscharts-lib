@@ -19,6 +19,7 @@ package org.thousandsmiles.tscharts_lib;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import org.jetbrains.annotations.Nullable;
@@ -131,6 +133,18 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
     public void OnSuccess(int job, @NonNull WristbandPrinter.PrinterStatus status) {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
+                String displayMsg = String.format(getString(R.string.msg_print_job_success), job, status.toString());
+                AlertDialog alert = new AlertDialog.Builder(getActivity())
+                        .setTitle(getActivity().getString(R.string.title_printer_success))
+                        .setMessage(displayMsg)
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setCancelable(false).create();
+                alert.setCanceledOnTouchOutside(false);
+                alert.show();
                 displayPrintJobChangeToast(job, status, getActivity().getString(R.string.msg_wristband_printed_successfully));
             }
         });
@@ -140,6 +154,18 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
     public void OnError(int job, @NonNull WristbandPrinter.PrinterStatus status, @NonNull String msg) {
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
+                String displayMsg = String.format(getString(R.string.msg_print_job_failed), job, status.toString(), msg);
+                AlertDialog alert = new AlertDialog.Builder(getActivity())
+                        .setTitle(getActivity().getString(R.string.title_printer_error))
+                        .setMessage(displayMsg)
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setCancelable(false).create();
+                alert.setCanceledOnTouchOutside(false);
+                alert.show();
                 displayPrintJobChangeToast(job, status, getActivity().getString(R.string.msg_wristband_failed_to_print) +": "+msg);
             }
         });

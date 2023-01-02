@@ -131,4 +131,10 @@
     <string name="msg_wristband_printed_successfully">wristband printed successfully</string>
     <string name="msg_wristband_failed_to_print">wristband failed to print</string>
     <string name="msg_printer_unknown_status">unknown printer status</string>
+    <string name="title_printer_success">Printer Job Successful</string>
+    <string name="title_printer_error">Print Job Failed</string>
+    <string name="title_printer_status_change">Printer Status Change</string>
+    <string name="title_connection_status_change">Printer Connection Status Change</string>
+    <string name="msg_print_job_success">Print Job %d Success! Status: %s</string>
+    <string name="msg_print_job_failed">Print Job %d Failed! Status: %s Message: %s</string>
 </resources>

@@ -130,5 +130,11 @@
     <string name="msg_wristband_printed_successfully">pulsera impresa con éxito</string>
     <string name="msg_wristband_failed_to_print">la pulsera no se imprimió</string>
     <string name="msg_printer_unknown_status">estado desconocido de la impresora</string>
+    <string name="title_printer_success">Trabajo de impresora exitoso</string>
+    <string name="title_printer_error">Trabajo de impresión fallido</string>
+    <string name="title_printer_status_change">Cambio de estado de la impresora</string>
+    <string name="title_connection_status_change">Cambio de estado de conexión de la impresora</string>
+    <string name="msg_print_job_success">Trabajo de Impresión %d Éxito! El Estatus: %s</string>
+    <string name="msg_print_job_failed">Trabajo de Impresión %d Fallido! El Estatus: %s El Aviso: %s</string>
 </resources>
 
