@@ -30,11 +30,11 @@ class WristbandPrintJob(val printer : WristbandPrinter, var id : Int, var patien
         Finished
     }
 
-    fun startJob() : Boolean {
+    fun startJob(numberOfCopies: Int) : Boolean {
         var ret : Boolean = false
 
         m_thread = Thread {
-            m_printer.print(id, m_patientData)
+            m_printer.print(id, m_patientData, numberOfCopies)
         }
         m_thread!!.start()
 

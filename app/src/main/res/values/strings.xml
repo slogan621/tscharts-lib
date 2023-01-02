@@ -137,4 +137,9 @@
     <string name="title_connection_status_change">Printer Connection Status Change</string>
     <string name="msg_print_job_success">Print Job %d Success! Status: %s</string>
     <string name="msg_print_job_failed">Print Job %d Failed! Status: %s Message: %s</string>
+    <string name="title_print_wristband">Print Wristband</string>
+    <string name="msg_select_number_of_wristbands">Select Number Of Wristbands to Print</string>
+    <string name="print_one_wristband">Print One Wristband</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="print_two_wristbands">Print Two Wristbands</string>
 </resources>

@@ -76,11 +76,11 @@ class WristbandPrintManager(context: Context) : WristbandStatusListener {
         return id
     }
 
-    fun startJob(id : Int) : Boolean {
+    fun startJob(id : Int, numberOfCopies: Int) : Boolean {
         var ret : Boolean = false
         // find job, start
         if (m_jobs.contains(id) == true) {
-            ret = m_jobs[id]?.startJob() ?: false;
+            ret = m_jobs[id]?.startJob(numberOfCopies) ?: false;
         }
         return ret
     }

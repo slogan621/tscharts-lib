@@ -29,7 +29,7 @@ class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAd
     var m_printer: ZebraPrinter? = null
     var m_connection : Connection? = null;
 
-    @Synchronized override fun print(job: Int, patient: PatientData) : Boolean {
+    @Synchronized override fun print(job: Int, patient: PatientData, numberOfCopies: Int) : Boolean {
 
         // code to print to zebra goes here.
         // On success, call notifyOnSuccess with latest status reported by printer
@@ -89,7 +89,10 @@ class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAd
             }
         } catch (e: ConnectionException) {
         }
-        m_connection?.write(configLabel)
+
+        for (i in 1..numberOfCopies) {
+            m_connection?.write(configLabel)
+        }
 
         disconnect(job);
         notifyOnSuccess(job, m_printerStatus)

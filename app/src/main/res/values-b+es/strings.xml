@@ -136,5 +136,12 @@
     <string name="title_connection_status_change">Cambio de estado de conexión de la impresora</string>
     <string name="msg_print_job_success">Trabajo de Impresión %d Éxito! El Estatus: %s</string>
     <string name="msg_print_job_failed">Trabajo de Impresión %d Fallido! El Estatus: %s El Aviso: %s</string>
+    <string name="title_print_wristband">
+Imprimir pulsera</string>
+    <string name="msg_select_number_of_wristbands">Seleccione el número de pulseras para imprimir</string>
+    <string name="print_one_wristband">Imprimir una pulsera</string>
+    <string name="label_cancel">Cancelar</string>
+    <string name="print_two_wristbands">
+Imprimir dos pulseras</string>
 </resources>
 

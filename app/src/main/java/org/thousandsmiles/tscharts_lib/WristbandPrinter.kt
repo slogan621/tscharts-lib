@@ -20,8 +20,9 @@ package org.thousandsmiles.tscharts_lib
 abstract class WristbandPrinter(var ipAddr: String?, var port: Int?) : WristbandStatusPublisher {
 
     var m_connectedStatus : ConnectedStatus = ConnectedStatus.Disconnected
-    var m_printerStatus : PrinterStatus =PrinterStatus.Idle
+    var m_printerStatus : PrinterStatus = PrinterStatus.Idle
     var m_listeners = ArrayList<WristbandStatusListener>()
+    var m_numberOfCopies = 2;
 
     enum class ConnectedStatus {
         Connected,
@@ -45,7 +46,7 @@ abstract class WristbandPrinter(var ipAddr: String?, var port: Int?) : Wristband
         return m_connectedStatus
     }
 
-    abstract fun print(job : Int, patient : PatientData) : Boolean
+    abstract fun print(job : Int, patient : PatientData, numberOfCopies: Int) : Boolean
 
     abstract fun reachable() : Boolean
 
