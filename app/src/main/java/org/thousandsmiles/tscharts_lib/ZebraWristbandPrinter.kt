@@ -28,9 +28,10 @@ class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAd
     var m_ipAddr : String? = ipAddr
     var m_printer: ZebraPrinter? = null
     var m_connection : Connection? = null;
-    var m_status = ZebraWristbandPrinterStatus
+    lateinit var m_status : ZebraWristbandPrinterStatus
 
     init {
+        m_status = ZebraWristbandPrinterStatus
         m_status.registerListener(this)
     }
 
