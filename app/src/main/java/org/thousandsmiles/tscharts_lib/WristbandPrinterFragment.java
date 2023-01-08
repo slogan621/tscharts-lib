@@ -40,7 +40,6 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
     private View m_view = null;
     WristbandPrinter m_printer;
     private volatile Thread m_connectivityThread;
-    private volatile Thread m_jobStatusThread;
 
     public void stopConnectivityThread() {
         m_connectivityThread = null;
@@ -48,10 +47,6 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
 
     public Thread getM_connectivityThread() {
         return m_connectivityThread;
-    }
-
-    public void stopJobStatusThread() {
-        m_jobStatusThread = null;
     }
 
     public WristbandPrinterFragment(WristbandPrinter printer) {
@@ -73,7 +68,6 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
         super.onDestroyView();
         // kill the threads
         m_connectivityThread = null;
-        m_jobStatusThread = null;
     }
 
     void displayPrintJobChangeToast(int job, @NonNull WristbandPrinter.PrinterStatus status, String msg) {
@@ -176,7 +170,7 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
         getActivity().runOnUiThread(new Runnable() {
             public void run() {
                 String msg;
-                if (status == WristbandPrinter.PrinterStatus.Printing) {
+                if (status == WristbandPrinter.PrinterStatus.Idle) {
                     msg = getActivity().getString(R.string.msg_printer_is_online);
 
                 } else {
@@ -242,12 +236,20 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
     private void startConnectivityThread() {
         m_connectivityThread = new Thread() {
             public void run() {
+                WristbandPrinter.PrinterStatus m_status = WristbandPrinter.PrinterStatus.Idle;
                 while (Thread.currentThread() == m_connectivityThread) {
                     boolean isReachable = false;
                     if (m_printer != null) {
                         isReachable = m_printer.reachable();
                     }
                     boolean finalIsReachable = isReachable;
+
+                    WristbandPrinter.PrinterStatus pStatus = WristbandPrinter.PrinterStatus.Idle;
+                    if (m_printer != null) {
+                        pStatus = m_printer.checkPrinterStatus();
+                    }
+                    WristbandPrinter.PrinterStatus finalpStatus = pStatus;
+
                     Activity activity = getActivity();
                     if (activity == null) {
                         break;
@@ -259,17 +261,21 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
                                 if (finalIsReachable) {
                                     txt.setText("Able to connect");
                                     Button button = m_view.findViewById(R.id.print);
-                                    button.setEnabled(true);
+                                    button.setEnabled(finalpStatus == WristbandPrinter.PrinterStatus.Idle);
                                 } else {
                                     txt.setText("Not able to connect");
                                     Button button = m_view.findViewById(R.id.print);
                                     button.setEnabled(false);
                                 }
                             }
+                            txt = m_view.findViewById(R.id.job_status);
+                            if (txt != null) {
+                                txt.setText(finalpStatus.toString());
+                            }
                         }
                     });
                     try {
-                        Thread.sleep(1000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         // ignore
                     }
@@ -278,35 +284,6 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
         };
         m_connectivityThread.setName("wristband connectivity status thread");
         m_connectivityThread.start();
-    }
-
-    private void startJobStatusThread() {
-        m_jobStatusThread = new Thread() {
-            public void run() {
-                while (Thread.currentThread() == m_jobStatusThread) {
-                    Activity activity = getActivity();
-                    if (activity != null) {
-                        activity.runOnUiThread(new Runnable() {
-                            public void run() {
-                                TextView txt = m_view.findViewById(R.id.job_status);
-                                if (txt != null) {
-                                    if (m_printer != null) {
-                                        txt.setText(m_printer.getM_printerStatus().toString());
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        // ignore
-                    }
-                }
-            }
-        };
-        m_jobStatusThread.setName("wristband job status thread");
-        m_jobStatusThread.start();
     }
 
     @Override
@@ -332,9 +309,7 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
             });
         }
         stopConnectivityThread();
-        startJobStatusThread();
         startConnectivityThread();
-        startJobStatusThread();
     }
 
     @Override

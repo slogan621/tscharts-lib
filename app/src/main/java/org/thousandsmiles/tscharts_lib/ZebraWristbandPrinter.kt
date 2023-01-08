@@ -22,12 +22,26 @@ import com.zebra.sdk.comm.ConnectionException
 import com.zebra.sdk.comm.TcpConnection
 import com.zebra.sdk.printer.*
 
-class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAddr, port) {
+class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAddr, port), WristbandStatusListener {
 
     var m_port : Int? = port
     var m_ipAddr : String? = ipAddr
     var m_printer: ZebraPrinter? = null
     var m_connection : Connection? = null;
+    var m_status = ZebraWristbandPrinterStatus
+
+    init {
+        m_status.registerListener(this)
+    }
+
+    override fun checkPrinterStatus(): PrinterStatus {
+        m_printer = connect();
+        var statusVal = m_status.checkPrinterStatus(this)
+        if (m_printer != null) {
+            disconnect()
+        }
+        return statusVal
+    }
 
     @Synchronized override fun print(job: Int, patient: PatientData, numberOfCopies: Int) : Boolean {
 
@@ -212,6 +226,20 @@ class ZebraWristbandPrinter(ipAddr: String?, port: Int?) : WristbandPrinter(ipAd
         for (x in m_listeners) {
             x.OnConnectionStatusChange(job, status)
         }
+    }
+
+    override fun OnSuccess(job: Int, status: PrinterStatus) {
+    }
+
+    override fun OnError(job: Int, status: PrinterStatus, msg: String) {
+    }
+
+    override fun OnStatusChange(job: Int, status: PrinterStatus) {
+       notifyOnStatusChange(job, status)
+    }
+
+    override fun OnConnectionStatusChange(job: Int, status: ConnectedStatus) {
+        notifyOnConnectionStatusChange(job, status)
     }
 
 }

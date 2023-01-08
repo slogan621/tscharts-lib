@@ -143,5 +143,6 @@ Imprimir pulsera</string>
     <string name="label_cancel">Cancelar</string>
     <string name="print_two_wristbands">
 Imprimir dos pulseras</string>
+    <string name="network">Red</string>
 </resources>
 

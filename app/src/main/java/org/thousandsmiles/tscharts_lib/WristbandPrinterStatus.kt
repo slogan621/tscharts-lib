@@ -1,6 +1,6 @@
 /*
- * (C) Copyright Syd Logan 2022-2023
- * (C) Copyright Thousand Smiles Foundation 2022-2023
+ * (C) Copyright Syd Logan 2023
+ * (C) Copyright Thousand Smiles Foundation 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,32 +17,11 @@
 
 package org.thousandsmiles.tscharts_lib
 
-abstract class WristbandPrinter(var ipAddr: String?, var port: Int?) : WristbandStatusPublisher {
+abstract class WristbandPrinterStatus : WristbandStatusPublisher {
 
-    var m_connectedStatus : ConnectedStatus = ConnectedStatus.Disconnected
-    var m_printerStatus : PrinterStatus = PrinterStatus.Idle
     var m_listeners = ArrayList<WristbandStatusListener>()
 
-    enum class ConnectedStatus {
-        Connected,
-        Disconnected,
-    }
-
-    enum class PrinterStatus {
-        Idle,
-        OutOfPaper,
-        Jammed,
-        HeadOpen,
-        Paused,
-        Printing,
-        Restarting,
-    }
-
-    abstract fun checkPrinterStatus() : PrinterStatus
-
-    abstract fun print(job : Int, patient : PatientData, numberOfCopies: Int) : Boolean
-
-    abstract fun reachable() : Boolean
+    abstract fun checkPrinterStatus(printer: WristbandPrinter): WristbandPrinter.PrinterStatus
 
     override fun registerListener(listener : WristbandStatusListener) {
         m_listeners.add(listener);
