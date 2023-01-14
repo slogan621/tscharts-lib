@@ -53,6 +53,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingRight="16dp"
                         android:text="@string/ip_address" />
 
                     <TextView
@@ -73,6 +74,7 @@
 
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingRight="16dp"
                         android:text="@string/port" />
 
                     <TextView
@@ -92,6 +94,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingRight="16dp"
                         android:text="@string/network" />
 
                     <TextView
@@ -111,6 +114,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingRight="16dp"
                         android:text="@string/printer_status" />
 
                     <TextView

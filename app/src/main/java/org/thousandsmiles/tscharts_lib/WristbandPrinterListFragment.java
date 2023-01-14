@@ -108,7 +108,7 @@ public class WristbandPrinterListFragment extends Fragment implements WristbandS
             frag.setArguments(arguments);
             //m_fragment.setNextActivity(VaccinationActivity.class);
             getChildFragmentManager().beginTransaction()
-                    .replace(resource_ids[i], frag)
+                    .add(resource_ids[i], frag)
                     .commit();
         }
     }

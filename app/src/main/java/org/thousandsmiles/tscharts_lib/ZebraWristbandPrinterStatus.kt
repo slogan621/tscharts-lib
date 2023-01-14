@@ -42,7 +42,9 @@ object ZebraWristbandPrinterStatus : WristbandPrinterStatus() {
         if (newStatus != m_printerStatus) {
             m_printerStatus = newStatus
             for (item in m_listeners) {
-                item.OnStatusChange(-1, m_printerStatus)
+                if (item == zwp) {
+                    item.OnStatusChange(-1, m_printerStatus)
+                }
             }
         }
         return m_printerStatus

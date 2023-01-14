@@ -38,8 +38,8 @@ import java.util.ArrayList;
 
 public class WristbandPrinterFragment extends Fragment implements WristbandStatusListener {
     private View m_view = null;
-    WristbandPrinter m_printer;
-    private volatile Thread m_connectivityThread;
+    private WristbandPrinter m_printer;
+    private WristbandConnectivityThread m_connectivityThread;
 
     public void stopConnectivityThread() {
         m_connectivityThread = null;
@@ -70,32 +70,44 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
         m_connectivityThread = null;
     }
 
+    String statusToString(@NonNull WristbandPrinter.PrinterStatus status) {
+        String ret;
+        Activity activity = getActivity();
+        if (activity != null) {
+            switch(status) {
+                case Printing:
+                    ret = getActivity().getString(R.string.msg_printer_is_printing);
+                    break;
+                case Jammed:
+                    ret = getActivity().getString(R.string.msg_printer_is_jammed);
+                    break;
+                case OutOfPaper:
+                    ret = getActivity().getString(R.string.msg_printer_is_out_of_paper);
+                    break;
+                case Idle:
+                    ret = getActivity().getString(R.string.msg_printer_is_idle);
+                    break;
+                case Restarting:
+                    ret = getActivity().getString(R.string.msg_printer_is_restarting);
+                    break;
+                default:
+                    ret = status.toString();
+                    break;
+            }
+        } else {
+            ret = status.toString();
+        }
+        return ret;
+    }
+
     void displayPrintJobChangeToast(int job, @NonNull WristbandPrinter.PrinterStatus status, String msg) {
         String displayMsg = "";
 
         if (job != 1) {
             displayMsg = String.format("Print job: %d: ", job);
         }
-        switch(status) {
-            case Printing:
-                displayMsg += getActivity().getString(R.string.msg_printer_is_printing);
-                break;
-            case Jammed:
-                displayMsg += getActivity().getString(R.string.msg_printer_is_jammed);
-                break;
-            case OutOfPaper:
-                displayMsg += getActivity().getString(R.string.msg_printer_is_out_of_paper);
-                break;
-            case Idle:
-                displayMsg += getActivity().getString(R.string.msg_printer_is_idle);
-                break;
-            case Restarting:
-                displayMsg += getActivity().getString(R.string.msg_printer_is_restarting);
-                break;
-            default:
-                displayMsg += getActivity().getString(R.string.msg_printer_unknown_status);
-                break;
-        }
+
+        displayMsg += statusToString(status);
 
         if (msg.length() != 0) {
             displayMsg += ": ";
@@ -126,6 +138,7 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
     @Override
     public void OnSuccess(int job, @NonNull WristbandPrinter.PrinterStatus status) {
         getActivity().runOnUiThread(new Runnable() {
+
             public void run() {
                 String displayMsg = String.format(getString(R.string.msg_print_job_success), job, status.toString());
                 AlertDialog alert = new AlertDialog.Builder(getActivity())
@@ -233,52 +246,83 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
         alertDialog.show();
     }
 
-    private void startConnectivityThread() {
-        m_connectivityThread = new Thread() {
-            public void run() {
-                WristbandPrinter.PrinterStatus m_status = WristbandPrinter.PrinterStatus.Idle;
-                while (Thread.currentThread() == m_connectivityThread) {
-                    boolean isReachable = false;
-                    if (m_printer != null) {
-                        isReachable = m_printer.reachable();
-                    }
-                    boolean finalIsReachable = isReachable;
+    private synchronized void startConnectivityThread(WristbandPrinter printer) {
 
-                    WristbandPrinter.PrinterStatus pStatus = WristbandPrinter.PrinterStatus.Idle;
-                    if (m_printer != null) {
-                        pStatus = m_printer.checkPrinterStatus();
-                    }
-                    WristbandPrinter.PrinterStatus finalpStatus = pStatus;
+        m_connectivityThread = new WristbandConnectivityThread(printer, WristbandPrinterFragment.this.m_view) {
+            final ThreadLocal<Boolean> m_isReachable = new ThreadLocal<Boolean>();
+            final ThreadLocal<WristbandPrinter.PrinterStatus> m_printerStatus = new ThreadLocal<WristbandPrinter.PrinterStatus>();
+
+            public void run() {
+
+                m_wbPrinter.set(printer);
+                while (Thread.currentThread() == m_connectivityThread) {
 
                     Activity activity = getActivity();
                     if (activity == null) {
                         break;
                     }
-                    activity.runOnUiThread(new Runnable() {
+                    if (m_wbPrinter.get() != null) {
+                        WristbandPrinter p = m_wbPrinter.get();
+                        if (p.reachable()) {
+                            m_isReachable.set(Boolean.TRUE);
+                        } else {
+                            m_isReachable.set(Boolean.FALSE);
+                        }
+                    }
+
+                    if (m_isReachable.get() == false || m_wbPrinter.get() == null) {
+                        m_printerStatus.set(WristbandPrinter.PrinterStatus.Idle);
+                    } else {
+                        m_printerStatus.set(m_wbPrinter.get().checkPrinterStatus());
+                    }
+
+                    Boolean reachable = m_isReachable.get();
+                    WristbandPrinter.PrinterStatus status = m_printerStatus.get();
+
+                    Runnable updateRunnable = new Runnable() {
+                        @Override
                         public void run() {
-                            TextView txt = m_view.findViewById(R.id.printer_status);
+                            TextView txt = WristbandPrinterFragment.this.m_view.findViewById(R.id.printer_status);
                             if (txt != null) {
-                                if (finalIsReachable) {
+                                if (reachable == Boolean.TRUE) {
                                     txt.setText("Able to connect");
-                                    Button button = m_view.findViewById(R.id.print);
-                                    button.setEnabled(finalpStatus == WristbandPrinter.PrinterStatus.Idle);
+                                    Button button = WristbandPrinterFragment.this.m_view.findViewById(R.id.print);
+                                    button.setEnabled(status == WristbandPrinter.PrinterStatus.Idle);
                                 } else {
                                     txt.setText("Not able to connect");
-                                    Button button = m_view.findViewById(R.id.print);
+                                    Button button = WristbandPrinterFragment.this.m_view.findViewById(R.id.print);
                                     button.setEnabled(false);
                                 }
                             }
-                            txt = m_view.findViewById(R.id.job_status);
+                            txt = WristbandPrinterFragment.this.m_view.findViewById(R.id.job_status);
                             if (txt != null) {
-                                txt.setText(finalpStatus.toString());
+                                if (status != null) {
+                                    txt.setText(statusToString(status));
+                                }
+                            }
+
+                            synchronized(this)
+                            {
+                                this.notify();
                             }
                         }
-                    });
-                    try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        // ignore
+
+                    };
+
+                    synchronized( updateRunnable ) {
+                        activity.runOnUiThread(updateRunnable) ;
+
+                        try {
+                            updateRunnable.wait() ; // unlocks myRunable while waiting
+                        } catch (InterruptedException e) {
+                            //e.printStackTrace(); TODO display a toast?
+                        }
                     }
+                }
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    // ignore
                 }
             }
         };
@@ -309,7 +353,7 @@ public class WristbandPrinterFragment extends Fragment implements WristbandStatu
             });
         }
         stopConnectivityThread();
-        startConnectivityThread();
+        startConnectivityThread(m_printer);
     }
 
     @Override
