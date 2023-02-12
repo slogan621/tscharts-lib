@@ -55,7 +55,10 @@ class WristbandPrintManager(context: Context) : WristbandStatusListener {
         // find a suitable printer
 
         for (x in m_printers) {
-            if (createJob(x, data) != -1) {
+            var ret : Int
+            ret = createJob(x, data)
+            if (ret != -1) {
+                id = ret;
                 break;
             }
         }
